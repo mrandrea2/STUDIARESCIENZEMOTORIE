@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Studiare Scienze Motorie e Sportive · Prof. Andrea Bertelli</title>
+  <meta name="description" content="Slide, video, podcast e giochi di ripasso di Scienze motorie e sportive per gli studenti del Liceo Scientifico a indirizzo sportivo Galilei di Verona. Prof. Andrea Bertelli.">
+  <meta name="theme-color" content="#101B33">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Scienze Motorie">
+  <meta property="og:title" content="Studiare Scienze Motorie e Sportive">
+  <meta property="og:description" content="Slide, video e giochi per studiare Scienze motorie e sportive. Prof. Andrea Bertelli, Liceo Galilei Verona.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#/" aria-label="Home">
+        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#E2563F"/><path d="M14 46c0-11 8-20 18-20s18 9 18 20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><path d="M23 46c0-6 4-11 9-11s9 5 9 11" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/><circle cx="46" cy="17" r="6" fill="#FFC531"/></svg>
+        <span><b>Scienze Motorie<i>:</i></b><small>Prof. Andrea Bertelli · Liceo Galilei</small></span>
+      </a>
+      <nav class="nav" aria-label="Menu principale">
+        <a href="#/" data-nav="home">Home</a>
+        <a href="#/classe/1" data-nav="c1">1ª</a>
+        <a href="#/classe/2" data-nav="c2">2ª</a>
+        <a href="#/classe/3" data-nav="c3">3ª</a>
+        <a href="#/classe/4" data-nav="c4">4ª</a>
+        <a href="#/classe/5" data-nav="c5">5ª</a>
+        <a href="#/sfida" data-nav="sfida">Sfida</a>
+        <a href="#/cerca" data-nav="cerca">Cerca</a>
+      </nav>
+      <button class="abtn" id="bigBtn" aria-pressed="false" aria-label="Testo più grande">A+</button>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div><b>Studiare Scienze Motorie e Sportive</b><br>© Prof. Andrea Bertelli · Liceo Statale «Galileo Galilei» · Verona</div>
+      <div>Liceo Scientifico a indirizzo sportivo · Materiali a uso didattico per gli studenti</div>
+    </div>
+  </footer>
+
+  <nav class="bnav" aria-label="Navigazione">
+    <a href="#/" data-nav="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>Home
+    </a>
+    <a href="#/classi" data-nav="classi">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>Classi
+    </a>
+    <a href="#/sfida" data-nav="sfida">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Sfida
+    </a>
+    <a href="#/cerca" data-nav="cerca">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Cerca
+    </a>
+  </nav>
+
+  <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Visualizzatore materiale">
+    <div class="viewer-box">
+      <div class="viewer-bar">
+        <b id="viewerTitle"></b>
+        <a class="btn small alt" id="viewerOpen" target="_blank" rel="noopener">Apri ↗</a>
+        <button class="x" id="viewerClose" aria-label="Chiudi">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <iframe id="viewerFrame" title="Materiale" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <script src="data/topics.js"></script>
+  <script src="data/giochi-1.js"></script>
+  <script src="data/giochi-2.js"></script>
+  <script src="data/giochi-3.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
