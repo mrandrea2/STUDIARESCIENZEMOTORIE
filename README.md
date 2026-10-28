@@ -15,6 +15,8 @@ data/topics.js      ARGOMENTI E MATERIALI  ← è il file che modificherai più 
 data/giochi-1.js    giochi: metodo di studio e classe prima
 data/giochi-2.js    giochi: classe seconda e terza
 data/giochi-3.js    giochi: classe quarta e quinta
+data/giochi-extra.js  domande in più e i giochi «Metti in ordine» e «Dividi in gruppi»
+data/schemi.js      SCHEMI RIASSUNTIVI di ogni argomento (flussi, cicli, confronti, barre)
 ```
 
 ## Pubblicare: GitHub + Vercel
@@ -57,6 +59,14 @@ completa: "Frase con la {parola} da trovare tra graffe."
 ```
 
 Attenzione alle virgole tra una riga e l'altra e alle virgolette: se il sito diventa bianco dopo una modifica, di solito manca una virgola.
+
+## Schemi riassuntivi
+
+Ogni argomento ha la scheda **Schemi**. Li trovi in `data/schemi.js`: ogni schema ha un `tipo` (hub, flow, cycle, compare, bars) e un elenco di voci. In cima al file c'è la spiegazione di ogni tipo.
+
+## Metodo di studio
+
+La pagina del metodo di studio e la home mostrano in evidenza i due link bit.ly/CERVELLOINGIOCO e bit.ly/SBLOCCAILTUOPOTENZIALE. Per cambiarli modifica `evidenza` nell'argomento «metodo-di-studio» in `data/topics.js`.
 
 ## Importante: condivisione dei file Drive
 

@@ -22,24 +22,17 @@ window.TOPICS = [
     sottotitolo: "imparare a imparare",
     classi: [1, 2, 3, 4, 5],
     obiettivi: [
+      "Capire come funziona il cervello quando impara",
       "Organizzare il tempo di studio in modo efficace",
-      "Tecniche di lettura e annotazione per comprendere meglio",
-      "Strategie per gestire stress e ansia da verifica",
-      "Metodi per memorizzare e richiamare le informazioni",
-      "Creare un ambiente di studio adatto e senza distrazioni"
+      "Memorizzare meglio e ricordare più a lungo",
+      "Gestire stress e ansia da verifica",
+      "Allenare attenzione e concentrazione"
     ],
-    materiali: [
-      { tipo: "pdf", id: "1zQN-PEr-bUQb2t-1YZZTfkg161B5jud2", titolo: "A lezione di studio", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1zNe-gdFYLnuamuMR_yOPySqcZgZlvA9p", titolo: "Imparare a pianificare", nota: "Laboratorio di pianificazione SMART" },
-      { tipo: "pdf", id: "1j210Hr-WDLtOaYKRfT78PRKkGCuFgkeU", titolo: "Ebook: tutto sul metodo di studio", nota: "Da scaricare" },
-      { tipo: "link", url: "https://bit.ly/SBLOCCAILTUOPOTENZIALE", titolo: "Sblocca il tuo potenziale", nota: "Web app sul metodo di studio" },
-      { tipo: "yt", id: "iOwQY_QYyv0", titolo: "Video di approfondimento 1" },
-      { tipo: "yt", id: "eJn7n51XoLM", titolo: "Video di approfondimento 2" },
-      { tipo: "yt", id: "EzF7epJupJs", titolo: "Video di approfondimento 3" },
-      { tipo: "yt", id: "-xRgMQr_Ro0", titolo: "Video di approfondimento 4" },
-      { tipo: "yt", id: "cnVuLfxWScc", titolo: "Video di approfondimento 5" },
-      { tipo: "yt", id: "GeoKxev6-Zg", titolo: "Video di approfondimento 6" }
-    ]
+    evidenza: [
+      { url: "https://bit.ly/CERVELLOINGIOCO", titolo: "Cervello in gioco", testo: "Scopri come funziona il tuo cervello quando studi, ricordi e ti concentri.", corto: "bit.ly/CERVELLOINGIOCO" },
+      { url: "https://bit.ly/SBLOCCAILTUOPOTENZIALE", titolo: "Sblocca il tuo potenziale", testo: "Strategie pratiche per organizzarti, studiare meglio e ottenere di più.", corto: "bit.ly/SBLOCCAILTUOPOTENZIALE" }
+    ],
+    materiali: []
   },
 
   /* ---------------- CLASSE PRIMA ---------------- */

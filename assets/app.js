@@ -41,12 +41,14 @@
     if (v > (mem[tid][g] || 0)) { mem[tid][g] = v; save(); return true; }
     return false;
   };
-  const GAME_KEYS = ["quiz", "vf", "flash", "abbina", "completa"];
+  const GAME_KEYS = ["quiz", "vf", "abbina", "completa", "ordina", "gruppi", "flash"];
+  const MAXT = GAME_KEYS.length * 3;
+  const S = window.SCHEMI || {};
   const starsFor = p => (p >= 90 ? 3 : p >= 70 ? 2 : p >= 40 ? 1 : 0);
   const topicStars = tid => GAME_KEYS.reduce((a, g) => a + starsFor(getBest(tid, g)), 0);
   const passed = tid => GAME_KEYS.filter(g => getBest(tid, g) >= 70).length;
   const totalStars = () => T.filter(t => G[t.id]).reduce((a, t) => a + topicStars(t.id), 0);
-  const MAX_STARS = T.filter(t => G[t.id]).length * 15;
+  const MAX_STARS = T.filter(t => G[t.id]).length * MAXT;
 
   let lastClass = mem._pref.classe || 0;
   const rememberClass = c => { lastClass = c; mem._pref.classe = c; save(); };
@@ -125,6 +127,9 @@
     brain: sv('<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a2 2 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/>'),
     search: sv('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
     trophy: sv('<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>'),
+    map: sv('<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/><path d="M10 6.5h4a3 3 0 0 1 3 3V14M7 10v4a3 3 0 0 0 3 3h4"/>'),
+    order: sv('<path d="M4 6h10M4 12h7M4 18h4"/><path d="M18 4v16M15 17l3 3 3-3"/>'),
+    groups: sv('<rect x="3" y="4" width="7.5" height="16" rx="2"/><rect x="13.5" y="4" width="7.5" height="16" rx="2"/><path d="M6.7 8h.1M6.7 12h.1M17.2 8h.1"/>'),
     calc: sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>')
   };
   const star = on => `<svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="${on ? "#FFD23F" : "rgba(255,255,255,.12)"}" stroke="${on ? "#FFD23F" : "rgba(255,255,255,.35)"}" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
@@ -243,7 +248,7 @@
       <span><h3>${esc(t.titolo)}</h3><p>${esc(t.sottotitolo || "")}</p></span>
       ${I.arr.replace("<svg", '<svg class="arr"')}
       <span class="meta">
-        <span class="stars-row">${[0, 1, 2, 3, 4].map(x => star(st >= (x + 1) * 3)).join("")}</span>
+        <span class="stars-row">${[0, 1, 2, 3, 4].map(x => star(st >= (x + 1) * MAXT / 5)).join("")}</span>
         <span class="chips">${nDoc ? `<span class="chip">${nDoc} dispense</span>` : ""}${nVid ? `<span class="chip">${nVid} video</span>` : ""}</span>
       </span>
     </a>`;
@@ -252,7 +257,7 @@
   function classTiles() {
     return [1, 2, 3, 4, 5].map((c, i) => {
       const tot = C[c].temi.length;
-      const st = C[c].temi.reduce((a, id) => a + (G[id] ? topicStars(id) : 0), 0), mx = tot * 15;
+      const st = C[c].temi.reduce((a, id) => a + (G[id] ? topicStars(id) : 0), 0), mx = tot * MAXT;
       return `<a class="ctile tilt rv" href="#/classe/${c}" style="${kVars(c)};--i:${i}">
         <span class="num">${c}</span>
         <span class="ord">${c}<sup>e</sup></span>
@@ -278,9 +283,15 @@
 
   /* ================= Home ================= */
   const WORDS = ["il cuore", "i muscoli", "il respiro", "le ossa", "la mente", "lo sport", "l'energia"];
+  function evidenzaCards() {
+    const m = byId["metodo-di-studio"];
+    return (m && m.evidenza || []).map((e, i) => `<a class="hl rv hl${i + 1}" href="${esc(e.url)}" target="_blank" rel="noopener" style="--i:${i}">
+      <span class="hl-ic">${i ? I.bolt : I.brain}</span>
+      <span class="hl-tx"><b>${esc(e.titolo)}</b><span>${esc(e.testo)}</span><small>${esc(e.corto)} ↗</small></span>
+    </a>`).join("");
+  }
   function pageHome() {
     setK(0);
-    const nItems = Object.values(G).reduce((a, g) => a + g.quiz.length + g.vf.length + g.flash.length + g.abbina.length + g.completa.length, 0);
     const lastT = mem._pref.last && byId[mem._pref.last];
     const s = totalStars(), l = levelOf(s), nx = LEVELS[l + 1];
     const streakTxt = "SCIENZE MOTORIE · LICEO GALILEI · MOVIMENTO · SALUTE · SPORT · ENERGIA · ";
@@ -289,53 +300,40 @@
         <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
         <div class="streaks" aria-hidden="true">${[0, 1, 2, 3, 4].map(() => `<div>${streakTxt.repeat(4)}${streakTxt.repeat(4)}</div>`).join("")}</div>
         <div class="wrap">
-          <div class="logo-card"><img src="assets/logo-galilei.jpg" alt="Logo Liceo Galilei Verona" width="406" height="132"><span>LICEO SCIENTIFICO<br>INDIRIZZO SPORTIVO<small>Prof. Andrea Bertelli</small></span></div>
-          <h1 aria-label="Studia il corpo e gioca">
+          <div class="logo-card"><img src="assets/logo-galilei.jpg" alt="Logo Liceo Galilei Verona" width="406" height="132"><span>LICEO SCIENTIFICO<br>INDIRIZZO SPORTIVO<small>Scienze motorie e sportive</small></span></div>
+          <h1 aria-label="Studia il corpo in movimento">
             <span class="l">Studia</span>
             <span class="l" style="font-size:.6em;line-height:1.05"><span class="rot gt" id="rot"><span class="in">${WORDS[0]}</span></span></span>
-            <span class="l">e <span class="gt">gioca.</span></span>
+            <span class="l">in <span class="gt">movimento.</span></span>
           </h1>
-          <p class="lead">Slide, video e podcast delle lezioni. Poi <b>ripassi giocando</b>, conquisti stelle e sali di livello.</p>
-          <div class="stats">
-            <div><b data-n="${T.length}">0</b><small>argomenti</small></div>
-            <div><b data-n="${nItems}">0</b><small>domande</small></div>
-            <div><b data-n="5">0</b><small>giochi</small></div>
-          </div>
-          <div class="cta-row">
-            <a class="btn grad" href="${lastClass ? `#/classe/${lastClass}` : "#/classi"}">${lastClass ? `Vai alle ${PL[lastClass]}` : "Inizia ora"} ${I.arr}</a>
-            <a class="btn ghost" href="#/sfida">${I.bolt} Sfida lampo</a>
-          </div>
+          <p class="lead">Lezioni, <b>schemi riassuntivi</b> e attività di ripasso di Scienze motorie e sportive, divisi per classe.</p>
+          <div class="cta-row"><a class="btn grad" href="${lastClass ? `#/classe/${lastClass}` : "#/classi"}">${lastClass ? `Vai alle ${PL[lastClass]}` : "Scegli la tua classe"} ${I.arr}</a></div>
         </div>
-        <span class="scroll-hint" aria-hidden="true"></span>
       </section>
 
-      <section class="wrap section"><div class="home-two">
-        <div class="rv" id="dailyBox">${dailyHtml()}</div>
-        <div style="display:grid;gap:12px;align-content:start;margin-top:12px">
-          ${lastT ? `<div class="rv" style="--i:1"><p class="kicker">Continua da qui</p>${topicCard(lastT, 0).replace("tcard rv", "tcard")}</div>` : ""}
-          <a class="card rv" href="#/trofei" style="--i:2;text-decoration:none;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center">
-            <span style="width:62px;height:62px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:900;font-size:1.6rem">${l + 1}</span>
-            <span><b style="font-size:1.2rem;display:block">${LEVELS[l][1]}</b><span class="muted" style="font-weight:700;font-size:.92rem">★ ${s} stelle${nx ? ` · ancora ${nx[0] - s} per «${nx[1]}»` : ""}</span>
-            <span class="xpbar" style="margin:8px 0 0;height:8px"><i style="width:${nx ? Math.round((s - LEVELS[l][0]) / (nx[0] - LEVELS[l][0]) * 100) : 100}%"></i></span></span>
-            ${I.arr.replace("<svg", '<svg style="width:26px;height:26px;stroke:#fff"')}
-          </a>
-        </div>
-      </div></section>
+      <section class="wrap section">
+        <div class="section-head rv"><div><p class="kicker">Prima di tutto</p><h2>Impara a <span class="gt">studiare</span>:</h2></div></div>
+        <div class="hl-grid">${evidenzaCards()}</div>
+      </section>
 
       <section class="wrap section">
         <div class="section-head rv"><h2>Scegli la tua <span class="gt">classe</span>:</h2></div>
         <div class="classes">${classTiles()}</div>
       </section>
 
-      <section class="wrap section">
-        <a class="sbanner rv" href="#/sfida">
-          <span class="ic">${I.bolt}</span>
-          <span><h3>Sfida lampo</h3><p>10 domande, 15 secondi l'una. Batti il tuo record.</p></span>
-          <span class="go">${I.arr}</span>
-        </a>
-      </section>`;
+      <section class="wrap section"><div class="home-two">
+        <div class="rv" id="dailyBox">${dailyHtml()}</div>
+        <div style="display:grid;gap:12px;align-content:start;margin-top:12px">
+          ${lastT && !lastT.evidenza ? `<div class="rv" style="--i:1"><p class="kicker">Riprendi da qui</p>${topicCard(lastT, 0).replace("tcard rv", "tcard")}</div>` : ""}
+          <a class="card rv" href="#/trofei" style="--i:2;text-decoration:none;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center">
+            <span style="width:62px;height:62px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:900;font-size:1.6rem">${l + 1}</span>
+            <span><b style="font-size:1.2rem;display:block">I miei progressi</b><span class="muted" style="font-weight:700;font-size:.92rem">Livello «${LEVELS[l][1]}» · ★ ${s}${nx ? ` · ancora ${nx[0] - s} per «${nx[1]}»` : ""}</span>
+            <span class="xpbar" style="margin:8px 0 0;height:8px"><i style="width:${nx ? Math.round((s - LEVELS[l][0]) / (nx[0] - LEVELS[l][0]) * 100) : 100}%"></i></span></span>
+            ${I.arr.replace("<svg", '<svg style="width:26px;height:26px;stroke:#fff"')}
+          </a>
+        </div>
+      </div></section>`;
     bindDaily();
-    $$(".stats b").forEach((b, i) => setTimeout(() => countUp(b, Number(b.dataset.n), "", 1400), 400 + i * 120));
     let w = 0;
     const rot = $("#rot");
     if (!reduce) {
@@ -406,7 +404,7 @@
         <a class="crumb" href="#/classi">${I.back}Classi</a>
         <div class="row">
           <div><p class="kicker">${ts.length} argomenti</p><h1>Classi ${PL[c]}<em>studia, ripassa, gioca</em></h1></div>
-          ${ring(st, ts.length * 15, "stelle")}
+          ${ring(st, ts.length * MAXT, "stelle")}
         </div>
         <div class="cta-row"><a class="btn white" href="#/sfida/${c}">${I.bolt} Sfida delle ${PL[c]}</a></div>
       </div></section>
@@ -456,12 +454,12 @@
     mem._pref.last = t.id; save();
     tab = tab || "studia";
     const g = G[t.id];
-    const hasExtra = (t.extra || []).length > 0;
+        if (t.evidenza) return pageMetodo(t);
     const tabs = [
       ["studia", "Studia", I.book],
+      S[t.id] ? ["schemi", "Schemi", I.map] : null,
       g ? ["ripassa", "Ripassa", I.cards] : null,
-      g ? ["gioca", "Gioca", I.game] : null,
-      hasExtra ? ["altri", "Altri", I.link] : null
+      g ? ["gioca", "Gioca", I.game] : null
     ].filter(Boolean);
     const inGame = (tab === "gioca" && game) || tab === "ripassa";
 
@@ -471,7 +469,7 @@
         <a class="crumb" href="${k ? `#/classe/${k}` : "#/classi"}">${I.back}${k ? PLC[k] : "Classi"}</a>
         <div class="row">
           <div><p class="kicker">${esc(classLabel(t.classi))}</p><h1>${esc(t.titolo)}<em>${esc(t.sottotitolo || "")}</em></h1></div>
-          ${g ? ring(topicStars(t.id), 15, "stelle") : ""}
+          ${g ? ring(topicStars(t.id), MAXT, "stelle") : ""}
         </div>
       </div></section>`}
       <div class="seg-wrap" ${inGame ? 'style="margin-top:0"' : ""}><div class="wrap">
@@ -487,9 +485,11 @@
       if (game === "vf") return gameVF(body, t);
       if (game === "abbina") return gameMatch(body, t);
       if (game === "completa") return gameCloze(body, t);
+      if (game === "ordina" && g.ordina) return gameOrder(body, t);
+      if (game === "gruppi" && g.gruppi) return gameGroups(body, t);
       return gamePicker(body, t);
     }
-    if (tab === "altri" && hasExtra) return tabAltri(body, t);
+    if (tab === "schemi" && S[t.id]) return tabSchemi(body, t);
     return tabStudia(body, t);
   }
 
@@ -508,7 +508,7 @@
     }).join("");
     const sintesi = (t.sintesi || []).length ? `<div class="card sintesi rv"><h3>In sintesi:</h3><dl>${t.sintesi.map(([a, b]) => `<div class="item"><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>` : "";
     const domande = (t.domande || []).length ? `<div class="card rv"><h3>Domande guida:</h3><ol class="domande">${t.domande.map(d => `<li>${esc(d)}</li>`).join("")}</ol><p class="note">Rispondi sul quaderno dopo aver guardato i materiali.</p></div>` : "";
-    const giochi = G[t.id] ? `<div class="card play-card rv"><h3>Hai studiato?</h3><p>Conquista tutte le 15 stelle di questo argomento.</p><div class="cta-row" style="margin:0"><a class="btn white full" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a><a class="btn ghost full" href="#/argomento/${t.id}/ripassa">${I.cards} Flashcard</a></div></div>` : "";
+    const giochi = G[t.id] ? `<div class="card play-card rv"><h3>Hai studiato?</h3><p>Ripassa con 7 attività diverse e conquista tutte le ${MAXT} stelle.</p><div class="cta-row" style="margin:0"><a class="btn white full" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a><a class="btn ghost full" href="#/argomento/${t.id}/schemi">${I.map} Schemi riassuntivi</a></div></div>` : "";
     body.innerHTML = `<div class="two">
       <div class="col">
         <div class="card rv"><h3>Cosa imparerai:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
@@ -536,14 +536,6 @@
     e.addEventListener("input", () => { const v = Number(e.value); $("#etaOut b", el).textContent = v >= 8 && v <= 99 ? Math.round(208 - 0.7 * v) + " · classica " + (220 - v) : "—"; });
   }
 
-  function tabAltri(body, t) {
-    body.innerHTML = `<p class="note" style="margin:8px 0 14px">Quiz e giochi già usati in classe, su Google Moduli e LearningApps.</p>` +
-      t.extra.map((m, i) => {
-        const u = matUrls(m);
-        return `<div class="embed rv" style="--i:${i}"><header><b>${esc(m.titolo)}</b><a class="btn small ghost" href="${esc(u.open)}" target="_blank" rel="noopener">Apri ↗</a></header>${u.embed ? `<iframe src="${esc(u.embed)}" loading="lazy" title="${esc(m.titolo)}" allowfullscreen></iframe>` : `<div style="padding:16px">${esc(m.nota || "")}</div>`}</div>`;
-      }).join("");
-  }
-
   /* ================= Giochi ================= */
   function gamePicker(body, t) {
     const g = G[t.id];
@@ -552,13 +544,21 @@
       ["vf", "Vero o falso", I.vf, "10 secondi per risposta"],
       ["abbina", "Abbina le coppie", I.match, "Termine e definizione"],
       ["completa", "Completa le frasi", I.gap, "Trova la parola giusta"],
+      g.ordina ? ["ordina", "Metti in ordine", I.order, "Ricostruisci la sequenza"] : null,
+      g.gruppi ? ["gruppi", "Dividi in gruppi", I.groups, "Ogni voce al suo posto"] : null,
       ["flash", "Flashcard", I.cards, `${g.flash.length} carte da imparare`]
-    ];
+    ].filter(Boolean);
     body.innerHTML = `<div class="game-pick">${list.map(([key, n, ic, d], i) => {
       const s = starsFor(getBest(t.id, key));
       const href = key === "flash" ? `#/argomento/${t.id}/ripassa` : `#/argomento/${t.id}/gioca/${key}`;
       return `<a class="gcard g-${key} rv${i === 0 ? " big" : ""}" href="${href}" style="--i:${i}"><span class="gi">${ic}</span><span style="display:flex;flex-direction:column;gap:4px;flex:1"><h3>${n}</h3><p>${d}</p><span class="stars-row">${[0, 1, 2].map(x => star(x < s)).join("")}</span></span></a>`;
     }).join("")}</div><p class="note" style="text-align:center">1 stella dal 40% · 2 stelle dal 70% · 3 stelle dal 90%</p>`;
+    if ((t.extra || []).length) {
+      body.insertAdjacentHTML("beforeend", `<div class="section-head" style="margin-top:26px"><h2 style="font-size:1.5rem">Altri giochi della classe:</h2></div>` + t.extra.map((m, i) => {
+        const u = matUrls(m);
+        return `<div class="embed rv" style="--i:${i}"><header><b>${esc(m.titolo)}</b><a class="btn small ghost" href="${esc(u.open)}" target="_blank" rel="noopener">Apri ↗</a></header>${u.embed ? `<iframe src="${esc(u.embed)}" loading="lazy" title="${esc(m.titolo)}" allowfullscreen></iframe>` : `<div style="padding:16px">${esc(m.nota || "")}</div>`}</div>`;
+      }).join(""));
+    }
   }
 
   const stageTop = (t, right) => `<div class="stage-top"><a class="back" href="#/argomento/${t.id}/gioca">${I.back} Giochi</a>${right || ""}</div>`;
@@ -776,6 +776,141 @@
     };
   }
 
+  /* ================= Metodo di studio ================= */
+  function pageMetodo(t) {
+    setK(0);
+    app.innerHTML = `
+      <section class="band"><div class="wrap">
+        <span class="ghost" aria-hidden="true">?!</span>
+        <a class="crumb" href="#/classi">${I.back}Classi</a>
+        <p class="kicker">Per tutte le classi</p><h1>${esc(t.titolo)}<em>${esc(t.sottotitolo)}</em></h1>
+      </div></section>
+      <section class="wrap section" style="padding-top:6px">
+        <div class="hl-grid">${evidenzaCards()}</div>
+      </section>
+      <section class="wrap section">
+        <div class="card rv"><h3>Con queste due app imparerai a:</h3><ol class="goals">${t.obiettivi.map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
+      </section>`;
+  }
+
+  /* ================= Schemi riassuntivi ================= */
+  const PAL = ["var(--o)", "var(--m)", "var(--p)", "var(--b)", "var(--cy)", "var(--ok)", "var(--gold)", "var(--o)"];
+  function schemaHtml(sc, n) {
+    const head = `<div class="sc-head"><span class="sc-n">${n}</span><h3>${esc(sc.titolo)}:</h3></div>`;
+    if (sc.tipo === "hub") {
+      return `${head}<div class="hub"><div class="hub-c"><span>${esc(sc.centro)}</span></div>
+        <div class="hub-v">${sc.voci.map(([a, b], i) => `<div class="hub-i" style="--c:${PAL[i % PAL.length]};--i:${i}"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join("")}</div></div>`;
+    }
+    if (sc.tipo === "flow") {
+      return `${head}<ol class="flow">${sc.voci.map(([a, b], i) => `<li style="--c:${PAL[i % PAL.length]};--i:${i}"><span class="fn">${i + 1}</span><div><b>${esc(a)}</b><span>${esc(b)}</span></div></li>`).join("")}</ol>`;
+    }
+    if (sc.tipo === "cycle") {
+      const N = sc.voci.length, R = 118, cx = 160, cy = 160;
+      const pts = sc.voci.map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / N; return [cx + R * Math.cos(a), cy + R * Math.sin(a)]; });
+      const arcs = pts.map((p, i) => {
+        const a1 = -Math.PI / 2 + i * 2 * Math.PI / N + .32, a2 = -Math.PI / 2 + (i + 1) * 2 * Math.PI / N - .32;
+        const x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1), x2 = cx + R * Math.cos(a2), y2 = cy + R * Math.sin(a2);
+        return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${R} ${R} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" marker-end="url(#ah)"/>`;
+      }).join("");
+      return `${head}<div class="cyc"><svg viewBox="0 0 320 320" class="cyc-svg" aria-hidden="true">
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 10 5 0 10z" fill="rgba(255,255,255,.7)"/></marker></defs>
+          <g class="cyc-arcs" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="3" stroke-linecap="round">${arcs}</g>
+          ${pts.map(([x, y], i) => `<g class="cyc-node" style="--i:${i}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="24" style="fill:${PAL[i % PAL.length]}"/><text x="${x.toFixed(1)}" y="${(y + 7).toFixed(1)}" text-anchor="middle">${i + 1}</text></g>`).join("")}
+          <circle cx="${cx}" cy="${cy}" r="58" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.15)"/>
+          <text x="${cx}" y="${cy + 6}" text-anchor="middle" class="cyc-mid">↻</text>
+        </svg>
+        <ol class="flow mini">${sc.voci.map(([a, b], i) => `<li style="--c:${PAL[i % PAL.length]};--i:${i}"><span class="fn">${i + 1}</span><div><b>${esc(a)}</b><span>${esc(b)}</span></div></li>`).join("")}</ol></div>`;
+    }
+    if (sc.tipo === "compare") {
+      return `${head}<div class="cmp" style="--n:${sc.colonne.length}">${sc.colonne.map((c, i) => `<div class="cmp-c" style="--c:${PAL[(i * 2) % PAL.length]};--i:${i}"><header><b>${esc(c.nome)}</b>${c.sotto ? `<small>${esc(c.sotto)}</small>` : ""}</header><ul>${c.voci.map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>`).join("")}</div>`;
+    }
+    if (sc.tipo === "bars") {
+      return `${head}<div class="bars">${sc.voci.map(([a, v, lab, d], i) => `<div class="bar-r" style="--c:${PAL[i % PAL.length]};--i:${i}"><div class="bar-l"><b>${esc(a)}</b><span>${esc(lab)}</span></div><div class="bar-t"><i style="--w:${v}%"></i></div>${d ? `<p>${esc(d)}</p>` : ""}</div>`).join("")}</div>`;
+    }
+    return "";
+  }
+  function tabSchemi(body, t) {
+    const list = S[t.id] || [];
+    body.innerHTML = `<p class="note" style="margin:8px 0 16px">${list.length} schemi per ripassare l'argomento a colpo d'occhio. Prova a spiegarli ad alta voce, poi mettiti alla prova.</p>
+      <div class="schemi">${list.map((sc, i) => `<div class="card schema sc-${sc.tipo} rv" style="--i:${i % 2}">${schemaHtml(sc, i + 1)}</div>`).join("")}</div>
+      ${G[t.id] ? `<div class="cta-row" style="justify-content:center"><a class="btn grad" href="#/argomento/${t.id}/gioca">${I.game} Mettiti alla prova</a></div>` : ""}`;
+  }
+
+  /* ---------- Metti in ordine ---------- */
+  function gameOrder(body, t) {
+    const rounds = shuffle(G[t.id].ordina).slice(0, 2);
+    let r = 0, okTot = 0, allTot = 0;
+    function draw() {
+      if (r >= rounds.length) return showResult(body, t, "ordina", Math.round(okTot / allTot * 100), `${okTot} posizioni giuste su ${allTot}.`, gameOrder);
+      const [title, steps] = rounds[r];
+      let pool = shuffle(steps.map((s, i) => ({ s, i })));
+      while (steps.length > 2 && pool.every((p, k) => p.i === k)) pool = shuffle(pool);
+      const chosen = [];
+      body.innerHTML = `<div class="stage">${stageTop(t, `<span class="pill k">${r + 1}/${rounds.length}</span>`)}
+        <div class="qcard" id="qc"><span class="qn">Metti in ordine</span><h2>${esc(title)}</h2>
+          <ol class="slots" id="slots">${steps.map((_, i) => `<li data-i="${i}"><span class="fn">${i + 1}</span><span class="sl"></span></li>`).join("")}</ol>
+          <p class="note" style="margin:6px 0 10px">Tocca le voci nell'ordine giusto. Tocca una voce già messa per toglierla.</p>
+          <div class="pool" id="pool">${pool.map((p, k) => `<button class="tile" data-i="${p.i}" style="--i:${k}">${esc(p.s)}</button>`).join("")}</div>
+          <div class="feedback" id="fb"></div>
+          <div class="next-row"><button class="btn" id="check" disabled>Verifica</button></div>
+        </div></div>`;
+      const slots = $$("#slots li", body), check = $("#check", body), card = $("#qc", body);
+      const paint = () => {
+        slots.forEach((li, k) => { const c = chosen[k]; li.classList.toggle("full", c != null); $(".sl", li).textContent = c != null ? steps[c] : ""; });
+        $$("#pool .tile", body).forEach(b => { b.disabled = chosen.includes(Number(b.dataset.i)); });
+        check.disabled = chosen.length < steps.length;
+      };
+      $$("#pool .tile", body).forEach(b => b.addEventListener("click", () => { if (chosen.length < steps.length) { chosen.push(Number(b.dataset.i)); vib(8); sfx("tap"); paint(); } }));
+      slots.forEach((li, k) => li.addEventListener("click", () => { if (li.classList.contains("locked") || chosen[k] == null) return; chosen.splice(k, 1); sfx("flip"); paint(); }));
+      check.onclick = () => {
+        let ok = 0;
+        slots.forEach((li, k) => { const good = chosen[k] === k; if (good) ok++; li.classList.add("locked", good ? "right" : "wrong"); if (!good) li.insertAdjacentHTML("beforeend", `<small class="sol">→ ${esc(steps[k])}</small>`); });
+        okTot += ok; allTot += steps.length;
+        $$("#pool .tile", body).forEach(b => b.disabled = true);
+        const fb = $("#fb", body), all = ok === steps.length;
+        fb.className = "feedback show " + (all ? "ok" : "no");
+        fb.innerHTML = `<b>${all ? "Sequenza perfetta!" : `${ok} su ${steps.length} al posto giusto`}</b>${all ? "Hai ricostruito tutto l'ordine." : "Guarda le correzioni in verde."}`;
+        if (all) rightFx(card, "+" + ok); else wrongFx(card);
+        check.parentElement.innerHTML = `<button class="btn" id="next">${r + 1 < rounds.length ? "Prossima sequenza" : "Vedi il risultato"} ${I.arr}</button>`;
+        $("#next", body).onclick = () => { r++; draw(); window.scrollTo(0, 0); };
+        scrollToEl($("#next", body));
+      };
+    }
+    draw();
+  }
+
+  /* ---------- Dividi in gruppi ---------- */
+  function gameGroups(body, t) {
+    const [title, groups] = G[t.id].gruppi;
+    const items = shuffle(groups.flatMap(([g, vs], gi) => vs.map(v => ({ v, gi }))));
+    let i = 0, ok = 0;
+    const res = [];
+    function draw() {
+      if (i >= items.length) return showResult(body, t, "gruppi", Math.round(ok / items.length * 100), `${ok} voci su ${items.length} nel gruppo giusto.`, gameGroups);
+      const it = items[i];
+      body.innerHTML = `<div class="stage">${stageTop(t, dotsHtml(items.length, i, res))}
+        <div class="tbar prog"><i style="transform:scaleX(${i / items.length})"></i></div>
+        <div class="qcard" id="qc"><span class="qn">Dividi in gruppi · ${i + 1} di ${items.length}</span><h2 style="font-size:1.15rem;color:var(--muted);margin:8px 0 14px">${esc(title)}</h2>
+          <div class="gitem" id="gi">${esc(it.v)}</div>
+          <div class="gbtns" style="--n:${groups.length}">${groups.map(([g], k) => `<button data-g="${k}" style="--c:${PAL[(k * 2) % PAL.length]};--i:${k}">${esc(g)}</button>`).join("")}</div>
+          <div class="feedback" id="fb"></div>
+          <div class="next-row"><button class="btn" id="next" hidden>${i + 1 < items.length ? "Avanti" : "Vedi il risultato"} ${I.arr}</button></div>
+        </div></div>`;
+      const card = $("#qc", body);
+      $$(".gbtns button", body).forEach(b => b.addEventListener("click", () => {
+        const k = Number(b.dataset.g), good = k === it.gi;
+        $$(".gbtns button", body).forEach(x => { x.disabled = true; if (Number(x.dataset.g) === it.gi) x.classList.add("right"); });
+        if (good) { ok++; rightFx(card); $("#gi", body).classList.add("ok"); } else { b.classList.add("wrong"); wrongFx(card); $("#gi", body).classList.add("no"); }
+        res[i] = good;
+        const fb = $("#fb", body); fb.className = "feedback show " + (good ? "ok" : "no");
+        fb.innerHTML = `<b>${good ? "Giusto!" : "Non qui."}</b>«${esc(it.v)}» va in: ${esc(groups[it.gi][0])}.`;
+        const n = $("#next", body); n.hidden = false; scrollToEl(n);
+      }));
+      $("#next", body).onclick = () => { i++; sfx("tap"); draw(); window.scrollTo(0, 0); };
+    }
+    draw();
+  }
+
   /* ================= Sfida lampo ================= */
   function pageSfida(c) {
     c = Number(c);
@@ -796,7 +931,7 @@
     }
     setK(c);
     const pool = [];
-    C[c].temi.concat(["metodo-di-studio"]).forEach(id => (G[id] ? G[id].quiz : []).forEach(q => pool.push({ id, q })));
+    C[c].temi.forEach(id => (G[id] ? G[id].quiz : []).forEach(q => pool.push({ id, q })));
     const qs = shuffle(pool).slice(0, 10).map(({ id, q: [q, opts, ci, sp] }) => ({ id, q, sp, o: shuffle(opts.map((x, i) => ({ x, ok: i === ci }))) }));
     let i = 0, pts = 0, streak = 0, best = 0, right = 0, timer = null;
     const SEC = 15;
@@ -886,7 +1021,7 @@
         </div>
         <div class="col">
           <div class="card rv"><h3>Per classe:</h3><div class="cprog">${[1, 2, 3, 4, 5].map(c => {
-            const ts = C[c].temi, st = ts.reduce((a, id) => a + (G[id] ? topicStars(id) : 0), 0), mx = ts.length * 15;
+            const ts = C[c].temi, st = ts.reduce((a, id) => a + (G[id] ? topicStars(id) : 0), 0), mx = ts.length * MAXT;
             return `<a href="#/classe/${c}" style="${kVars(c)}"><span class="ord">${c}</span><span><b>${PLC[c]}</b><span class="bar"><i style="width:${Math.round(st / mx * 100)}%"></i></span></span><small class="muted" style="font-weight:800">★ ${st}/${mx}</small></a>`;
           }).join("")}</div></div>
           <div class="card rv"><h3>Record Sfida lampo:</h3><div class="ranks">${[1, 2, 3, 4, 5].map(c => { const r = getBest("_sfida", "c" + c); return `<div class="rank${r ? " got" : ""}"><i>${c}</i><span>${PLC[c]}</span><small>${r ? r + " punti" : "—"}</small></div>`; }).join("")}</div>
