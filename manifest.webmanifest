@@ -4,8 +4,8 @@
   "description": "Slide, video e giochi di Scienze motorie e sportive. Prof. Andrea Bertelli, Liceo Galilei Verona.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#F6F1E6",
-  "theme_color": "#101B33",
+  "background_color": "#0A0D24",
+  "theme_color": "#0A0D24",
   "lang": "it",
   "icons": [
     { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }

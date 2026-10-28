@@ -9,7 +9,8 @@ Sito didattico del **prof. Andrea Bertelli**, Liceo Statale «Galileo Galilei» 
 ```
 index.html          la pagina del sito
 assets/style.css    la grafica (colori, caratteri, impaginazione)
-assets/app.js       il funzionamento (pagine, visualizzatore, giochi)
+assets/app.js       il funzionamento (pagine, giochi, livelli, suoni)
+assets/logo-galilei.jpg  logo del Liceo Galilei
 data/topics.js      ARGOMENTI E MATERIALI  ← è il file che modificherai più spesso
 data/giochi-1.js    giochi: metodo di studio e classe prima
 data/giochi-2.js    giochi: classe seconda e terza
@@ -69,7 +70,9 @@ Questi file sono nel Drive personale (Gmail) e non nella cartella del sito: cont
 
 ## Progressi degli studenti
 
-Record dei giochi e flashcard imparate restano salvati **solo sul dispositivo dello studente**, nel browser. Il sito non raccoglie dati e non richiede l'accesso.
+Ogni gioco assegna fino a 3 stelle: 1 dal 40%, 2 dal 70%, 3 dal 90%. Con le stelle si sale di livello, da «Principiante» a «Leggenda». Nella pagina Trofei si vedono il livello, i record della Sfida lampo e i giorni di fila. La domanda del giorno cambia ogni giorno in automatico.
+
+Tutto resta salvato **solo sul dispositivo dello studente**, nel browser. Il sito non raccoglie dati e non richiede l'accesso.
 
 ---
 © Prof. Andrea Bertelli · Liceo Statale «Galileo Galilei» · Verona

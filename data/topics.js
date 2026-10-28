@@ -151,7 +151,6 @@ window.TOPICS = [
     titolo: "Apparato cardio-circolatorio",
     sottotitolo: "il cuore dell'atleta",
     classi: [2, 3],
-    libro: "Libro di testo: pag. 174–179 (classe terza)",
     obiettivi: [
       "Struttura e funzione del cuore",
       "Il ciclo cardiaco",
@@ -178,7 +177,6 @@ window.TOPICS = [
     titolo: "Apparato respiratorio",
     sottotitolo: "il respiro e lo sport",
     classi: [2, 3],
-    libro: "Libro di testo: pag. 180–184 (classe terza)",
     obiettivi: [
       "Struttura dell'apparato respiratorio",
       "Il processo di ventilazione polmonare",
@@ -199,7 +197,6 @@ window.TOPICS = [
     titolo: "I metabolismi energetici",
     sottotitolo: "da dove arriva l'energia",
     classi: [2, 3],
-    libro: "Libro di testo: pag. 386 e approfondimenti (classe terza)",
     obiettivi: [
       "I tre sistemi energetici: anaerobico alattacido, anaerobico lattacido, aerobico",
       "Il ruolo di ogni sistema in base a intensità e durata dello sforzo",
@@ -219,7 +216,6 @@ window.TOPICS = [
     titolo: "Teoria dell'allenamento",
     sottotitolo: "carico, recupero, supercompensazione",
     classi: [2, 3, 4],
-    libro: "Libro di testo: pag. 284–295 (classe terza)",
     obiettivi: [
       "Carico esterno e carico interno",
       "La supercompensazione e come sfruttarla",
@@ -241,7 +237,6 @@ window.TOPICS = [
     titolo: "Le capacità condizionali",
     sottotitolo: "forza, resistenza, velocità, flessibilità",
     classi: [2, 3],
-    libro: "Libro di testo: pag. 296–329 (classe terza)",
     obiettivi: [
       "Le capacità motorie che determinano la prestazione",
       "I tipi di resistenza e i metodi per allenarla",
@@ -270,8 +265,6 @@ window.TOPICS = [
     titolo: "Dal gioco allo sport",
     sottotitolo: "open skills e closed skills",
     classi: [3],
-    nuovo: true,
-    libro: "Libro di testo: pag. 60–66",
     obiettivi: [
       "Che differenza c'è tra gioco, gioco presportivo e sport",
       "Le abilità aperte (open skills) e chiuse (closed skills)",
@@ -294,8 +287,6 @@ window.TOPICS = [
     titolo: "L'apparato digerente",
     sottotitolo: "dal cibo all'energia",
     classi: [3],
-    nuovo: true,
-    libro: "Materiale fornito dal docente",
     obiettivi: [
       "Gli organi dell'apparato digerente e il percorso del cibo",
       "Digestione meccanica e digestione chimica",
@@ -320,7 +311,6 @@ window.TOPICS = [
     titolo: "I test motori",
     sottotitolo: "misurare per migliorare",
     classi: [3],
-    nuovo: true,
     obiettivi: [
       "Perché si fanno i test e come renderli affidabili",
       "Test di Cooper, beep test e Bronco test: la resistenza",
@@ -346,7 +336,6 @@ window.TOPICS = [
     titolo: "Principi per una sana alimentazione",
     sottotitolo: "colazione, dieta mediterranea, sostenibilità",
     classi: [3],
-    libro: "Libro di testo: pag. 381–394",
     obiettivi: [
       "I benefici di una colazione regolare e cosa metterci",
       "La piramide della dieta mediterranea",
