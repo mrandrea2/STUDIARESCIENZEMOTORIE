@@ -455,8 +455,10 @@
     tab = tab || "studia";
     const g = G[t.id];
         if (t.evidenza) return pageMetodo(t);
+    const hasLez = !!L[t.id];
+    if (hasLez && tab === "studia") tab = "lezione";
     const tabs = [
-      ["studia", "Studia", I.book],
+      hasLez ? ["lezione", "Lezione", I.slides] : ["studia", "Studia", I.book],
       S[t.id] ? ["schemi", "Schemi", I.map] : null,
       g ? ["ripassa", "Ripassa", I.cards] : null,
       g ? ["gioca", "Gioca", I.game] : null
@@ -490,6 +492,7 @@
       return gamePicker(body, t);
     }
     if (tab === "schemi" && S[t.id]) return tabSchemi(body, t);
+    if (tab === "lezione" && hasLez) return tabLezione(body, t);
     return tabStudia(body, t);
   }
 
@@ -774,6 +777,120 @@
       $("#fine", body).onclick = () => showResult(body, t, "completa", pct, `${ok} parole giuste su ${sels.length}.`, gameCloze);
       scrollToEl($("#fine", body));
     };
+  }
+
+  /* ================= Lezione a slide ================= */
+  const L = window.LEZIONI || {};
+  const rich = s => esc(s).replace(/&lt;em&gt;/g, "<em>").replace(/&lt;\/em&gt;/g, "</em>");
+  function slideHtml(s, i, n, deckTitle) {
+    const bg = s.t === "key" || s.dark ? "dark" : s.bg || (i % 3 === 2 ? "blue" : "ivory");
+    const head = s.t === "cover" ? "" : `<p class="sk">${esc(s.kicker || "")}</p><h3 class="st">${rich(s.title)}</h3>`;
+    const foot = s.t === "cover" ? "" : `<span class="sf">${esc(deckTitle)} · ${i + 1}</span>`;
+    const note = s.note ? `<p class="sn">${esc(s.note)}</p>` : "";
+    let body = "";
+    switch (s.t) {
+      case "cover":
+        return `<div class="sl s-cover"><div class="cv-l"><p class="sk">${esc(s.kicker)}</p><h2 class="st">${esc(s.title)}</h2><p class="cv-sub">${esc(s.sub)}</p><p class="cv-by">Prof. Andrea Bertelli · Liceo Galilei, Verona</p></div><div class="cv-r"><img src="assets/logo-galilei.jpg" alt="Liceo Galilei Verona"></div></div>`;
+      case "cards":
+        body = `${s.lead ? `<p class="sl-lead">${esc(s.lead)}</p>` : ""}<div class="sgrid g${s.grid || s.cards.length}${s.line ? " line" : ""}">${s.cards.map((c, k) => `<div class="sc${c.dark ? " d" : ""}${c.accent ? " a" : ""}" style="--k:${k}">${c.n ? `<b class="sbig">${esc(c.n)}</b>` : ""}<b class="sh">${esc(c.h)}</b><span>${esc(c.p)}</span></div>`).join("")}</div>`; break;
+      case "key":
+        body = `<p class="sl-lead">${esc(s.lead)}</p><div class="defs">${s.defs.map(([a, b]) => `<p><b>${esc(a)}</b> = ${esc(b)}</p>`).join("")}</div>`; break;
+      case "list":
+        body = `<ol class="slist">${s.items.map(([a, b], k) => `<li style="--k:${k}"><span class="ln">${k + 1}</span><b>${esc(a)}</b><span>${esc(b)}</span></li>`).join("")}</ol>`; break;
+      case "split":
+        body = `${s.lead ? `<p class="sl-lead">${esc(s.lead)}</p>` : ""}<div class="ssplit${s.arrow ? " arr" : ""}">${[s.left, s.right].map((c, k) => `<div class="sc" style="--k:${k}"><b class="sh">${esc(c.h)}</b><ul>${c.items.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`).join(s.arrow ? '<span class="sarrow">→</span>' : "")}</div>`; break;
+      case "stack": {
+        const tot = s.rows.reduce((a, r) => a + r.size, 0);
+        body = `<div class="sstack"><div class="bar">${s.rows.map(r => `<span class="${r.hl ? "vc" : ""}${r.dark ? " dk" : ""}" style="flex:${r.size / tot}">${esc(r.abbr)}</span>`).join("")}</div>
+          <div class="rows">${s.rows.map(r => `<div class="${r.hl ? "vc" : ""}"><b>${esc(r.h)}</b><span>${esc(r.v)} · ${esc(r.p)}</span></div>`).join("")}</div></div>`; break;
+      }
+      case "stats":
+        body = `<div class="sgrid g${s.grid || s.stats.length}">${s.stats.map((c, k) => `<div class="sc${c.dark ? " d" : ""}" style="--k:${k}"><b class="sbig${c.blue ? " bl" : ""}">${esc(c.big)}</b>${c.h ? `<b class="sh">${esc(c.h)}</b>` : ""}<span>${esc(c.p)}</span></div>`).join("")}</div>`; break;
+      case "formula":
+        body = `<div class="sform"><b>${rich(s.big)}</b><span>${esc(s.caption)}</span></div><div class="sgrid g2 line">${s.cols.map((c, k) => `<div class="sc plain" style="--k:${k}"><b class="sh">${esc(c.h)}</b><span>${esc(c.p)}</span></div>`).join("")}</div>`; break;
+      case "table":
+        body = `<div class="stable"><table><thead><tr>${s.head.map((h, k) => `<th${k === s.head.length - 1 ? ' class="hot"' : ""}>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${esc(c)}</td>` : `<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`; break;
+      case "steps":
+        body = `<div class="sgrid g${s.steps.length} steps">${s.steps.map((c, k) => `<div class="sc${s.lastDark && k === s.steps.length - 1 ? " d" : ""}" style="--k:${k}"><b class="sbig">${k + 1}</b><b class="sh">${esc(c.h)}</b><span>${esc(c.p)}</span></div>`).join("")}</div>`; break;
+      case "end":
+        return `<div class="sl s-end b-dark"><p class="sk">${esc(s.kicker)}</p><h3 class="st">${esc(s.title)}</h3><ol class="send">${s.items.map((x, k) => `<li style="--k:${k}">${esc(x)}</li>`).join("")}</ol><span class="sf">${esc(deckTitle)} · ${i + 1}</span></div>`;
+    }
+    return `<div class="sl s-${s.t} b-${bg}">${head}${body}${note}${foot}</div>`;
+  }
+
+  function deckHtml(t) {
+    const D = L[t.id], n = D.slides.length;
+    return `<div class="deck" id="deck" tabindex="0" aria-roledescription="presentazione" aria-label="${esc(D.titolo)}">
+      <div class="deck-top"><span class="deck-c"><b id="dkN">1</b> / ${n}</span><div class="deck-prog"><i id="dkP"></i></div>
+        <button class="dbtn" id="dkIdx" aria-label="Indice delle slide">${sv('<path d="M4 6h16M4 12h16M4 18h10"/>')}</button>
+        <button class="dbtn" id="dkFs" aria-label="Schermo intero">${sv('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>')}</button></div>
+      <div class="deck-stage" id="dkS">${D.slides.map((s, i) => `<section class="slide${i ? "" : " on"}" data-i="${i}" aria-hidden="${i ? "true" : "false"}">${slideHtml(s, i, n, D.titolo)}</section>`).join("")}</div>
+      <div class="deck-nav"><button class="dnav" id="dkPrev" aria-label="Slide precedente">${I.back}</button>
+        <div class="deck-dots">${D.slides.map((_, i) => `<i data-i="${i}"${i ? "" : ' class="on"'}></i>`).join("")}</div>
+        <button class="dnav nx" id="dkNext" aria-label="Slide successiva">${I.arr}</button></div>
+      <div class="deck-index" id="dkList" hidden><ol>${D.slides.map((s, i) => `<li><button data-go="${i}"><span>${i + 1}</span>${esc(s.title)}</button></li>`).join("")}</ol></div>
+    </div>`;
+  }
+
+  function bindDeck(root, t) {
+    const deck = $("#deck", root); if (!deck) return;
+    const slides = $$(".slide", deck), dots = $$(".deck-dots i", deck), n = slides.length;
+    let cur = 0;
+    const key = "lez-" + t.id;
+    const go = (k, dir) => {
+      k = Math.max(0, Math.min(n - 1, k)); if (k === cur) return;
+      const d = dir || (k > cur ? 1 : -1);
+      slides[cur].classList.remove("on"); slides[cur].setAttribute("aria-hidden", "true");
+      slides[k].classList.remove("in-l", "in-r"); void slides[k].offsetWidth;
+      slides[k].classList.add("on", d > 0 ? "in-r" : "in-l"); slides[k].setAttribute("aria-hidden", "false");
+      dots[cur].classList.remove("on"); dots[k].classList.add("on");
+      cur = k;
+      $("#dkN", deck).textContent = k + 1;
+      $("#dkP", deck).style.width = ((k + 1) / n * 100) + "%";
+      $("#dkPrev", deck).disabled = k === 0;
+      $("#dkNext", deck).classList.toggle("fin", k === n - 1);
+      mem._pref[key] = k; save(); sfx("flip");
+      if (k === n - 1) { markActive(); }
+    };
+    $("#dkPrev", deck).onclick = () => go(cur - 1);
+    $("#dkNext", deck).onclick = () => { if (cur === n - 1) { location.hash = `#/argomento/${t.id}/schemi`; return; } go(cur + 1); };
+    dots.forEach(d => d.onclick = () => go(Number(d.dataset.i)));
+    deck.addEventListener("keydown", e => { if (e.key === "ArrowRight") go(cur + 1); if (e.key === "ArrowLeft") go(cur - 1); });
+    let sx = null, sy = null;
+    const st = $("#dkS", deck);
+    st.addEventListener("touchstart", e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    st.addEventListener("touchend", e => { if (sx == null) return; const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) go(cur + (dx < 0 ? 1 : -1)); sx = null; });
+    $("#dkFs", deck).onclick = () => {
+      try { if (document.fullscreenElement) document.exitFullscreen(); else if (deck.requestFullscreen) deck.requestFullscreen(); else deck.classList.toggle("fake-fs"); } catch (e) { deck.classList.toggle("fake-fs"); }
+    };
+    const list = $("#dkList", deck);
+    $("#dkIdx", deck).onclick = () => { list.hidden = !list.hidden; };
+    $$("[data-go]", list).forEach(b => b.onclick = () => { go(Number(b.dataset.go)); list.hidden = true; });
+    $("#dkPrev", deck).disabled = true;
+    $("#dkP", deck).style.width = (1 / n * 100) + "%";
+    const saved = mem._pref[key];
+    if (saved > 0 && saved < n) go(saved, 1);
+  }
+
+  function tabLezione(body, t) {
+    const m = t.materiali || [];
+    const groups = [["Lezioni e dispense", ["pdf", "slides"]], ["Video", ["video", "yt"]], ["Podcast", ["audio"]], ["Link utili", ["link"]]];
+    const matHtml = groups.map(([name, tipi]) => {
+      const items = m.map((x, i) => [x, i]).filter(([x]) => tipi.includes(x.tipo));
+      return items.length ? `<div class="mat-group"><h4>${name}</h4>${items.map(([x, i]) => matButton(x, i)).join("")}</div>` : "";
+    }).join("");
+    body.innerHTML = `
+      <div class="lez-intro rv"><p class="kicker">Lezione</p><h2>${esc(L[t.id].titolo)}:</h2><p class="muted">${esc(L[t.id].sottotitolo)}. Scorri le slide con le frecce o con il dito.</p></div>
+      ${deckHtml(t)}
+      <div class="two" style="margin-top:18px">
+        <div class="col"><div class="card rv"><h3>Obiettivi della lezione:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div></div>
+        <div class="col">
+          ${m.length ? `<div class="card rv" style="--i:1"><h3>Approfondisci:</h3>${matHtml}</div>` : ""}
+          ${G[t.id] ? `<div class="card play-card rv"><h3>Hai studiato?</h3><p>Ripassa con gli schemi e mettiti alla prova con 7 attività.</p><div class="cta-row" style="margin:0"><a class="btn white full" href="#/argomento/${t.id}/schemi">${I.map} Schemi riassuntivi</a><a class="btn ghost full" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a></div></div>` : ""}
+        </div>
+      </div>`;
+    $$("[data-m]", body).forEach(b => b.addEventListener("click", () => openViewer(m[Number(b.dataset.m)])));
+    bindDeck(body, t);
   }
 
   /* ================= Metodo di studio ================= */
