@@ -198,7 +198,6 @@ window.TOPICS = [
     materiali: [
       { tipo: "pdf", id: "1rJbbwA_ER1RJ_LE62rD9s7kNotvEnHV8", titolo: "I metabolismi energetici", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1HiWVEpgwc18fgp0eL9grFxOCih9hdh_e", titolo: "Sistemi energetici: slide del libro", nota: "Slide relative al libro di testo" },
-      { tipo: "pdf", id: "1KhH3WiOyz8Pj6oO_xqXQ5-NUvA_sZAW-", titolo: "Metabolismi: approfondimento" },
       { tipo: "yt", id: "Hhj2uWm7L6c", titolo: "La glicolisi" },
       { tipo: "yt", id: "0yLYEZ_eToU", titolo: "Il destino del piruvato" },
       { tipo: "yt", id: "DRWIdL7cLdo", titolo: "Il ciclo di Krebs" }
@@ -505,7 +504,6 @@ window.TOPICS = [
     ],
     materiali: [
       { tipo: "pdf", id: "1aNRkW2Bz4PU0f8ueVKtwM7zUBLdpjTdq", titolo: "Adattamenti a lungo termine ai diversi tipi di allenamento", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1KhH3WiOyz8Pj6oO_xqXQ5-NUvA_sZAW-", titolo: "Riassunto metabolismi energetici" },
       { tipo: "link", url: "https://drive.google.com/open?id=1be5DmIcAXtx-I8Vcn1YLLkKRATR_cPMkEaGzuF3gE4Y", titolo: "Slide prof. Mischiati" },
       { tipo: "video", id: "1hg4m9gxVRKrzuac51EJLYVUx5VUKxfQC", titolo: "I motori energetici del corpo" },
       { tipo: "video", id: "1i0f8Xsr7_ISdQs2KAwb7Kf8Gx9C5_Un_", titolo: "Adattamenti all'allenamento" }

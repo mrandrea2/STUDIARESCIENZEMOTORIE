@@ -265,11 +265,7 @@
         <small>${tot} argomenti${st ? ` · ★ ${st}` : ""}</small>
         <span class="pbar"><i style="width:${Math.round(st / mx * 100)}%"></i></span>
       </a>`;
-    }).join("") + `<a class="ctile tilt rv" href="#/argomento/metodo-di-studio" style="--k:#1F2760;--kb:#3A2A7A;--i:5">
-        <span class="num" style="font-size:7rem;bottom:-16px">?!</span>
-        <span class="ord" style="font-size:2.4rem">${I.brain.replace("<svg", '<svg style="width:46px;height:46px;stroke:#fff"')}</span>
-        <b>Metodo di studio</b><small>Per tutte le classi</small>
-      </a>`;
+    }).join("");
   }
 
   function ring(v, tot, label) {
@@ -289,6 +285,23 @@
       <span class="hl-ic">${i ? I.bolt : I.brain}</span>
       <span class="hl-tx"><b>${esc(e.titolo)}</b><span>${esc(e.testo)}</span><small>${esc(e.corto)} ↗</small></span>
     </a>`).join("");
+  }
+  function studyBanner() {
+    if (mem._pref.banner === today()) return;
+    const id = setTimeout(() => {
+      if ($(".sbanr")) return;
+      const el = document.createElement("div");
+      el.className = "sbanr"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Metodo di studio");
+      el.innerHTML = `<span class="sb-ic">${I.brain}</span>
+        <a class="sb-tx" href="#/argomento/metodo-di-studio"><b>Impara a studiare meglio</b><span>Cervello in gioco · Sblocca il tuo potenziale</span></a>
+        <button class="sb-x" aria-label="Chiudi">${sv('<path d="M6 6l12 12M18 6 6 18"/>', 2.6)}</button>`;
+      document.body.appendChild(el);
+      const close = () => { el.classList.add("out"); setTimeout(() => el.remove(), 400); };
+      $(".sb-x", el).onclick = () => { mem._pref.banner = today(); save(); close(); sfx("tap"); };
+      $(".sb-tx", el).onclick = () => { mem._pref.banner = today(); save(); close(); };
+      stopOnLeave(close);
+    }, 1800);
+    stopOnLeave(() => clearTimeout(id));
   }
   function pageHome() {
     setK(0);
@@ -312,11 +325,6 @@
       </section>
 
       <section class="wrap section">
-        <div class="section-head rv"><div><p class="kicker">Prima di tutto</p><h2>Impara a <span class="gt">studiare</span>:</h2></div></div>
-        <div class="hl-grid">${evidenzaCards()}</div>
-      </section>
-
-      <section class="wrap section">
         <div class="section-head rv"><h2>Scegli la tua <span class="gt">classe</span>:</h2></div>
         <div class="classes">${classTiles()}</div>
       </section>
@@ -332,8 +340,16 @@
             ${I.arr.replace("<svg", '<svg style="width:26px;height:26px;stroke:#fff"')}
           </a>
         </div>
-      </div></section>`;
+      </div></section>
+
+      <section class="metodo-band rv">
+        <div class="wrap">
+          <div class="mb-txt"><p class="kicker">Per tutte le classi</p><h2>Metodo di <span class="gt">studio</span>:</h2><p class="muted">Due app per capire come impara il tuo cervello e per organizzarti meglio.</p></div>
+          <div class="hl-grid">${evidenzaCards()}</div>
+        </div>
+      </section>`;
     bindDaily();
+    studyBanner();
     let w = 0;
     const rot = $("#rot");
     if (!reduce) {
@@ -812,10 +828,24 @@
         body = `<div class="stable"><table><thead><tr>${s.head.map((h, k) => `<th${k === s.head.length - 1 ? ' class="hot"' : ""}>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.rows.map(r => `<tr>${r.map((c, k) => k ? `<td>${esc(c)}</td>` : `<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</tbody></table></div>`; break;
       case "steps":
         body = `<div class="sgrid g${s.steps.length} steps">${s.steps.map((c, k) => `<div class="sc${s.lastDark && k === s.steps.length - 1 ? " d" : ""}" style="--k:${k}"><b class="sbig">${k + 1}</b><b class="sh">${esc(c.h)}</b><span>${esc(c.p)}</span></div>`).join("")}</div>`; break;
+      case "points":
+        body = `${s.lead ? `<p class="sl-lead">${esc(s.lead)}</p>` : ""}<ul class="spts">${s.items.map((x, k) => Array.isArray(x) ? `<li style="--k:${k}"><b>${esc(x[0])}</b> ${esc(x[1])}</li>` : `<li style="--k:${k}">${esc(x)}</li>`).join("")}</ul>`; break;
+      case "fonti":
+        return `<div class="sl s-fonti b-ivory">${head}<ul class="sfonti">${s.items.map(x => `<li>${esc(x)}</li>`).join("")}</ul>${note}${foot}</div>`;
       case "end":
         return `<div class="sl s-end b-dark"><p class="sk">${esc(s.kicker)}</p><h3 class="st">${esc(s.title)}</h3><ol class="send">${s.items.map((x, k) => `<li style="--k:${k}">${esc(x)}</li>`).join("")}</ol><span class="sf">${esc(deckTitle)} · ${i + 1}</span></div>`;
     }
+    if (s.fig) return `<div class="sl s-${s.t} b-${bg} has-fig">${head}<div class="sxw"><div class="sxt">${body}${note}</div>${figHtml(s.fig)}</div>${foot}</div>`;
     return `<div class="sl s-${s.t} b-${bg}">${head}${body}${note}${foot}</div>`;
+  }
+
+  /* immagine di una slide: disegno nostro (svg) oppure immagine esterna (src) con disegno di riserva */
+  function figHtml(f) {
+    const ILL = window.ILL || {};
+    const svg = f.svg && ILL[f.svg] ? ILL[f.svg] : "";
+    const cap = f.cap || f.credit ? `<figcaption>${f.cap ? esc(f.cap) : ""}${f.credit ? `<small class="cr">${esc(f.credit)}</small>` : ""}</figcaption>` : "";
+    if (f.src) return `<figure class="sfig${svg ? "" : " nofb"}"><div class="im"><img src="${esc(f.src)}" alt="${esc(f.alt || f.cap || "")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('figure').classList.add('nf')">${svg ? `<div class="fb">${svg}</div>` : ""}</div>${cap}</figure>`;
+    return `<figure class="sfig"><div class="im" role="img" aria-label="${esc(f.alt || f.cap || "")}">${svg}</div>${cap}</figure>`;
   }
 
   function deckHtml(t) {

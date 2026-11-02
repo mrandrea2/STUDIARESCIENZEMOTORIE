@@ -17,6 +17,8 @@ data/giochi-2.js    giochi: classe seconda e terza
 data/giochi-3.js    giochi: classe quarta e quinta
 data/giochi-extra.js  domande in più e i giochi «Metti in ordine» e «Dividi in gruppi»
 data/schemi.js      SCHEMI RIASSUNTIVI di ogni argomento (flussi, cicli, confronti, barre)
+data/lezioni/       LEZIONI UNICHE (slide integrate), un file per argomento
+assets/illustrazioni.js  i disegni delle slide (SVG con etichette in italiano)
 ```
 
 ## Pubblicare: GitHub + Vercel
@@ -63,6 +65,14 @@ Attenzione alle virgole tra una riga e l'altra e alle virgolette: se il sito div
 ## Schemi riassuntivi
 
 Ogni argomento ha la scheda **Schemi**. Li trovi in `data/schemi.js`: ogni schema ha un `tipo` (hub, flow, cycle, compare, bars) e un elenco di voci. In cima al file c'è la spiegazione di ogni tipo.
+
+## Lezioni (slide integrate)
+
+Gli argomenti con un file in `data/lezioni/` mostrano la scheda **Lezione** con le slide sfogliabili (frecce, swipe, indice, schermo intero; la slide raggiunta viene ricordata). Ci sono le lezioni di seconda e terza: respiratorio, cardiocircolatorio, metabolismi, teoria dell'allenamento, capacità condizionali, dal gioco allo sport, apparato digerente, sana alimentazione, alimentazione e sport/integratori/doping, test motori.
+
+Per aggiungere una lezione: copia un file di `data/lezioni/`, cambia il nome dell'argomento tra parentesi quadre e aggiungi la riga `<script src="data/lezioni/NOME.js"></script>` in `index.html`. Tipi di slide: cover, cards, steps, list, split, key, stack, stats, formula, table, points, end, fonti.
+
+Per mettere un'immagine accanto al testo aggiungi a una slide `fig: { svg: "cuore", cap: "Didascalia" }` (i nomi dei disegni sono in `assets/illustrazioni.js`) oppure `fig: { src: "indirizzo dell'immagine", svg: "disegno di riserva", cap: "...", credit: "autore e licenza" }`.
 
 ## Metodo di studio
 

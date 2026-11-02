@@ -21,7 +21,7 @@ LEZIONI["apparato-respiratorio"] = {
       { h: "Respirazione cellulare", p: "Nei mitocondri l'O₂ serve a produrre ATP (respirazione interna)." }
     ] },
 
-    { t: "list", kicker: "Le vie aeree", title: "Il viaggio dell'aria", bg: "blue", items: [
+    { t: "list", kicker: "Le vie aeree", title: "Il viaggio dell'aria", bg: "blue", fig: { svg: "polmoni", cap: "Vie aeree, polmoni e diaframma" }, items: [
       ["Naso", "Filtra, riscalda e umidifica l'aria."],
       ["Faringe", "Crocevia tra vie aeree e digerenti."],
       ["Laringe", "Contiene le corde vocali; l'epiglottide chiude la trachea quando deglutisci."],
@@ -32,7 +32,7 @@ LEZIONI["apparato-respiratorio"] = {
 
     { t: "split", kicker: "I polmoni", title: "Due polmoni avvolti dalle pleure", lead: "Il polmone destro è più voluminoso: ha tre lobi. Il sinistro ne ha due, per lasciare spazio al cuore.", left: { h: "Pleura viscerale", items: ["Foglietto interno", "Aderisce al polmone"] }, right: { h: "Pleura parietale", items: ["Foglietto esterno", "Aderisce alla parete del torace"] }, note: "Tra i due foglietti c'è il liquido pleurico: fa scorrere i polmoni e li tiene «attaccati» al torace mentre si espande." },
 
-    { t: "split", kicker: "La meccanica respiratoria", title: "Chi muove l'aria?", bg: "blue", left: { h: "Inspirazione · sempre attiva", items: ["Diaframma: si contrae e scende", "Intercostali esterni: sollevano le coste", "Muscoli accessori sotto sforzo (scaleni, sternocleidomastoideo)"] }, right: { h: "Espirazione · a riposo passiva", items: ["A riposo: i muscoli si rilassano e il polmone torna indietro", "Sotto sforzo: addominali", "Intercostali interni: abbassano le coste"] }, note: "Inspirazione + espirazione = atto respiratorio. I muscoli adeguano la ventilazione ai bisogni: si elimina tanta CO₂ quanta se ne produce." },
+    { t: "split", kicker: "La meccanica respiratoria", title: "Chi muove l'aria?", bg: "blue", fig: { svg: "diaframma", cap: "Il diaframma è il motore del respiro" }, left: { h: "Inspirazione · sempre attiva", items: ["Diaframma: si contrae e scende", "Intercostali esterni: sollevano le coste", "Muscoli accessori sotto sforzo (scaleni, sternocleidomastoideo)"] }, right: { h: "Espirazione · a riposo passiva", items: ["A riposo: i muscoli si rilassano e il polmone torna indietro", "Sotto sforzo: addominali", "Intercostali interni: abbassano le coste"] }, note: "Inspirazione + espirazione = atto respiratorio. I muscoli adeguano la ventilazione ai bisogni: si elimina tanta CO₂ quanta se ne produce." },
 
     { t: "key", kicker: "Automatica e volontaria", title: "L'unica funzione che puoi anche comandare", lead: "Il respiro è automatico, ma puoi cambiarne volontariamente ampiezza e frequenza.", defs: [["Apnea inspiratoria", "a polmoni pieni: anche qualche minuto"], ["Apnea espiratoria", "a polmoni vuoti: pochi secondi"]] },
 
@@ -57,10 +57,9 @@ LEZIONI["apparato-respiratorio"] = {
       { h: "Lento e profondo vince", p: "(500 − 150) × 12 = 4,2 L/min arrivano davvero agli alveoli." }
     ] },
 
-    { t: "split", kicker: "Scambi gassosi", title: "I gas passano da soli: diffusione", lead: "Da dove la pressione parziale è alta a dove è bassa. Nessuna pompa: basta una differenza e una membrana sottilissima.", arrow: true,
+    { t: "split", kicker: "Scambi gassosi", title: "I gas passano da soli: diffusione", fig: { svg: "alveolo", cap: "Scambio tra alveolo e capillare" }, lead: "Da dove la pressione parziale è alta a dove è bassa: nessuna pompa, basta una membrana sottilissima.", arrow: true,
       left: { h: "Nel polmone · respirazione esterna", items: ["O₂ dall'alveolo al sangue", "CO₂ dal sangue all'alveolo", "PO₂ circa 100 mmHg nell'alveolo contro 40 nel sangue venoso"] },
-      right: { h: "Nel muscolo · respirazione interna", items: ["O₂ dal sangue al muscolo", "CO₂ dal muscolo al sangue", "Nei mitocondri l'O₂ serve a produrre ATP"] },
-      note: "Più il muscolo lavora, più la differenza cresce e più ossigeno passa." },
+      right: { h: "Nel muscolo · respirazione interna", items: ["O₂ dal sangue al muscolo", "CO₂ dal muscolo al sangue", "Nei mitocondri l'O₂ serve a produrre ATP"] } },
 
     { t: "stats", kicker: "Trasporto nel sangue", title: "Come viaggiano O₂ e CO₂", stats: [
       { big: "98%", h: "dell'O₂ sull'emoglobina", p: "dei globuli rossi; il resto è disciolto nel plasma.", blue: true },
