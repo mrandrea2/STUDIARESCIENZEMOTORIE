@@ -328,6 +328,265 @@ window.ILL = (function () {
       <path class="o" d="M230 132 l18 8 -18 8z"/>
       ${lab(40, 40, "Sit and reach")}${lab(40, 58, "busto avanti, ginocchia tese, 2 secondi fermi", "sm")}
       ${lab(270, 120, "cm", "to", "middle")}
-    `)
+    `),
+
+    /* ---------- SALUTE DINAMICA ---------- */
+    oms: S(`
+      <g class="fi" style="--k:0"><circle class="o" cx="110" cy="120" r="78"/><text x="110" y="122" class="tw" text-anchor="middle" style="font-size:44px">60′</text><text x="110" y="148" class="tw" text-anchor="middle">al giorno</text>
+        ${lab(110, 228, "Ragazzi 5–17 anni", "", "middle")}${lab(110, 246, "moderata o vigorosa", "sm", "middle")}${lab(110, 262, "+ forza 3 volte a settimana", "sm", "middle")}</g>
+      <g class="fi" style="--k:1"><circle class="b" cx="290" cy="120" r="78"/><text x="290" y="122" class="tw" text-anchor="middle" style="font-size:40px">150′</text><text x="290" y="148" class="tw" text-anchor="middle">a settimana</text>
+        ${lab(290, 228, "Adulti", "", "middle")}${lab(290, 246, "moderata (o 75′ vigorosa)", "sm", "middle")}${lab(290, 262, "+ forza 2 volte a settimana", "sm", "middle")}</g>
+    `),
+    prevenzione: S(`
+      ${[["Primaria", "evita che la malattia compaia", "b", 0], ["Secondaria", "la scopre presto e ne ferma l'evoluzione", "o2", 1], ["Terziaria", "riduce le complicanze e aiuta il recupero", "o", 2]].map(([a, b, c, k]) =>
+        `<g class="fi" style="--k:${k}"><rect class="${c}" x="${30 + k * 20}" y="${40 + k * 80}" width="${340 - k * 40}" height="66" rx="14"/>${lab(56 + k * 20, 70 + k * 80, a, k === 1 ? "" : "tw")}${lab(56 + k * 20, 90 + k * 80, b, k === 1 ? "sm" : "tw sm")}</g>`).join("")}
+      ${lab(200, 26, "L'attività fisica aiuta in tutti e tre i livelli", "sm", "middle")}
+    `),
+    fitness: S(`
+      ${(() => { const P = [[200, 40], [318, 126], [272, 262], [128, 262], [82, 126]]; const L = ["Cardiorespiratoria", "Forza e resistenza", "Flessibilità", "Equilibrio", "Velocità"]; const pos = [[200, 28, "middle"], [326, 130, "start"], [280, 286, "middle"], [120, 286, "middle"], [74, 130, "end"]];
+        return `<path class="b3 sk" d="M${P.map(p => p.join(" ")).join(" L")}Z"/><path class="o2" d="M200 80 L280 132 L252 228 L148 228 L120 132Z" opacity=".9"/>` + P.map((p, k) => `<circle class="${k % 2 ? "b" : "o"} fi" style="--k:${k}" cx="${p[0]}" cy="${p[1]}" r="12"/>` + lab(pos[k][0], pos[k][1], L[k], "", pos[k][2])).join("") + lab(200, 166, "Physical", "", "middle") + lab(200, 184, "fitness", "", "middle"); })()}
+    `, "-50 0 500 300"),
+    sonnociclo: S(`
+      <path class="ln" d="M40 40 V250 H380"/>
+      ${["Veglia", "REM", "N1", "N2", "N3"].map((t, k) => lab(34, 64 + k * 44, t, "sm", "end")).join("")}
+      <path class="lo dr" d="M42 60 L60 104 L74 148 L90 192 L120 236 L150 236 L166 192 L180 104 L196 104 L206 148 L222 192 L238 236 L258 236 L268 192 L280 104 L300 104 L308 148 L322 192 L334 192 L342 104 L366 104 L376 60"/>
+      ${lab(210, 274, "ore di sonno →  cicli di circa 90 minuti", "sm", "middle")}
+      ${lab(120, 230, "sonno profondo", "tb", "middle")}${lab(340, 96, "più REM", "to", "middle")}
+    `, "0 0 400 290"),
+
+    /* ---------- SCHELETRICO ---------- */
+    osso: S(`
+      <path class="iv sk" d="M150 30 C120 30 110 60 130 76 L150 92 L150 210 L130 226 C110 242 120 272 150 272 C164 272 172 262 180 254 C188 262 196 272 210 272 C240 272 250 242 230 226 L210 210 L210 92 L230 76 C250 60 240 30 210 30 C196 30 188 40 180 48 C172 40 164 30 150 30Z"/>
+      <rect class="o2" x="160" y="100" width="40" height="104" rx="10"/>
+      <path class="b2" d="M140 46 Q180 30 220 46 L210 82 L150 82Z" opacity=".9"/><path class="b2" d="M140 256 Q180 272 220 256 L210 220 L150 220Z" opacity=".9"/>
+      ${lead(205, 60, 270, 50)}${lab(276, 46, "Epifisi")}${lab(276, 62, "osso spugnoso, midollo rosso", "sm")}
+      ${lead(210, 150, 270, 150)}${lab(276, 146, "Diafisi")}${lab(276, 162, "osso compatto", "sm")}
+      ${lead(180, 150, 100, 150)}${lab(20, 140, "Cavità")}${lab(20, 156, "midollare", "")}${lab(20, 172, "midollo giallo", "sm")}
+      ${lead(206, 92, 270, 104)}${lab(276, 106, "Metafisi", "to")}${lab(276, 122, "cartilagine di crescita", "sm")}
+    `, "0 0 480 300"),
+    colonna: S(`
+      ${Array.from({ length: 24 }, (_, k) => { const y = 24 + k * 10.4; const x = 200 + 22 * Math.sin((k / 24) * 2 * Math.PI * 1.05 + 0.4); const c = k < 7 ? "b" : k < 19 ? "o2" : "o"; const w = 18 + k * 0.9; return `<rect class="${c}" x="${x - w / 2}" y="${y}" width="${w}" height="8" rx="3"/>`; }).join("")}
+      <path class="iv sk" d="M178 276 L222 276 L210 300 L190 300Z"/>
+      ${lab(250, 60, "Cervicale · 7", "tb")}${lab(260, 150, "Toracica · 12")}${lab(250, 236, "Lombare · 5", "to")}${lab(240, 290, "Sacro e coccige", "sm")}
+      ${lab(20, 60, "lordosi", "sm")}${lab(20, 150, "cifosi", "sm")}${lab(20, 236, "lordosi", "sm")}
+    `, "0 0 400 310"),
+    tipiossa: S(`
+      ${[["Lunghe", "femore", "M40 70 h18 v110 h-18z M34 60 h30 v14 h-30z M34 176 h30 v14 h-30z"], ["Corte", "carpo", "M118 110 h40 v40 h-40z"], ["Piatte", "scapola", "M190 80 L260 90 L240 180 Z"], ["Irregolari", "vertebre", "M290 110 h40 v30 h-40z M300 140 l-10 20 M320 140 l10 20 M310 110 v-20"], ["Sesamoidi", "rotula", "M430 120 a18 22 0 1 0 0.1 0z"]].map(([a, b, d], k) =>
+        `<g class="fi" style="--k:${k}"><path class="${k % 2 ? "o2" : "b2"} sk" d="${d}"/>${lab([50, 138, 222, 312, 412][k], 230, a, "", "middle")}${lab([50, 138, 222, 312, 412][k], 248, b, "sm", "middle")}</g>`).join("")}
+    `, "0 0 460 280"),
+    rimodella: S(`
+      <rect class="iv sk" x="40" y="150" width="320" height="80" rx="10"/>
+      <g class="fi" style="--k:0"><circle class="o" cx="120" cy="150" r="30"/>${lab(120, 155, "OC", "tw", "middle")}${lab(120, 100, "Osteoclasti", "to", "middle")}${lab(120, 116, "riassorbono", "sm", "middle")}</g>
+      <path class="o2" d="M90 150 Q120 190 150 150Z"/>
+      <g class="fi" style="--k:1"><circle class="b" cx="270" cy="140" r="24"/><circle class="b" cx="300" cy="140" r="20"/>${lab(285, 145, "OB", "tw", "middle")}${lab(285, 96, "Osteoblasti", "tb", "middle")}${lab(285, 112, "costruiscono", "sm", "middle")}</g>
+      ${lab(200, 266, "Il movimento e il carico stimolano gli osteoblasti", "sm", "middle")}
+    `),
+
+    /* ---------- ARTICOLAZIONI ---------- */
+    diartrosi: S(`
+      <path class="iv sk" d="M140 20 L260 20 L260 100 C260 130 230 140 200 140 C170 140 140 130 140 100Z"/>
+      <path class="iv sk" d="M140 290 L260 290 L260 210 C260 186 230 176 200 176 C170 176 140 186 140 210Z"/>
+      <path class="b2" d="M146 112 C160 136 240 136 254 112 L254 118 C240 144 160 144 146 118Z"/>
+      <path class="b2" d="M146 200 C160 180 240 180 254 200 L254 194 C240 172 160 172 146 194Z"/>
+      <path fill="#C9E7F7" d="M150 128 C170 150 230 150 250 128 L250 186 C230 168 170 168 150 186Z" opacity=".8"/>
+      <path class="lo dr" d="M128 90 C112 150 112 170 128 230 M272 90 C288 150 288 170 272 230"/>
+      ${lead(250, 124, 300, 100)}${lab(306, 100, "Cartilagine", "tb")}
+      ${lead(200, 158, 300, 160)}${lab(306, 156, "Liquido")}${lab(306, 172, "sinoviale", "")}
+      ${lead(280, 200, 310, 230)}${lab(316, 234, "Capsula", "to")}
+      ${lab(20, 156, "Diartrosi", "")}${lab(20, 172, "mobile", "sm")}
+    `, "0 0 420 300"),
+    tipiart: S(`
+      ${[["Sinartrosi", "immobili", "cranio", "M30 120 l20 -10 l20 14 l20 -12 l20 10 l20 -8"], ["Anfiartrosi", "poco mobili", "vertebre", "M150 100 h80 M150 140 h80"], ["Diartrosi", "mobili", "spalla, anca", "M296 96 a24 24 0 1 0 48 0 M296 150 a24 24 0 0 1 48 0"]].map(([a, b, c, d], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${["b3", "b2", "o2"][k]}" x="${20 + k * 128}" y="60" width="120" height="120" rx="16"/><path class="ln" d="${d}"/>${lab(80 + k * 128, 206, a, "", "middle")}${lab(80 + k * 128, 224, b, "to", "middle")}${lab(80 + k * 128, 242, c, "sm", "middle")}</g>`).join("")}
+    `, "0 0 400 270"),
+    movimenti: S(`
+      ${[["Flessione", "M60 200 L60 120 L110 80"], ["Estensione", "M160 200 L160 120 L160 50"], ["Abduzione", "M260 200 L260 120 M260 120 L310 90"], ["Rotazione", "M350 120 a24 24 0 1 1 -0.1 0"]].map(([a, d], k) =>
+        `<g class="fi" style="--k:${k}"><path class="lo" d="${d}"/><circle class="n" cx="${[60, 160, 260, 350][k]}" cy="120" r="7"/>${lab([60, 160, 270, 350][k], 240, a, "", "middle")}</g>`).join("")}
+      <path class="ld" d="M60 120 L60 50 M260 120 L260 50"/>
+      ${lab(200, 28, "Movimenti attorno a un'articolazione", "sm", "middle")}
+    `),
+
+    /* ---------- MUSCOLARE ---------- */
+    sarcomero: S(`
+      <path class="ln" d="M40 60 V240 M360 60 V240"/>${lab(40, 50, "Z", "", "middle")}${lab(360, 50, "Z", "", "middle")}
+      ${[90, 130, 170, 210].map(y => `<path class="lbl" d="M40 ${y} H170 M360 ${y} H230"/>`).join("")}
+      ${[110, 150, 190].map(y => `<path d="M130 ${y} H270" stroke="#E8692F" stroke-width="9" stroke-linecap="round"/>`).join("")}
+      ${lab(100, 270, "actina (sottile)", "tb", "middle")}${lab(300, 270, "miosina (spessa)", "to", "middle")}
+      <path class="ln dr" d="M150 30 L180 30 M250 30 L220 30"/><path class="n" d="M180 24 l10 6 -10 6z M220 24 l-10 6 10 6z"/>
+      ${lab(200, 20, "contrazione: l'actina scorre verso il centro", "sm", "middle")}
+    `, "0 0 400 290"),
+    muscolo: S(`
+      <path class="o sk" d="M30 150 C30 80 120 70 160 110 C130 150 130 150 160 190 C120 230 30 220 30 150Z"/>
+      ${lab(90, 255, "Muscolo", "", "middle")}
+      <path class="ld" d="M160 110 L200 80 M160 190 L200 220"/>
+      <g class="fi" style="--k:1"><rect class="o2 sk" x="200" y="80" width="70" height="140" rx="30"/>${[100, 130, 160, 190].map(y => `<circle class="o" cx="235" cy="${y}" r="11"/>`).join("")}${lab(235, 255, "Fascio", "", "middle")}</g>
+      <g class="fi" style="--k:2"><rect class="iv sk" x="300" y="110" width="40" height="80" rx="18"/>${[125, 145, 165, 180].map(y => `<path class="lt" stroke="#E8692F" d="M308 ${y} H332"/>`).join("")}${lab(320, 255, "Fibra", "", "middle")}${lab(320, 273, "miofibrille", "sm", "middle")}</g>
+      ${lab(200, 30, "Dal muscolo alla fibra", "sm", "middle")}
+    `, "0 0 400 290"),
+    agonista: S(`
+      <path class="iv sk" d="M70 60 L110 50 L120 170 L84 176Z"/>
+      <path class="iv sk" d="M110 170 L120 160 L300 120 L306 148 L128 194Z"/>
+      <circle class="n" cx="112" cy="174" r="9"/>
+      <path class="o" d="M112 64 C150 80 150 140 128 166 L116 162 C130 130 126 92 104 74Z"/>
+      <path class="b" d="M70 70 C52 100 56 150 80 176 L92 170 C76 140 74 106 84 74Z"/>
+      ${lab(160, 92, "Bicipite", "to")}${lab(160, 108, "agonista: si accorcia", "sm")}
+      ${lab(14, 230, "Tricipite", "tb")}${lab(14, 246, "antagonista: si allunga", "sm")}
+      ${lab(220, 200, "Flessione del gomito", "")}
+    `, "0 0 380 270"),
+    fibre: S(`
+      ${[["Tipo I", "lente, rosse", "resistenti", "o", 200], ["Tipo IIa", "veloci", "intermedie", "o2", 150], ["Tipo IIx", "veloci, bianche", "si stancano presto", "b3", 100]].map(([a, b, c, cl, h], k) =>
+        `<rect class="${cl} sk gr" style="--k:${k}" x="${40 + k * 120}" y="${240 - h}" width="80" height="${h}" rx="12"/>${lab(80 + k * 120, 262, a, "", "middle")}${lab(80 + k * 120, 278, b, "sm", "middle")}${lab(80 + k * 120, 294, c, "sm", "middle")}`).join("")}
+      ${lab(40, 26, "Resistenza alla fatica", "sm")}
+    `, "0 0 400 300"),
+
+    /* ---------- NERVOSO ---------- */
+    neurone: S(`
+      <circle class="o2 sk" cx="80" cy="150" r="34"/><circle class="o" cx="80" cy="150" r="12"/>
+      <path class="ln" d="M52 132 L20 100 M30 112 L14 120 M56 170 L24 204 M48 140 L10 150 M66 120 L54 84 M60 98 L44 92"/>
+      <path class="ln" d="M114 150 H340"/>
+      ${[130, 180, 230, 280].map((x, k) => `<rect class="b2 sk fi" style="--k:${k}" x="${x}" y="140" width="40" height="20" rx="10"/>`).join("")}
+      <path class="ln" d="M340 150 L370 120 M340 150 L376 150 M340 150 L370 180"/>
+      <circle class="b" cx="372" cy="120" r="6"/><circle class="b" cx="378" cy="150" r="6"/><circle class="b" cx="372" cy="180" r="6"/>
+      <path class="lo dr" d="M130 120 H330 M318 112 l12 8 -12 8"/>
+      ${lab(80, 220, "Corpo cellulare", "", "middle")}${lab(22, 70, "Dendriti", "sm")}${lab(230, 200, "Assone con guaina mielinica", "", "middle")}${lab(360, 222, "Terminali", "sm", "middle")}${lab(230, 104, "impulso nervoso", "to", "middle")}
+    `, "0 0 400 260"),
+    sn: S(`
+      <rect class="n" x="140" y="20" width="120" height="56" rx="14"/>${lab(200, 46, "SNC", "tw", "middle")}${lab(200, 64, "encefalo + midollo", "tw sm", "middle")}
+      <path class="ln" d="M200 76 V110 M200 110 H90 M200 110 H310 M90 110 V130 M310 110 V130"/>
+      <rect class="o" x="30" y="130" width="120" height="56" rx="14"/>${lab(90, 156, "SNP somatico", "tw", "middle")}${lab(90, 174, "volontario", "tw sm", "middle")}
+      <rect class="b" x="250" y="130" width="120" height="56" rx="14"/>${lab(310, 156, "SNP autonomo", "tw", "middle")}${lab(310, 174, "automatico", "tw sm", "middle")}
+      <path class="ln" d="M310 186 V210 M310 210 H250 M310 210 H370 M250 210 V226 M370 210 V226"/>
+      <rect class="o2" x="196" y="226" width="110" height="50" rx="12"/>${lab(251, 248, "Simpatico", "", "middle")}${lab(251, 266, "attacco o fuga", "sm", "middle")}
+      <rect class="b2" x="314" y="226" width="80" height="50" rx="12"/>${lab(354, 248, "Para-", "", "middle")}${lab(354, 266, "simpatico", "sm", "middle")}
+    `, "0 0 400 290"),
+    riflesso: S(`
+      <path class="iv sk" d="M60 40 L120 40 L130 170 L80 180Z"/><path class="iv sk" d="M80 180 L130 170 L150 280 L110 286Z"/>
+      <circle class="b2 sk" cx="122" cy="176" r="12"/>
+      <path class="n" d="M170 150 l-36 20 6 10 36 -20z"/>${lab(180, 146, "martelletto", "sm")}
+      <rect class="b3 sk" x="290" y="40" width="80" height="80" rx="40"/>${lab(330, 85, "midollo", "", "middle")}
+      <path class="lbl dr" d="M120 190 C200 210 280 160 300 110"/>${lab(250, 236, "neurone sensitivo", "tb", "middle")}
+      <path class="lo dr" d="M318 112 C330 200 200 120 110 90"/>${lab(230, 70, "neurone motorio", "to", "middle")}
+      ${lab(30, 300, "Il riflesso rotuleo non passa dal cervello: risposta in pochi millisecondi", "sm")}
+    `, "0 0 400 310"),
+
+    /* ---------- ENDOCRINO ---------- */
+    ghiandole: S(`
+      <path class="iv sk" d="M200 14 C222 14 236 30 236 52 C236 74 222 88 200 88 C178 88 164 74 164 52 C164 30 178 14 200 14Z" opacity=".7"/>
+      <path class="iv sk" d="M150 98 H250 C268 98 278 110 278 128 V230 H122 V128 C122 110 132 98 150 98Z" opacity=".7"/>
+      ${[[200, 40, "Ipotalamo e ipofisi", 230, 34, "o"], [196, 62, "Epifisi", 120, 62, "b", "end"], [200, 102, "Tiroide", 240, 102, "o"], [200, 132, "Timo", 140, 132, "b", "end"], [176, 186, "Surrenali", 140, 186, "b", "end"], [214, 196, "Pancreas", 250, 196, "o"], [200, 224, "Gonadi", 240, 228, "o"]].map(([x, y, t, lx, ly, c, an], k) =>
+        `<g class="fi" style="--k:${k}"><circle class="${c}" cx="${x}" cy="${y}" r="9"/><path class="lt" d="M${x} ${y} L${lx} ${ly}"/>${lab(an ? lx - 4 : lx + 4, ly + 5, t, "", an || "")}</g>`).join("")}
+    `, "0 0 400 250"),
+    feedback: S(`
+      <rect class="n" x="140" y="20" width="120" height="50" rx="12"/>${lab(200, 50, "Ipotalamo", "tw", "middle")}
+      <rect class="o" x="140" y="110" width="120" height="50" rx="12"/>${lab(200, 140, "Ipofisi", "tw", "middle")}
+      <rect class="b" x="140" y="200" width="120" height="50" rx="12"/>${lab(200, 230, "Ghiandola", "tw", "middle")}
+      <path class="ln" d="M200 70 V108 M192 98 l8 10 8 -10 M200 160 V198 M192 188 l8 10 8 -10"/>
+      <path class="lbl dr" d="M262 226 C340 220 340 60 262 46"/><path class="b" d="M262 46 l12 -6 0 12z"/>
+      ${lab(320, 140, "−", "tb", "middle")}${lab(300, 280, "Feedback negativo: l'ormone", "sm", "middle")}${lab(300, 296, "frena chi lo ha fatto produrre", "sm", "middle")}
+      ${lab(60, 92, "ormone di", "sm", "middle")}${lab(60, 108, "rilascio", "sm", "middle")}${lab(60, 182, "ormone", "sm", "middle")}${lab(60, 198, "stimolante", "sm", "middle")}
+    `, "0 0 400 300"),
+    glicemia: S(`
+      <path class="ln" d="M60 230 L340 230"/><path class="n" d="M190 230 l10 -24 10 24z"/>
+      <g class="fi" style="--k:0"><rect class="b" x="40" y="160" width="130" height="50" rx="12"/>${lab(105, 190, "Insulina", "tw", "middle")}${lab(105, 140, "abbassa la glicemia", "sm", "middle")}${lab(105, 124, "dopo i pasti", "tb", "middle")}</g>
+      <g class="fi" style="--k:1"><rect class="o" x="230" y="160" width="130" height="50" rx="12"/>${lab(295, 190, "Glucagone", "tw", "middle")}${lab(295, 140, "alza la glicemia", "sm", "middle")}${lab(295, 124, "a digiuno e sotto sforzo", "to", "middle")}</g>
+      ${lab(200, 40, "Il pancreas tiene in equilibrio", "", "middle")}${lab(200, 60, "lo zucchero nel sangue: circa 70–100 mg/dL a digiuno", "sm", "middle")}
+    `, "0 0 400 260"),
+
+    /* ---------- IMMUNITARIO ---------- */
+    difese: S(`
+      ${[["Barriere", "pelle, mucose, muco, acidità", "b3"], ["Immunità innata", "macrofagi, neutrofili, NK: rapida, aspecifica", "b2"], ["Immunità acquisita", "linfociti T e B, anticorpi, memoria", "o"]].map(([a, b, c], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${c}" x="${30 + k * 18}" y="${30 + k * 82}" width="${340 - k * 36}" height="70" rx="16"/>${lab(50 + k * 18, 60 + k * 82, (k + 1) + "ª linea · " + a, k === 2 ? "tw" : "")}${lab(50 + k * 18, 82 + k * 82, b, k === 2 ? "tw sm" : "sm")}</g>`).join("")}
+    `, "0 0 400 280"),
+    anticorpo: S(`
+      <path class="o sk" d="M190 270 V160 L120 80 L140 64 L200 138 Z"/><path class="o sk" d="M210 270 V160 L280 80 L260 64 L200 138Z"/>
+      <path class="o2 sk" d="M120 80 L100 56 L120 40 L140 64Z M280 80 L300 56 L280 40 L260 64Z"/>
+      <g class="fi" style="--k:1"><circle class="b" cx="104" cy="34" r="16"/><circle class="b" cx="296" cy="34" r="16"/></g>
+      ${lab(14, 120, "Antigene", "tb")}${lab(14, 136, "la «chiave»", "sm")}${lab(14, 152, "del microbo", "sm")}${lab(250, 210, "Anticorpo")}${lab(250, 226, "prodotto dai linfociti B", "sm")}
+    `),
+    memoria: S(`
+      <path class="ln" d="M40 30 V240 H380"/>${lab(46, 24, "anticorpi nel sangue", "sm")}${lab(380, 262, "tempo →", "sm", "end")}
+      <path class="lbl dr" d="M42 236 C80 236 100 200 130 196 C160 194 170 230 200 234"/>
+      <path class="lo dr" d="M220 236 C240 236 250 60 290 56 C330 54 340 150 378 170"/>
+      <path class="ld" d="M60 240 V60 M230 240 V60"/>${lab(60, 56, "1° contatto", "sm", "middle")}${lab(230, 56, "2° contatto", "sm", "middle")}
+      ${lab(130, 186, "risposta primaria", "tb", "middle")}${lab(290, 46, "secondaria: rapida e forte", "to", "middle")}
+    `, "0 0 400 270"),
+    curvaj: S(`
+      <path class="ln" d="M40 30 V240 H380"/>${lab(46, 24, "rischio di infezioni", "sm")}${lab(380, 262, "carico di allenamento →", "sm", "end")}
+      <path class="lo dr" d="M50 130 C110 210 170 210 230 180 C290 150 330 80 370 40"/>
+      ${lab(60, 120, "sedentario", "sm")}${lab(170, 222, "moderato: difese più forti", "tb", "middle")}${lab(360, 70, "eccessivo", "to", "end")}
+    `, "0 0 400 270"),
+
+    /* ---------- PNEI ---------- */
+    pnei: S(`
+      <circle class="o" cx="200" cy="60" r="52"/>${lab(200, 58, "Psiche e", "tw", "middle")}${lab(200, 76, "sist. nervoso", "tw sm", "middle")}
+      <circle class="b" cx="90" cy="220" r="52"/>${lab(90, 218, "Sistema", "tw sm", "middle")}${lab(90, 236, "endocrino", "tw sm", "middle")}
+      <circle class="n" cx="310" cy="220" r="52"/>${lab(310, 218, "Sistema", "tw sm", "middle")}${lab(310, 236, "immunitario", "tw sm", "middle")}
+      <path class="ld" d="M176 98 L112 182 M224 98 L288 182 M134 222 H266"/>
+      ${lab(116, 130, "ormoni", "to", "end")}${lab(284, 130, "citochine", "tb")}${lab(200, 214, "segnali", "sm", "middle")}
+      ${lab(200, 296, "Un'unica rete: stress, sonno, cibo e movimento la influenzano", "sm", "middle")}
+    `, "0 0 400 305"),
+    stress: S(`
+      ${[["Stress percepito", "n"], ["Ipotalamo → CRH", "o"], ["Ipofisi → ACTH", "o2"], ["Surreni → cortisolo e adrenalina", "b"]].map(([a, c], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${c}" x="60" y="${18 + k * 62}" width="280" height="46" rx="12"/>${lab(200, 46 + k * 62, a, c === "o2" ? "" : "tw", "middle")}</g>${k < 3 ? `<path class="ln" d="M200 ${64 + k * 62} v14"/>` : ""}`).join("")}
+      ${lab(30, 284, "Acuto: utile, ti prepara all'azione · Cronico: abbassa le difese", "sm")}
+    `, "0 0 400 295"),
+
+    /* ---------- QUOTA E PROFONDITÀ ---------- */
+    montagna: S(`
+      <path class="b3" d="M0 300 L120 120 L170 170 L250 40 L400 300Z"/><path class="w" d="M228 76 L250 40 L272 76 L258 70 L250 82 L240 70Z"/>
+      ${[[40, 280, "0 m · 760 mmHg · O₂ 100%"], [150, 196, "2000 m · ~80%"], [210, 120, "4000 m · ~62%"], [256, 34, "8848 m · ~33%"]].map(([x, y, t], k) => `<g class="fi" style="--k:${k}"><circle class="o" cx="${x}" cy="${y}" r="6"/>${lab(x + 12, y + 4, t, "sm")}</g>`).join("")}
+      ${lab(14, 30, "Più sali, meno ossigeno a ogni respiro", "")}
+    `, "0 0 400 300"),
+    boyle: S(`
+      <rect x="0" y="0" width="400" height="300" fill="#C9E7F7"/><rect x="0" y="0" width="400" height="14" fill="#9DD0EE"/>
+      ${[[0, 1, 6], [10, 2, 3], [20, 3, 2], [30, 4, 1.5]].map(([d, p, v], k) => { const r = 30 * Math.sqrt(v / 6) + 6; return `<g class="fi" style="--k:${k}"><circle class="o2 sk" cx="${60 + k * 95}" cy="${70 + k * 38}" r="${r}"/>${lab(60 + k * 95, 76 + k * 38 + r + 22, d + " m", "", "middle")}${lab(60 + k * 95, 94 + k * 38 + r + 22, p + " atm · " + String(v).replace(".", ",") + " L", "sm", "middle")}</g>`; }).join("")}
+      ${lab(200, 290, "Legge di Boyle: pressione × volume = costante", "", "middle")}
+    `, "0 0 400 300"),
+
+    /* ---------- PSICOLOGIA ---------- */
+    arousal: S(`
+      <path class="ln" d="M40 30 V240 H380"/>${lab(46, 24, "prestazione", "sm")}${lab(380, 262, "attivazione (arousal) →", "sm", "end")}
+      <path class="lo dr" d="M44 230 C130 230 150 50 210 50 C270 50 290 230 376 230"/>
+      <rect class="b3" x="160" y="40" width="100" height="196" opacity=".5"/>
+      ${lab(80, 200, "apatia", "tb", "middle")}${lab(210, 34, "zona ottimale", "to", "middle")}${lab(340, 200, "ansia", "tb", "middle")}
+    `, "0 0 400 270"),
+    nideffer: S(`
+      <path class="ln" d="M200 20 V280 M40 150 H360"/>
+      ${lab(200, 14, "Ampia", "sm", "middle")}${lab(200, 296, "Stretta", "sm", "middle")}${lab(36, 146, "Esterna", "sm", "end")}${lab(364, 146, "Interna", "sm")}
+      ${[[120, 80, "Leggere il gioco", "visione del campo", "b2"], [280, 80, "Pianificare", "tattica, strategia", "o2"], [120, 220, "Eseguire", "palla, bersaglio", "o"], [280, 220, "Ascoltarsi", "respiro, sensazioni", "b"]].map(([x, y, a, b, c], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${c}" x="${x - 74}" y="${y - 40}" width="148" height="80" rx="14"/>${lab(x, y - 4, a, c === "o" || c === "b" ? "tw" : "", "middle")}${lab(x, y + 16, b, c === "o" || c === "b" ? "tw sm" : "sm", "middle")}</g>`).join("")}
+    `, "0 0 400 300"),
+    flow: S(`
+      <path class="ln" d="M40 30 V250 H370"/>${lab(46, 24, "difficoltà della sfida", "sm")}${lab(370, 272, "abilità →", "sm", "end")}
+      <path class="o2" d="M40 250 L40 200 L330 30 L370 30 L370 70 L80 250Z" opacity=".85"/>
+      ${lab(220, 130, "FLOW", "to", "middle")}${lab(100, 90, "ansia", "tb", "middle")}${lab(300, 220, "noia", "tb", "middle")}
+    `, "0 0 400 280"),
+
+    /* ---------- ADATTAMENTI ---------- */
+    adattamenti: S(`
+      ${[["Cuore", "più gittata, FC a riposo più bassa", "o"], ["Sangue", "più plasma ed emoglobina", "o2"], ["Muscolo", "più mitocondri, capillari, miofibrille", "b"], ["Ossa e tendini", "più densi e resistenti", "b2"], ["Metabolismo", "più sensibilità all'insulina, più grassi usati", "n"]].map(([a, b, c], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${c}" x="30" y="${18 + k * 54}" width="44" height="44" rx="12"/>${lab(88, 36 + k * 54, a)}${lab(88, 54 + k * 54, b, "sm")}</g>`).join("")}
+    `, "0 0 400 290"),
+
+    /* ---------- PARALIMPIADI ---------- */
+    storia: S(`
+      <path class="ln" d="M30 150 H370"/>
+      ${[["1948", "Stoke Mandeville", "Guttmann"], ["1960", "Roma", "1ª Paralimpiade"], ["1989", "nasce l'IPC", ""], ["1992", "Barcellona", "stessi impianti"], ["oggi", "evento mondiale", ""]].map(([a, b, c], k) =>
+        `<g class="fi" style="--k:${k}"><circle class="${k % 2 ? "b" : "o"}" cx="${50 + k * 75}" cy="150" r="14"/>${lab(50 + k * 75, k % 2 ? 196 : 112, a, k % 2 ? "tb" : "to", "middle")}${lab(50 + k * 75, k % 2 ? 214 : 94, b, "sm", "middle")}${c ? lab(50 + k * 75, k % 2 ? 230 : 78, c, "sm", "middle") : ""}</g>`).join("")}
+    `, "0 0 400 260"),
+    icf: S(`
+      <rect class="o" x="130" y="20" width="140" height="50" rx="12"/>${lab(200, 50, "Condizione di salute", "tw", "middle")}
+      ${[["Funzioni e strutture", 20], ["Attività", 140], ["Partecipazione", 260]].map(([a, x], k) => `<g class="fi" style="--k:${k}"><rect class="b" x="${x}" y="120" width="120" height="50" rx="12"/>${lab(x + 60, 150, a, "tw sm", "middle")}</g>`).join("")}
+      <path class="ln" d="M200 70 V96 M80 96 H320 M80 96 V120 M200 96 V120 M320 96 V120 M80 170 V196 M320 170 V196 M80 196 H320 M200 170 V196"/>
+      <rect class="o2" x="40" y="210" width="150" height="50" rx="12"/>${lab(115, 240, "Fattori ambientali", "", "middle")}
+      <rect class="o2" x="210" y="210" width="150" height="50" rx="12"/>${lab(285, 240, "Fattori personali", "", "middle")}
+      ${lab(200, 290, "ICF (OMS, 2001): la disabilità nasce dall'interazione", "sm", "middle")}
+    `, "0 0 400 300"),
+    modelli: S(`
+      <g class="fi" style="--k:0"><rect class="b3" x="20" y="60" width="160" height="150" rx="16"/>${lab(100, 96, "Modello medico", "", "middle")}${lab(100, 130, "la disabilità è", "sm", "middle")}${lab(100, 146, "un problema della", "sm", "middle")}${lab(100, 162, "persona da curare", "sm", "middle")}</g>
+      <path class="lo dr" d="M190 135 H226 M216 125 l12 10 -12 10"/>
+      <g class="fi" style="--k:1"><rect class="o" x="236" y="60" width="160" height="150" rx="16"/>${lab(316, 96, "Modello sociale", "tw", "middle")}${lab(316, 130, "la disabilità nasce", "tw sm", "middle")}${lab(316, 146, "dalle barriere", "tw sm", "middle")}${lab(316, 162, "dell'ambiente", "tw sm", "middle")}</g>
+      ${lab(208, 250, "Oggi: approccio bio-psico-sociale", "", "middle")}
+    `, "0 0 420 270")
   };
 })();

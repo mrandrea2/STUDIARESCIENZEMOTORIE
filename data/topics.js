@@ -179,6 +179,7 @@ window.TOPICS = [
       "Gli adattamenti respiratori all'esercizio fisico"
     ],
     materiali: [
+      { tipo: "link", url: "https://polmonifumo.vercel.app/#top", titolo: "Polmoni e fumo: sito interattivo" },
       { tipo: "audio", id: "1IGfLeFNeKxyGUfy5qk3za9tQceio4Sa6", titolo: "Podcast introduttivo" },
       { tipo: "video", id: "1ByBU_cvxsPgzUAry6k6UuIZkqVlRh4lR", titolo: "Video di sintesi" },
       { tipo: "pdf", id: "1PFsggakqNc6dW4ElRM28kolLamdDUvzc", titolo: "Il respiro e lo sport", nota: "Lezione del prof. Bertelli" },
@@ -219,6 +220,7 @@ window.TOPICS = [
       "Le differenze di genere nello sport"
     ],
     materiali: [
+      { tipo: "link", url: "https://maratona-galilei.vercel.app/#/", titolo: "Esempio: piano di allenamento per la maratona" },
       { tipo: "pdf", id: "14Of9OCeDwkZkEoH97HRkalX-5m1A1wP6", titolo: "Teoria e metodologia dell'allenamento sportivo", nota: "Lezione del prof. Bertelli" },
       { tipo: "link", url: "https://www.canva.com/design/DAGWEo6Lz-k/VZhTy4jtNYnOh_SVNq3Spg/view", titolo: "Lezione su Canva", nota: "Presentazione interattiva" },
       { tipo: "pdf", id: "112iLdvt84coKBnJ642nsM7t5UX-qaS59", titolo: "L'allenamento sportivo: slide del libro", nota: "Slide relative al libro di testo" }

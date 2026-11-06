@@ -130,6 +130,8 @@
     map: sv('<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/><path d="M10 6.5h4a3 3 0 0 1 3 3V14M7 10v4a3 3 0 0 0 3 3h4"/>'),
     order: sv('<path d="M4 6h10M4 12h7M4 18h4"/><path d="M18 4v16M15 17l3 3 3-3"/>'),
     groups: sv('<rect x="3" y="4" width="7.5" height="16" rx="2"/><rect x="13.5" y="4" width="7.5" height="16" rx="2"/><path d="M6.7 8h.1M6.7 12h.1M17.2 8h.1"/>'),
+    lab: sv('<path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.8-2.5L14 9V3"/><path d="M7.5 14h9"/>'),
+    read: sv('<path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/>'),
     calc: sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>')
   };
   const star = on => `<svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="${on ? "#FFD23F" : "rgba(255,255,255,.12)"}" stroke="${on ? "#FFD23F" : "rgba(255,255,255,.35)"}" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
@@ -475,6 +477,7 @@
     if (hasLez && tab === "studia") tab = "lezione";
     const tabs = [
       hasLez ? ["lezione", "Lezione", I.slides] : ["studia", "Studia", I.book],
+      LAB[t.id] ? ["lab", "Laboratorio", I.lab] : null,
       S[t.id] ? ["schemi", "Schemi", I.map] : null,
       g ? ["ripassa", "Ripassa", I.cards] : null,
       g ? ["gioca", "Gioca", I.game] : null
@@ -491,7 +494,7 @@
         </div>
       </div></section>`}
       <div class="seg-wrap" ${inGame ? 'style="margin-top:0"' : ""}><div class="wrap">
-        <nav class="seg${tabs.length > 3 ? " four" : ""}" aria-label="Sezioni">${tabs.map(([key, l, ic]) => `<a href="#/argomento/${t.id}/${key}" class="${tab === key ? "on" : ""}">${ic}<span>${l}</span></a>`).join("")}</nav>
+        <nav class="seg${tabs.length > 3 ? " four" : ""}${tabs.length > 4 ? " five" : ""}" aria-label="Sezioni">${tabs.map(([key, l, ic]) => `<a href="#/argomento/${t.id}/${key}" class="${tab === key ? "on" : ""}">${ic}<span>${key === "lab" ? '<i class="lg">Laboratorio</i><i class="sh">Lab</i>' : l}</span></a>`).join("")}</nav>
       </div></div>
       <section class="wrap"><div id="tabBody"></div></section>`;
     animateRing();
@@ -509,6 +512,7 @@
     }
     if (tab === "schemi" && S[t.id]) return tabSchemi(body, t);
     if (tab === "lezione" && hasLez) return tabLezione(body, t);
+    if (tab === "lab" && LAB[t.id]) return tabLab(body, t);
     return tabStudia(body, t);
   }
 
@@ -797,6 +801,7 @@
 
   /* ================= Lezione a slide ================= */
   const L = window.LEZIONI || {};
+  const LAB = window.LAB || {};
   const rich = s => esc(s).replace(/&lt;em&gt;/g, "<em>").replace(/&lt;\/em&gt;/g, "</em>");
   function slideHtml(s, i, n, deckTitle) {
     const bg = s.t === "key" || s.dark ? "dark" : s.bg || (i % 3 === 2 ? "blue" : "ivory");
@@ -902,25 +907,42 @@
     if (saved > 0 && saved < n) go(saved, 1);
   }
 
+  function videoHtml(m, i) {
+    if (m.tipo === "yt") return `<button class="vid" data-m="${i}"><span class="vth"><img src="https://i.ytimg.com/vi/${esc(m.id)}/hqdefault.jpg" alt="" loading="lazy"><i>${I.play}</i></span><b>${esc(m.titolo)}</b><small>YouTube</small></button>`;
+    return `<button class="vid" data-m="${i}"><span class="vth dv"><i>${m.tipo === "audio" ? I.audio : I.play}</i></span><b>${esc(m.titolo)}</b><small>${m.tipo === "audio" ? "Podcast" : "Video"} del prof.</small></button>`;
+  }
   function tabLezione(body, t) {
     const m = t.materiali || [];
-    const groups = [["Lezioni e dispense", ["pdf", "slides"]], ["Video", ["video", "yt"]], ["Podcast", ["audio"]], ["Link utili", ["link"]]];
-    const matHtml = groups.map(([name, tipi]) => {
-      const items = m.map((x, i) => [x, i]).filter(([x]) => tipi.includes(x.tipo));
-      return items.length ? `<div class="mat-group"><h4>${name}</h4>${items.map(([x, i]) => matButton(x, i)).join("")}</div>` : "";
-    }).join("");
+    const vids = m.map((x, i) => [x, i]).filter(([x]) => ["yt", "video", "audio"].includes(x.tipo));
+    const docs = m.map((x, i) => [x, i]).filter(([x]) => ["pdf", "slides", "link", "form", "la"].includes(x.tipo));
     body.innerHTML = `
-      <div class="lez-intro rv"><p class="kicker">Lezione</p><h2>${esc(L[t.id].titolo)}:</h2><p class="muted">${esc(L[t.id].sottotitolo)}. Scorri le slide con le frecce o con il dito.</p></div>
+      <div class="lez-intro rv"><p class="kicker">Lezione</p><h2>${esc(L[t.id].titolo)}:</h2><p class="muted">${esc(L[t.id].sottotitolo)}.</p>
+        <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button></div></div>
       ${deckHtml(t)}
+      ${vids.length ? `<section class="lez-vid rv"><h3 class="lez-h">Guarda e ascolta:</h3><div class="vid-grid">${vids.map(([x, i]) => videoHtml(x, i)).join("")}</div></section>` : ""}
       <div class="two" style="margin-top:18px">
-        <div class="col"><div class="card rv"><h3>Obiettivi della lezione:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div></div>
+        <div class="col"><div class="card rv"><h3>Obiettivi della lezione:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
+          ${docs.length ? `<div class="card rv" style="--i:1"><h3>Le slide e le dispense del prof.:</h3>${docs.map(([x, i]) => matButton(x, i)).join("")}</div>` : ""}</div>
         <div class="col">
-          ${m.length ? `<div class="card rv" style="--i:1"><h3>Approfondisci:</h3>${matHtml}</div>` : ""}
+          ${LAB[t.id] ? `<div class="card lab-cta rv"><h3>Ora sperimenta:</h3><p>Esperienze pratiche, strumenti per misurarti${(LAB[t.id] || []).some(x => x.t === "3d") ? " e modelli 3D" : ""}.</p><a class="btn white full" href="#/argomento/${t.id}/lab">${I.lab} Vai al laboratorio</a></div>` : ""}
           ${G[t.id] ? `<div class="card play-card rv"><h3>Hai studiato?</h3><p>Ripassa con gli schemi e mettiti alla prova con 7 attività.</p><div class="cta-row" style="margin:0"><a class="btn white full" href="#/argomento/${t.id}/schemi">${I.map} Schemi riassuntivi</a><a class="btn ghost full" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a></div></div>` : ""}
         </div>
       </div>`;
     $$("[data-m]", body).forEach(b => b.addEventListener("click", () => openViewer(m[Number(b.dataset.m)])));
     bindDeck(body, t);
+    const deck = $("#deck", body);
+    const setMode = md => {
+      $$(".lez-mode .mode", body).forEach(b => b.classList.toggle("on", b.dataset.mode === md));
+      deck.classList.toggle("read", md === "read");
+      mem._pref.mode = md; save();
+    };
+    $$(".lez-mode .mode", body).forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+    if (mem._pref.mode === "read") setMode("read");
+  }
+
+  function tabLab(body, t) {
+    if (window.renderLab) window.renderLab(body, t, LAB[t.id]);
+    reveal();
   }
 
   /* ================= Metodo di studio ================= */

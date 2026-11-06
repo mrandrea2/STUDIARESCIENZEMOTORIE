@@ -74,6 +74,14 @@ LEZIONI["teoria-dellallenamento"] = {
       { h: "Macrociclo", p: "Tutta la stagione, verso le gare importanti." }
     ], lastDark: true },
 
+    { t: "points", kicker: "Un esempio reale", title: "La programmazione di una maratona", bg: "blue", fig: { svg: "supercomp", cap: "Carico e recupero, settimana dopo settimana" }, items: [
+      ["Obiettivo:", "42,195 km: serve un macrociclo di diversi mesi."],
+      ["Progressione:", "il chilometraggio settimanale cresce un po' alla volta."],
+      ["Alternanza:", "lunghi lenti, ripetute, recuperi; ogni 3–4 settimane una settimana di scarico."],
+      ["Tapering:", "nelle ultime settimane il carico cala per arrivare freschi alla gara."],
+      ["Guardalo dal vivo:", "nel Laboratorio trovi il sito con un piano completo per la maratona."]
+    ] },
+
     { t: "cards", kicker: "Età e sesso", title: "Allenare i giovani, allenare tutti", grid: 2, line: true, cards: [
       { h: "Prima dello sviluppo", p: "Giochi, coordinazione, rapidità, tanti sport diversi." },
       { h: "Durante e dopo lo sviluppo", p: "Si inseriscono gradualmente forza e resistenza specifica." },

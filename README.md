@@ -18,6 +18,8 @@ data/giochi-3.js    giochi: classe quarta e quinta
 data/giochi-extra.js  domande in più e i giochi «Metti in ordine» e «Dividi in gruppi»
 data/schemi.js      SCHEMI RIASSUNTIVI di ogni argomento (flussi, cicli, confronti, barre)
 data/lezioni/       LEZIONI UNICHE (slide integrate), un file per argomento
+data/laboratori.js  LABORATORIO di ogni argomento: esperienze, strumenti, modelli 3D, link
+assets/lab.js       il funzionamento degli strumenti interattivi del laboratorio
 assets/illustrazioni.js  i disegni delle slide (SVG con etichette in italiano)
 ```
 
@@ -68,11 +70,24 @@ Ogni argomento ha la scheda **Schemi**. Li trovi in `data/schemi.js`: ogni schem
 
 ## Lezioni (slide integrate)
 
-Gli argomenti con un file in `data/lezioni/` mostrano la scheda **Lezione** con le slide sfogliabili (frecce, swipe, indice, schermo intero; la slide raggiunta viene ricordata). Ci sono le lezioni di seconda e terza: respiratorio, cardiocircolatorio, metabolismi, teoria dell'allenamento, capacità condizionali, dal gioco allo sport, apparato digerente, sana alimentazione, alimentazione e sport/integratori/doping, test motori.
+Gli argomenti con un file in `data/lezioni/` mostrano la scheda **Lezione** con le slide sfogliabili (frecce, swipe, indice, schermo intero; la slide raggiunta viene ricordata). Ci sono le lezioni di tutti i 22 argomenti, dalla prima alla quinta. Il pulsante «Leggi tutto» mostra tutte le slide una sotto l'altra, come un testo da studiare. Sotto le slide ci sono i video (YouTube e Drive) e le dispense del prof.
 
 Per aggiungere una lezione: copia un file di `data/lezioni/`, cambia il nome dell'argomento tra parentesi quadre e aggiungi la riga `<script src="data/lezioni/NOME.js"></script>` in `index.html`. Tipi di slide: cover, cards, steps, list, split, key, stack, stats, formula, table, points, end, fonti.
 
 Per mettere un'immagine accanto al testo aggiungi a una slide `fig: { svg: "cuore", cap: "Didascalia" }` (i nomi dei disegni sono in `assets/illustrazioni.js`) oppure `fig: { src: "indirizzo dell'immagine", svg: "disegno di riserva", cap: "...", credit: "autore e licenza" }`.
+
+## Laboratorio
+
+Ogni argomento ha la scheda **Laboratorio** (`data/laboratori.js`). Si possono aggiungere quattro tipi di voci:
+
+```js
+{ t: "esperienza", titolo: "…", dove: "in palestra", tempo: "20 minuti", obiettivo: "…", materiale: ["…"], passi: ["…"], osserva: ["…"] },
+{ t: "tool", tool: "battito" },        // strumenti: battito, karvonen, cooper, imc, watson, reazione, respiro, attivita, met, rpe, sonno, idratazione, profondita, quota, supercomp, arousal, smart
+{ t: "3d", uid: "codice-sketchfab", titolo: "…", autore: "…" },   // il codice è l'ultima parte dell'indirizzo del modello su Sketchfab
+{ t: "link", url: "https://…", titolo: "…", testo: "…" }
+```
+
+I modelli 3D arrivano da Sketchfab e si caricano solo quando lo studente preme «Apri il modello 3D».
 
 ## Metodo di studio
 

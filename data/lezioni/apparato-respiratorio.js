@@ -99,6 +99,13 @@ LEZIONI["apparato-respiratorio"] = {
       { h: "Alta quota", p: "L'aria ha meno O₂: si respira di più anche da fermi." }
     ] },
 
+    { t: "cards", kicker: "Il nemico del respiro", title: "Il fumo e i polmoni", bg: "blue", grid: 2, cards: [
+      { h: "Ciglia paralizzate", p: "Le ciglia dei bronchi non spazzano più il muco: più tosse e infezioni." },
+      { h: "Monossido di carbonio", p: "Si lega all'emoglobina al posto dell'ossigeno: meno O₂ ai muscoli." },
+      { h: "Alveoli danneggiati", p: "Con gli anni le pareti si rompono: meno superficie per gli scambi." },
+      { h: "Per lo sportivo", p: "Più fiato corto, recupero più lento, prestazione più bassa. Anche svapo e narghilè irritano le vie aeree.", dark: true }
+    ], note: "Esplora il sito interattivo «Polmoni e fumo» nel Laboratorio di questo argomento." },
+
     { t: "end", kicker: "In sintesi", title: "Le cinque cose da ricordare", items: [
       "L'aria arriva agli alveoli attraverso le vie aeree, che la filtrano, scaldano e umidificano.",
       "Il diaframma è il motore dell'inspirazione; a riposo l'espirazione è passiva.",
