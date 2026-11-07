@@ -102,6 +102,8 @@ window.TOPICS = [
       "Gli infortuni articolari più comuni nello sport"
     ],
     materiali: [
+      { tipo: "yt", id: "hWJikT7WP_E", titolo: "Il sistema scheletrico e l'apparato locomotore · La Biologia per tutti" },
+      { tipo: "yt", id: "wTPcYX_xaN8", titolo: "I tessuti connettivi: cartilagine e osso · La Biologia per tutti" },
       { tipo: "pdf", id: "123XYIAbf3NAeMaLpdKoDqYCzWn0yfvo_", titolo: "Approfondimento articolazioni" },
       { tipo: "pdf", id: "1S5_e9an_Cj9iIDLGM4Lm3l9QQEK8EgiG", titolo: "Tabella delle articolazioni" },
       { tipo: "pdf", id: "1_4Q_z9fZwNXnlkypzqJRAnsd6NwboDPf", titolo: "Scheda: spalla" },
@@ -129,6 +131,7 @@ window.TOPICS = [
       "Applicazioni pratiche nello sport"
     ],
     materiali: [
+      { tipo: "yt", id: "lJ7f3uEI5To", titolo: "Il tessuto muscolare · La Biologia per tutti" },
       { tipo: "pdf", id: "1slW8GHjnHmmUF6mVvW_8Ree_ikzJ7UzW", titolo: "Il sistema muscolare", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1Fvfb3WtMP6rpbWsTbST4C5ltabn1HbqD", titolo: "I muscoli: slide Zanichelli", nota: "Slide relative al libro di testo" },
       { tipo: "pdf", id: "12K-rUfsqC4fTSgJ6bZDJ_SpyA7KiKQ_T", titolo: "Come crescono i muscoli?", nota: "Documento di sintesi" },
@@ -179,6 +182,7 @@ window.TOPICS = [
       "Gli adattamenti respiratori all'esercizio fisico"
     ],
     materiali: [
+      { tipo: "yt", id: "UHpqXOSi4Q0", titolo: "Apparato respiratorio · La Biologia per tutti" },
       { tipo: "link", url: "https://polmonifumo.vercel.app/#top", titolo: "Polmoni e fumo: sito interattivo" },
       { tipo: "audio", id: "1IGfLeFNeKxyGUfy5qk3za9tQceio4Sa6", titolo: "Podcast introduttivo" },
       { tipo: "video", id: "1ByBU_cvxsPgzUAry6k6UuIZkqVlRh4lR", titolo: "Video di sintesi" },
@@ -197,6 +201,9 @@ window.TOPICS = [
       "Usare i metabolismi energetici per allenarsi meglio"
     ],
     materiali: [
+      { tipo: "yt", id: "-IcuTAzQP9c", titolo: "Gli enzimi · La Biologia per tutti" },
+      { tipo: "yt", id: "eNOJhnzjmbE", titolo: "La glicolisi · La Biologia per tutti" },
+      { tipo: "yt", id: "Fw4guLC9R8s", titolo: "La fermentazione · La Biologia per tutti" },
       { tipo: "pdf", id: "1rJbbwA_ER1RJ_LE62rD9s7kNotvEnHV8", titolo: "I metabolismi energetici", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1HiWVEpgwc18fgp0eL9grFxOCih9hdh_e", titolo: "Sistemi energetici: slide del libro", nota: "Slide relative al libro di testo" },
       { tipo: "yt", id: "Hhj2uWm7L6c", titolo: "La glicolisi" },
@@ -298,7 +305,8 @@ window.TOPICS = [
       ["Intestino crasso", "Assorbe acqua e sali, ospita il microbiota intestinale e forma le feci."],
       ["E lo sport?", "Durante uno sforzo intenso il sangue viene dirottato ai muscoli e la digestione rallenta. Pasto completo 3–4 ore prima, spuntino leggero fino a 1 ora prima."]
     ],
-    materiali: []
+    materiali: [
+      { tipo: "yt", id: "RDnlYnrodyQ", titolo: "Apparato digerente · La Biologia per tutti" },]
   },
   {
     id: "test-motori",
@@ -348,6 +356,7 @@ window.TOPICS = [
       ["Sostenibilità", "Prodotti di stagione, meno spreco di cibo: fa bene alla salute e al pianeta."]
     ],
     materiali: [
+      { tipo: "yt", id: "YlSf3j_lK3M", titolo: "Le biomolecole · La Biologia per tutti" },
       { tipo: "slides", id: "1zkSjZ-orrvJdhR-_ppL4vy4d-SYdAvbwvjQCv5z5kiM", titolo: "Come costruire una dieta sana", nota: "Lezione del prof. Bertelli" },
       { tipo: "slides", id: "1gaYk4aFX5WipuPK8PX8EyEa3oe4GfMluyzsmTKSQigA", titolo: "Colazione e sostenibilità della dieta mediterranea", nota: "Lezione del prof. Bertelli" },
       { tipo: "slides", id: "1H6AYZIvq45elBDSHO_bpEhjLuFEQzdfdiWjF7L7R46Q", titolo: "Mangiare a colori per vivere meglio", nota: "Lezione del prof. Bertelli" },
@@ -373,6 +382,8 @@ window.TOPICS = [
       "Il ruolo del sistema nervoso nello sport"
     ],
     materiali: [
+      { tipo: "yt", id: "t806EymH7Kg", titolo: "Organizzazione del sistema nervoso · La Biologia per tutti" },
+      { tipo: "yt", id: "vRtfOwRobpA", titolo: "Il tessuto nervoso · La Biologia per tutti" },
       { tipo: "pdf", id: "1MNu-Ai14gBM8PWz2pnYUcIZSozTlcxB6", titolo: "Il sistema nervoso", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1Bj_S7-4MbE9ZfFtmWEOjeYLVLKKAEC5m", titolo: "Sistema nervoso: slide del libro", nota: "Slide relative al libro di testo" },
       { tipo: "yt", id: "emtxq9gPJ0M", titolo: "Il sistema nervoso" },
@@ -416,6 +427,7 @@ window.TOPICS = [
       "Il ruolo dei vaccini nella prevenzione"
     ],
     materiali: [
+      { tipo: "yt", id: "LL7aKX2K_XM", titolo: "Il sistema linfatico · La Biologia per tutti" },
       { tipo: "pdf", id: "1y8OOPFLVBKJ5tLOmYJKGCpD2gO2ZUWoz", titolo: "Il sistema immunitario", nota: "Lezione del prof. Bertelli" },
       { tipo: "link", url: "https://bit.ly/IMMUNITARIOCANVA", titolo: "Lezione su Canva", nota: "Presentazione interattiva" },
       { tipo: "pdf", id: "1djBXdFAM5uiCRXopMxUHfTzvql-VL9pc", titolo: "Immunitario: slide Zanichelli" },
@@ -437,6 +449,8 @@ window.TOPICS = [
       "Gestire lo stress con la respirazione diaframmatica"
     ],
     materiali: [
+      { tipo: "yt", id: "H24GJOLXz1A", titolo: "Il sistema endocrino · La Biologia per tutti" },
+      { tipo: "yt", id: "LL7aKX2K_XM", titolo: "Il sistema linfatico · La Biologia per tutti" },
       { tipo: "audio", id: "1qfbEZX4CsnBHDdWsfMDdTBhIRKrl-BS8", titolo: "Podcast di ripasso" },
       { tipo: "pdf", id: "1sOhQzq2tEyjvhbhI3yP-QPOZC-lFZWuS", titolo: "Salute e stile di vita" },
       { tipo: "pdf", id: "11vI26gqVgHZrk6fq3lJBADDOMHvUkAr4", titolo: "Il ruolo del sonno per il benessere" },
@@ -505,6 +519,8 @@ window.TOPICS = [
       "Il modello prestativo degli sport e l'allenamento"
     ],
     materiali: [
+      { tipo: "yt", id: "lJ7f3uEI5To", titolo: "Il tessuto muscolare · La Biologia per tutti" },
+      { tipo: "yt", id: "eNOJhnzjmbE", titolo: "La glicolisi · La Biologia per tutti" },
       { tipo: "pdf", id: "1aNRkW2Bz4PU0f8ueVKtwM7zUBLdpjTdq", titolo: "Adattamenti a lungo termine ai diversi tipi di allenamento", nota: "Lezione del prof. Bertelli" },
       { tipo: "link", url: "https://drive.google.com/open?id=1be5DmIcAXtx-I8Vcn1YLLkKRATR_cPMkEaGzuF3gE4Y", titolo: "Slide prof. Mischiati" },
       { tipo: "video", id: "1hg4m9gxVRKrzuac51EJLYVUx5VUKxfQC", titolo: "I motori energetici del corpo" },
@@ -524,6 +540,8 @@ window.TOPICS = [
       "Cosa sono le sostanze dopanti"
     ],
     materiali: [
+      { tipo: "yt", id: "YlSf3j_lK3M", titolo: "Le biomolecole · La Biologia per tutti" },
+      { tipo: "yt", id: "RDnlYnrodyQ", titolo: "Apparato digerente · La Biologia per tutti" },
       { tipo: "pdf", id: "11Kx-5vKvx3gE-l6fi-75xwZ7ftjfOSp4", titolo: "Attività fisica e pratica sportiva", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1EVmQBwCOhVXxcZSqSPjWGLXDiMtBCKLn", titolo: "Attenti alle diete e agli integratori", nota: "Dossier scientifico" },
       { tipo: "pdf", id: "1Crusu7ROTn8Tx4haoqn1xG53fq0CPLn8", titolo: "Integratori", nota: "Università di Verona" },
