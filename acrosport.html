@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acrosport — Liceo Galilei · Prof. Andrea Bertelli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --avorio:#FAF6EE; --avorio2:#F2EBDD; --blu:#14213D; --blu2:#2B3A63;
+    --corallo:#E4572E; --grigio:#6B6B6B; --linea:#DDD3C0; --verde:#2E8B57;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--avorio);color:var(--blu);font-family:"Source Serif 4",Georgia,serif;font-size:18px;line-height:1.6}
+  h1,h2,h3,.sans,nav,header .scuola{font-family:Inter,system-ui,sans-serif}
+  a{color:var(--corallo)}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  /* intestazione */
+  header.top{background:var(--blu);color:var(--avorio)}
+  header.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+  .scuola{font-weight:800;letter-spacing:.02em;font-size:17px}
+  .scuola span{display:block;font-weight:500;font-size:13px;opacity:.75;letter-spacing:.04em}
+  .prof{font-family:Inter,sans-serif;font-size:14px;text-align:right}
+  .prof b{display:block;font-size:16px;color:#FFB59E}
+
+  nav{position:sticky;top:0;z-index:10;background:var(--avorio2);border-bottom:1px solid var(--linea)}
+  nav .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+  nav a{color:var(--blu);text-decoration:none;font-size:14px;font-weight:700;padding:6px 12px;border-radius:6px;white-space:nowrap}
+  nav a:hover{background:var(--blu);color:var(--avorio)}
+
+  /* hero */
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-top:56px;padding-bottom:48px}
+  .hero h1{font-size:clamp(38px,5vw,60px);line-height:1.05;font-weight:800}
+  .hero h1 em{font-style:normal;color:var(--corallo)}
+  .hero p.lead{font-size:21px;margin-top:18px}
+  .tag{display:inline-block;font-family:Inter,sans-serif;font-size:13px;font-weight:700;color:var(--corallo);text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px}
+
+  section{padding:56px 0;border-top:1px solid var(--linea)}
+  h2{font-size:clamp(28px,3.4vw,38px);font-weight:800;margin-bottom:22px}
+  h2::after{content:"";display:block;width:56px;height:5px;background:var(--corallo);margin-top:10px;border-radius:3px}
+  h3{font-size:20px;font-weight:700;margin-bottom:6px}
+  p+p{margin-top:12px}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .card{background:#fff;border:1px solid var(--linea);border-radius:12px;padding:22px}
+  .card.blu{background:var(--blu);color:var(--avorio);border-color:var(--blu)}
+  .card.blu h3{color:#FFB59E}
+  .num{font-family:Inter,sans-serif;font-weight:800;font-size:34px;color:var(--corallo);line-height:1}
+
+  figure.fig{background:#fff;border:1px solid var(--linea);border-radius:12px;padding:14px;margin:0}
+  figure.fig svg{width:100%;height:auto;display:block;background:var(--avorio)}
+  figure.fig figcaption{font-family:Inter,sans-serif;font-size:14px;margin-top:10px}
+  figure.fig figcaption b{display:block;font-size:16px}
+  .liv{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:6px;background:var(--avorio2)}
+
+  ul.lista{list-style:none}
+  ul.lista li{padding:10px 0 10px 30px;position:relative;border-bottom:1px dashed var(--linea)}
+  ul.lista li::before{content:"";position:absolute;left:4px;top:19px;width:12px;height:12px;background:var(--corallo);border-radius:2px;transform:rotate(45deg)}
+  ul.lista li b{font-family:Inter,sans-serif}
+
+  .legenda{display:flex;gap:18px;flex-wrap:wrap;font-family:Inter,sans-serif;font-size:14px;margin-top:10px}
+  .legenda i{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-right:6px}
+
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:16px}
+  th{background:var(--blu);color:var(--avorio);font-family:Inter,sans-serif;font-size:14px;text-align:left;padding:12px}
+  td{padding:12px;border-bottom:1px solid var(--linea);vertical-align:top}
+  tr:last-child td{border-bottom:0}
+
+  .fasi{display:grid;grid-template-columns:repeat(3,1fr);gap:0;counter-reset:f}
+  .fase{padding:22px;border-left:5px solid var(--corallo);background:#fff;margin-right:12px;border-radius:0 12px 12px 0}
+  .fase .sans{font-weight:800;font-size:13px;letter-spacing:.1em;color:var(--corallo);text-transform:uppercase}
+
+  .quiz details{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:14px 18px;margin-bottom:10px}
+  .quiz summary{font-family:Inter,sans-serif;font-weight:700;cursor:pointer}
+  .quiz details p{margin-top:8px}
+
+  footer{background:var(--blu);color:var(--avorio);padding:28px 0;font-family:Inter,sans-serif;font-size:14px}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  @media (max-width:820px){
+    .hero .wrap,.split,.grid2,.grid3,.fasi{grid-template-columns:1fr}
+    .fase{margin:0 0 12px}
+    .prof{text-align:left}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="scuola">Liceo Statale "Galileo Galilei" — Verona<span>SCIENZE MOTORIE E SPORTIVE</span></div>
+    <div class="prof">Materiale didattico a cura del<b>Prof. Andrea Bertelli</b></div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a href="#cose">Cos'è</a>
+    <a href="#storia">Storia</a>
+    <a href="#ruoli">Ruoli</a>
+    <a href="#tecnica">Principi tecnici</a>
+    <a href="#elementi">Elementi</a>
+    <a href="#posizioni">Posizioni di base</a>
+    <a href="#figure">Figure</a>
+    <a href="#sicurezza">Sicurezza</a>
+    <a href="#prese">Prese</a>
+    <a href="#costruzione">Costruire una figura</a>
+    <a href="#parata">La parata</a>
+    <a href="#errori">Errori comuni</a>
+    <a href="#preparazione">Preparazione fisica</a>
+    <a href="#scuola">A scuola</a>
+    <a href="#coreografia">Coreografia</a>
+    <a href="#valutazione">Valutazione</a>
+    <a href="#verifica">Mettiti alla prova</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <div class="tag">Unità didattica</div>
+      <h1>Acrosport: <em>insieme</em> si sale più in alto</h1>
+      <p class="lead">L'acrosport è l'attività in cui due o più compagni costruiscono figure acrobatiche con il proprio corpo, sostenendosi a vicenda. Servono forza, equilibrio, precisione… e soprattutto fiducia.</p>
+    </div>
+    <!-- Illustrazione hero: trio -->
+    <svg viewBox="0 0 340 280" role="img" aria-label="Figura a tre: due basi in quadrupedia e un'agile in piedi sui loro bacini">
+      <line x1="10" y1="262" x2="330" y2="262" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+      <g stroke="#14213D" stroke-width="11" stroke-linecap="round" fill="none">
+        <path d="M40 258 L40 190 L120 190 L120 256 L155 258"/>
+        <path d="M300 258 L300 190 L220 190 L220 256 L185 258"/>
+      </g>
+      <circle cx="22" cy="182" r="15" fill="#14213D"/>
+      <circle cx="318" cy="182" r="15" fill="#14213D"/>
+      <g stroke="#E4572E" stroke-width="10" stroke-linecap="round" fill="none">
+        <path d="M122 182 L170 115 L218 182"/>
+        <path d="M170 115 L170 66"/>
+        <path d="M112 68 L228 68"/>
+      </g>
+      <circle cx="170" cy="46" r="14" fill="#E4572E"/>
+    </svg>
+  </div>
+</div>
+
+<!-- COS'È -->
+<section id="cose">
+  <div class="wrap split">
+    <div>
+      <h2>Cos'è l'acrosport:</h2>
+      <p>La parola unisce <b>acrobatica</b> e <b>sport</b>. In palestra si lavora in coppia o in piccoli gruppi per realizzare <b>piramidi umane</b> e figure di equilibrio, collegate tra loro da passaggi coreografici, spesso a tempo di musica.</p>
+      <p>Ogni figura viene <b>costruita</b>, <b>mantenuta</b> per almeno 3 secondi in modo stabile e poi <b>smontata</b> con controllo. Non conta solo "stare su": contano la sicurezza, la pulizia delle linee e la collaborazione del gruppo.</p>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="num">4-6</div><p class="sans" style="font-size:15px;margin-top:6px">componenti per gruppo a scuola</p></div>
+      <div class="card"><div class="num">3"</div><p class="sans" style="font-size:15px;margin-top:6px">tenuta minima di ogni figura statica</p></div>
+      <div class="card"><div class="num">3</div><p class="sans" style="font-size:15px;margin-top:6px">ruoli: base, agile, parata</p></div>
+      <div class="card blu"><h3>Cosa allena:</h3><p style="font-size:16px">forza, equilibrio, controllo posturale, coordinazione, fiducia e cooperazione.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORIA -->
+<section id="storia">
+  <div class="wrap">
+    <h2>Un po' di storia:</h2>
+    <div class="grid3">
+      <div class="card"><h3>Le origini</h3><p>Figure acrobatiche di gruppo compaiono già nelle raffigurazioni dell'antichità e nelle esibizioni di giocolieri e saltimbanchi. Il circo le ha rese spettacolo.</p></div>
+      <div class="card"><h3>La disciplina sportiva</h3><p>Nel Novecento nasce la <b>ginnastica acrobatica</b> come sport con regole e giudici. Oggi fa parte della Federazione Internazionale di Ginnastica (FIG) e in Italia della Federazione Ginnastica d'Italia.</p></div>
+      <div class="card"><h3>A scuola</h3><p>L'acrosport è la versione didattica: figure accessibili a tutti, costruite in sicurezza, dove il gruppo conta più del singolo. Ottima per sviluppare competenze sociali.</p></div>
+    </div>
+    <p style="margin-top:22px">Nella ginnastica acrobatica agonistica le specialità sono cinque: <b>coppia maschile</b>, <b>coppia femminile</b>, <b>coppia mista</b>, <b>gruppo femminile</b> (3 atlete) e <b>gruppo maschile</b> (4 atleti). Gli esercizi combinano elementi <b>statici</b> (equilibri), <b>dinamici</b> (lanci e riprese) e <b>individuali</b> (capovolte, ruote, salti).</p>
+  </div>
+</section>
+
+<!-- RUOLI -->
+<section id="ruoli">
+  <div class="wrap split">
+    <div>
+      <h2>I ruoli:</h2>
+      <ul class="lista">
+        <li><b>Base (porteur):</b> sostiene il peso dei compagni. Deve avere una posizione stabile, schiena allineata, braccia e gambe sotto le articolazioni, addome contratto.</li>
+        <li><b>Agile (voltigeur):</b> sale sulla base e realizza la figura. Deve essere leggero, preciso negli appoggi e "tonico": un corpo rigido pesa meno di un corpo molle.</li>
+        <li><b>Parata (aiutante):</b> assiste la costruzione e lo smontaggio, pronta a sostenere l'agile. È il ruolo chiave per la sicurezza.</li>
+      </ul>
+      <p style="margin-top:14px">A scuola tutti provano tutti i ruoli, compatibilmente con il peso e la forza di ciascuno.</p>
+    </div>
+    <svg viewBox="0 0 340 280" role="img" aria-label="Base, agile e parata">
+      <line x1="10" y1="262" x2="330" y2="262" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+      <!-- base quadrupedia -->
+      <g stroke="#14213D" stroke-width="11" stroke-linecap="round" fill="none"><path d="M90 258 L90 190 L190 190 L190 256 L235 258"/></g>
+      <circle cx="70" cy="182" r="15" fill="#14213D"/>
+      <!-- agile in piedi su spalle e bacino -->
+      <g stroke="#E4572E" stroke-width="10" stroke-linecap="round" fill="none">
+        <path d="M102 182 L140 115 L178 182"/><path d="M140 115 L140 64"/><path d="M140 66 L94 34 M140 66 L186 34"/>
+      </g>
+      <circle cx="140" cy="46" r="14" fill="#E4572E"/>
+      <!-- parata -->
+      <g stroke="#8C8C8C" stroke-width="10" stroke-linecap="round" fill="none" stroke-dasharray="0">
+        <path d="M265 258 L272 190 L285 258"/><path d="M272 190 L272 120"/><path d="M272 130 L210 120 M272 140 L205 150"/>
+      </g>
+      <circle cx="275" cy="100" r="14" fill="#8C8C8C"/>
+      <g font-family="Inter,sans-serif" font-size="13" font-weight="700">
+        <text x="118" y="245" fill="#14213D">BASE</text>
+        <text x="40" y="60" fill="#E4572E">AGILE</text>
+        <text x="250" y="78" fill="#6B6B6B">PARATA</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+
+<!-- PRINCIPI TECNICI -->
+<section id="tecnica">
+  <div class="wrap">
+    <h2>I principi tecnici:</h2>
+    <p style="margin-bottom:22px">Ogni figura sta in piedi grazie a poche regole di biomeccanica. Conoscerle permette di costruire figure stabili con meno fatica e più sicurezza.</p>
+    <div class="grid3">
+      <div class="card"><h3>1. Base d'appoggio e baricentro</h3><p>Una figura è in equilibrio quando la proiezione a terra del <b>baricentro comune</b> cade dentro la <b>base d'appoggio</b> (l'area compresa tra mani, ginocchia e piedi delle basi). Più la base è ampia e il baricentro basso, più la figura è stabile.</p></div>
+      <div class="card"><h3>2. Allineamento dei segmenti</h3><p>Il peso va scaricato in <b>verticale</b> lungo le ossa: braccia tese sotto le spalle, cosce perpendicolari sotto il bacino. Così sostiene lo scheletro e i muscoli devono solo stabilizzare. Un segmento inclinato crea una leva che affatica e fa cedere.</p></div>
+      <div class="card"><h3>3. Tonicità (corpo "a blocco")</h3><p>Base e agile mantengono addome e glutei contratti e il bacino in leggera <b>retroversione</b>. Un corpo rigido si comporta come un unico blocco: il carico resta concentrato e controllabile. Un corpo molle "si spezza" e sposta il baricentro.</p></div>
+      <div class="card"><h3>4. Appoggi sopra le articolazioni</h3><p>L'agile appoggia solo dove sotto c'è una colonna ossea verticale: <b>cingolo scapolare</b> (spalle) e <b>cingolo pelvico</b> (bacino) della base in quadrupedia; <b>coscia vicino all'anca</b> nella base in affondo o in semi-squat.</p></div>
+      <div class="card"><h3>5. Trasferimento progressivo del carico</h3><p>Il peso si passa <b>gradualmente</b>: prima un appoggio, poi il secondo, solo quando la base è pronta. Nessuno sale "a scatto": un carico improvviso moltiplica la forza che la base deve assorbire.</p></div>
+      <div class="card"><h3>6. Contrappeso</h3><p>Nelle figure in sbilanciamento (es. la bandiera) l'equilibrio nasce da <b>due forze opposte</b>: l'agile si inclina in fuori, la base tira in senso contrario. Braccia tese, presa mano-polso e baricentri che si compensano.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ELEMENTI -->
+<section id="elementi">
+  <div class="wrap">
+    <h2>La classificazione degli elementi:</h2>
+    <table>
+      <tr><th>Tipo</th><th>Cosa sono</th><th>Esempi</th></tr>
+      <tr><td><b>Statici di equilibrio</b></td><td>L'agile è sostenuto in equilibrio sopra la base; la figura resta ferma almeno 3".</td><td>Statua, ponte, piramidi in quadrupedia.</td></tr>
+      <tr><td><b>Statici di forza</b></td><td>Una base tiene l'agile in una posizione che richiede forza isometrica a entrambi.</td><td>Agile in plank sulle cosce della base, "aereo" su piedi della base supina.</td></tr>
+      <tr><td><b>In contrappeso</b></td><td>Equilibrio ottenuto da tirate o spinte opposte tra due o più compagni.</td><td>Bandiera, "V" a due in presa mano-polso, stella a quattro.</td></tr>
+      <tr><td><b>Dinamici</b></td><td>Fasi di volo: lanci, salti, riprese. Richiedono alto livello tecnico.</td><td>Nell'agonismo: lanci con salto mortale. A scuola solo salite e discese assistite.</td></tr>
+      <tr><td><b>Individuali di raccordo</b></td><td>Elementi di ginnastica che collegano le figure.</td><td>Capovolta avanti e indietro, ruota, candela, rotolamenti, salti.</td></tr>
+      <tr><td><b>Coreografici</b></td><td>Movimenti a tempo di musica che danno unità all'esercizio.</td><td>Andature, passi, onde, movimenti in canone e all'unisono.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- POSIZIONI DI BASE -->
+<section id="posizioni">
+  <div class="wrap">
+    <h2>Le posizioni della base:</h2>
+    <table>
+      <tr><th>Posizione</th><th>Tecnica corretta</th><th>Dove appoggia l'agile</th></tr>
+      <tr><td><b>Quadrupedia (a tavolo)</b></td><td>Mani sotto le spalle con dita in avanti, gomiti tesi ma non iperestesi, ginocchia sotto le anche, schiena piatta, nuca in linea, sguardo a terra.</td><td>Spalle e bacino (piedi o ginocchia). Mai al centro della schiena.</td></tr>
+      <tr><td><b>Panca (supina)</b></td><td>Schiena a terra, ginocchia flesse, piedi a terra larghezza anche; oppure gambe verticali per sostenere con i piedi.</td><td>Mani sulle ginocchia; bacino o addome dell'agile sui piedi della base ("aereo").</td></tr>
+      <tr><td><b>Seduta</b></td><td>Busto eretto, gambe divaricate o incrociate, addome attivo.</td><td>Spalle (agile in piedi solo con parata e livello avanzato) o cosce.</td></tr>
+      <tr><td><b>Semi-squat / sedia</b></td><td>Piedi larghi, ginocchia in linea con le punte, cosce quasi parallele al suolo, schiena dritta.</td><td>Cosce vicino all'anca, mai al centro del ginocchio.</td></tr>
+      <tr><td><b>Affondo</b></td><td>Ginocchio anteriore sopra la caviglia, coscia anteriore orizzontale, gamba posteriore tesa, busto eretto.</td><td>Coscia anteriore vicino all'anca.</td></tr>
+      <tr><td><b>In piedi</b></td><td>Gambe divaricate, ginocchia leggermente flesse, core contratto.</td><td>Mani a piattaforma per la salita; spalle solo a livello avanzato.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- FIGURE -->
+<section id="figure">
+  <div class="wrap">
+    <h2>Esempi di figure:</h2>
+    <p style="margin-bottom:22px">Le figure si classificano per <b>numero di componenti</b> e per <b>difficoltà</b>. Ecco alcune figure classiche da cui partire (in blu le basi, in rosso corallo gli agili).</p>
+    <div class="grid2">
+
+      <figure class="fig">
+        <svg viewBox="0 0 320 280" role="img" aria-label="Duo: la statua">
+          <line x1="10" y1="262" x2="310" y2="262" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+          <g stroke="#14213D" stroke-width="11" stroke-linecap="round" fill="none"><path d="M100 258 L100 190 L200 190 L200 256 L250 258"/></g>
+          <circle cx="80" cy="182" r="15" fill="#14213D"/>
+          <g stroke="#E4572E" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M112 182 L150 115 L188 182"/><path d="M150 115 L150 64"/><path d="M150 66 L104 34 M150 66 L196 34"/>
+          </g>
+          <circle cx="150" cy="46" r="14" fill="#E4572E"/>
+        </svg>
+        <figcaption><b>Duo — La statua</b>La base è in quadrupedia; l'agile sale e appoggia un piede sulle spalle e uno sul bacino, poi apre le braccia a V.<br><span class="liv">Livello 1</span></figcaption>
+      </figure>
+
+      <figure class="fig">
+        <svg viewBox="0 0 320 280" role="img" aria-label="Duo: la bandiera">
+          <line x1="10" y1="262" x2="310" y2="262" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+          <g stroke="#14213D" stroke-width="11" stroke-linecap="round" fill="none">
+            <path d="M80 258 L130 195 L190 195 L190 258"/><path d="M130 195 L130 125"/><path d="M130 135 L182 112"/><path d="M130 140 L85 160"/>
+          </g>
+          <circle cx="130" cy="105" r="15" fill="#14213D"/>
+          <g stroke="#E4572E" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M172 187 L205 132"/><path d="M205 132 L255 172"/><path d="M205 132 L240 85"/><path d="M240 88 L186 112"/><path d="M240 88 L292 62"/>
+          </g>
+          <circle cx="252" cy="70" r="14" fill="#E4572E"/>
+        </svg>
+        <figcaption><b>Duo — La bandiera</b>La base è in affondo frontale; l'agile sale sulla coscia vicino all'anca e si inclina verso l'esterno, tenuto per il polso. Una gamba e un braccio liberi in fuori.<br><span class="liv">Livello 2</span></figcaption>
+      </figure>
+
+      <figure class="fig">
+        <svg viewBox="0 0 340 280" role="img" aria-label="Trio: il ponte">
+          <line x1="10" y1="262" x2="330" y2="262" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+          <g stroke="#14213D" stroke-width="11" stroke-linecap="round" fill="none">
+            <path d="M40 258 L40 190 L120 190 L120 256 L155 258"/><path d="M300 258 L300 190 L220 190 L220 256 L185 258"/>
+          </g>
+          <circle cx="22" cy="182" r="15" fill="#14213D"/><circle cx="318" cy="182" r="15" fill="#14213D"/>
+          <g stroke="#E4572E" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M122 182 L170 115 L218 182"/><path d="M170 115 L170 66"/><path d="M112 68 L228 68"/>
+          </g>
+          <circle cx="170" cy="46" r="14" fill="#E4572E"/>
+        </svg>
+        <figcaption><b>Trio — Il ponte</b>Due basi in quadrupedia, una di fronte all'altra con le teste verso l'esterno; l'agile appoggia un piede sul bacino di ciascuna e apre le braccia a T.<br><span class="liv">Livello 2</span></figcaption>
+      </figure>
+
+      <figure class="fig">
+        <svg viewBox="0 0 340 280" role="img" aria-label="Piramide a sei: tre, due, uno">
+          <line x1="10" y1="262" x2="330" y2="262" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+          <!-- fila 1 -->
+          <g stroke="#14213D" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M62 258 L62 205 L118 205 L118 258"/><path d="M142 258 L142 205 L198 205 L198 258"/><path d="M222 258 L222 205 L278 205 L278 258"/>
+          </g>
+          <circle cx="90" cy="216" r="13" fill="#14213D"/><circle cx="170" cy="216" r="13" fill="#14213D"/><circle cx="250" cy="216" r="13" fill="#14213D"/>
+          <!-- fila 2 -->
+          <g stroke="#2B3A63" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M104 198 L104 145 L156 145 L156 198"/><path d="M184 198 L184 145 L236 145 L236 198"/>
+          </g>
+          <circle cx="130" cy="156" r="13" fill="#2B3A63"/><circle cx="210" cy="156" r="13" fill="#2B3A63"/>
+          <!-- vertice -->
+          <g stroke="#E4572E" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M150 138 L170 95 L190 138"/><path d="M170 95 L170 55"/><path d="M170 62 L128 32 M170 62 L212 32"/>
+          </g>
+          <circle cx="170" cy="38" r="13" fill="#E4572E"/>
+        </svg>
+        <figcaption><b>Gruppo — Piramide 3-2-1</b>Vista frontale: tre basi in quadrupedia, due in quadrupedia sopra (mani sulle spalle, ginocchia sui bacini), un agile in piedi al vertice. Servono almeno due parate.<br><span class="liv">Livello 3</span></figcaption>
+      </figure>
+
+
+      <figure class="fig">
+        <svg viewBox="0 0 340 280" role="img" aria-label="Quintetto: il tempio">
+          <line x1="10" y1="262" x2="330" y2="262" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+          <g stroke="#14213D" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M99 258 L99 205 L151 205 L151 258"/><path d="M189 258 L189 205 L241 205 L241 258"/>
+          </g>
+          <circle cx="125" cy="216" r="13" fill="#14213D"/><circle cx="215" cy="216" r="13" fill="#14213D"/>
+          <g stroke="#E4572E" stroke-width="10" stroke-linecap="round" fill="none"><path d="M145 198 L145 150 L195 150 L195 198"/></g>
+          <circle cx="170" cy="161" r="12" fill="#E4572E"/>
+          <g stroke="#2B3A63" stroke-width="10" stroke-linecap="round" fill="none">
+            <path d="M18 258 L52 200 L80 228 L90 258"/><path d="M52 200 L52 140"/><path d="M52 150 L98 112"/><path d="M52 150 L16 122"/>
+            <path d="M322 258 L288 200 L260 228 L250 258"/><path d="M288 200 L288 140"/><path d="M288 150 L242 112"/><path d="M288 150 L324 122"/>
+          </g>
+          <circle cx="52" cy="122" r="13" fill="#2B3A63"/><circle cx="288" cy="122" r="13" fill="#2B3A63"/>
+        </svg>
+        <figcaption><b>Quintetto — Il tempio</b>Vista frontale: due basi in quadrupedia affiancate, un agile in quadrupedia sopra (mani sulle spalle, ginocchia sui bacini). Ai lati due compagni in affondo laterale con un braccio verso il centro: chiudono la figura e fanno da parata.<br><span class="liv">Livello 2</span></figcaption>
+      </figure>
+
+      <div class="card" style="align-self:stretch">
+        <h3>Come classificare le figure:</h3>
+        <ul class="lista" style="font-size:16px">
+          <li><b>Per numero:</b> duo, trio, quartetto, quintetto, sestetto. In un gruppo da 6 si possono fare due trii o tre duo in contemporanea.</li>
+          <li><b>Per livelli:</b> figure su 1 livello (tutti a terra), 2 livelli (un agile sopra le basi), 3 livelli (piramide).</li>
+          <li><b>Per difficoltà:</b> livello 1 = basi a terra e agile basso; livello 2 = sbilanciamenti e appoggi in piedi; livello 3 = tre livelli o agile in piedi su basi alte.</li>
+          <li><b>Per forma:</b> simmetriche o asimmetriche, aperte o chiuse.</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:22px">Altre posizioni di base utili: <b>quadrupedia</b> (a "tavolo"), <b>panca</b> (supina con gambe flesse), <b>seduta</b>, <b>in piedi a gambe divaricate</b>, <b>affondo</b>. Combinandole si inventano decine di figure nuove.</p>
+  </div>
+</section>
+
+<!-- SICUREZZA -->
+<section id="sicurezza">
+  <div class="wrap split">
+    <div>
+      <h2>Le regole di sicurezza:</h2>
+      <ul class="lista">
+        <li><b>Appoggi sui punti forti:</b> l'agile appoggia piedi e ginocchia solo su <b>spalle</b> e <b>bacino</b> della base, mai al centro della schiena.</li>
+        <li><b>Base allineata:</b> mani sotto le spalle, ginocchia sotto le anche, schiena piatta e addome contratto.</li>
+        <li><b>Si sale e si scende con calma:</b> mai saltare giù dalla figura, si smonta in ordine inverso.</li>
+        <li><b>Comunicazione:</b> un segnale concordato ("su!", "giù!") per iniziare e terminare.</li>
+        <li><b>Parata sempre presente</b> nelle figure in altezza; tappeti sotto le zone di lavoro.</li>
+        <li><b>Abbigliamento:</b> niente orologi, collane o fermagli; capelli raccolti; si lavora scalzi o con calze antiscivolo.</li>
+      </ul>
+    </div>
+    <figure class="fig">
+      <svg viewBox="0 0 320 240" role="img" aria-label="Punti di appoggio sicuri sulla base">
+        <line x1="10" y1="222" x2="310" y2="222" stroke="#DDD3C0" stroke-width="4" stroke-linecap="round"/>
+        <g stroke="#14213D" stroke-width="12" stroke-linecap="round" fill="none"><path d="M90 218 L90 140 L220 140 L220 216 L270 218"/></g>
+        <circle cx="68" cy="132" r="16" fill="#14213D"/>
+        <circle cx="100" cy="128" r="17" fill="none" stroke="#2E8B57" stroke-width="5"/>
+        <circle cx="210" cy="128" r="17" fill="none" stroke="#2E8B57" stroke-width="5"/>
+        <g stroke="#E4572E" stroke-width="6" stroke-linecap="round"><path d="M143 116 L167 140 M167 116 L143 140"/></g>
+        <g font-family="Inter,sans-serif" font-size="13" font-weight="700">
+          <text x="70" y="100" fill="#2E8B57">SPALLE ✓</text>
+          <text x="180" y="100" fill="#2E8B57">BACINO ✓</text>
+          <text x="112" y="172" fill="#E4572E">ZONA LOMBARE ✗</text>
+        </g>
+      </svg>
+      <figcaption><b>Dove appoggiare</b>In verde i punti sicuri (sopra le articolazioni), in rosso la zona da evitare.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- PRESE -->
+<section id="prese">
+  <div class="wrap">
+    <h2>Le prese:</h2>
+    <table>
+      <tr><th>Presa</th><th>Come si fa</th><th>Quando si usa</th></tr>
+      <tr><td><b>Mano-mano</b></td><td>Palmo contro palmo, dita intrecciate o a gancio.</td><td>Equilibri semplici, passaggi coreografici.</td></tr>
+      <tr><td><b>Mano-polso</b></td><td>Ciascuno afferra il polso dell'altro: presa doppia, molto sicura.</td><td>Figure in sbilanciamento, come la bandiera.</td></tr>
+      <tr><td><b>A gancio</b></td><td>Dita piegate a uncino che si agganciano tra loro.</td><td>Trazioni brevi, salite.</td></tr>
+      <tr><td><b>A piattaforma</b></td><td>La base offre le mani a palmo in su come "gradino" per il piede dell'agile.</td><td>Salite in altezza, figure dinamiche.</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- COSTRUZIONE -->
+<section id="costruzione">
+  <div class="wrap">
+    <h2>Come si costruisce una figura:</h2>
+    <div class="fasi">
+      <div class="fase"><div class="sans">Fase 1</div><h3>Montaggio</h3><p>Le basi prendono posizione e si "bloccano" (addome contratto, segmenti allineati). Si costruisce <b>dal basso verso l'alto</b> e <b>dal centro verso l'esterno</b>. L'agile sale di lato, appoggia prima un ginocchio o un piede sul bacino, poi trasferisce il peso. Un capogruppo dà il tempo: "pronti… 1, 2, 3, su".</p></div>
+      <div class="fase"><div class="sans">Fase 2</div><h3>Tenuta</h3><p>Figura ferma almeno <b>3 secondi</b>: linee pulite, braccia e gambe tese dove previsto, punte dei piedi estese, sguardo avanti e posizione finale "presentata" (braccia aperte). Nessuno si muove finché il capogruppo non dà il segnale di discesa.</p></div>
+      <div class="fase"><div class="sans">Fase 3</div><h3>Smontaggio</h3><p>In <b>ordine inverso</b> alla salita: scende per primo chi è salito per ultimo, ripercorrendo gli stessi appoggi e ammortizzando con le gambe. Mai saltare giù dalla figura. Le basi si rialzano solo quando sono libere dal carico.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- PARATA -->
+<section id="parata">
+  <div class="wrap split">
+    <div>
+      <h2>La tecnica della parata:</h2>
+      <ul class="lista">
+        <li><b>Posizione:</b> vicino al punto più alto e più instabile della figura, piedi divaricati, ginocchia flesse, pronta a muoversi.</li>
+        <li><b>Mani:</b> pronte all'altezza della vita o del braccio dell'agile, vicine ma senza disturbare. Nella salita si accompagna l'agile per il bacino o per il polso.</li>
+        <li><b>Parata attiva:</b> aiuta fisicamente salita e discesa. <b>Parata passiva:</b> non tocca, ma è pronta a intervenire.</li>
+        <li><b>Cosa fa se la figura cede:</b> non trattiene a forza, ma <b>accompagna</b> l'agile a terra rallentandone la caduta, proteggendo testa e schiena.</li>
+        <li><b>Attenzione costante:</b> la parata guarda l'agile per tutta la durata della figura, non il pubblico.</li>
+      </ul>
+    </div>
+    <div class="card blu">
+      <h3>Regola d'oro:</h3>
+      <p>Nelle figure a due livelli serve <b>almeno una parata</b>, a tre livelli <b>almeno due</b>. In un gruppo da 4-6 i compagni che non fanno parte della figura fanno da parata: nessuno resta fermo a guardare.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ERRORI -->
+<section id="errori">
+  <div class="wrap">
+    <h2>Errori comuni e correzioni:</h2>
+    <table>
+      <tr><th>Errore</th><th>Conseguenza</th><th>Correzione</th></tr>
+      <tr><td>Base con la schiena "a sella" (lordosi)</td><td>Carico sulla zona lombare, rischio di dolore</td><td>Contrarre l'addome, bacino in retroversione, schiena piatta</td></tr>
+      <tr><td>Gomiti bloccati o piegati</td><td>Le braccia cedono o si sovraccaricano</td><td>Braccia tese ma attive, mani sotto le spalle</td></tr>
+      <tr><td>Agile che appoggia al centro della schiena</td><td>Colonna caricata dove non c'è sostegno</td><td>Spostare gli appoggi su spalle e bacino</td></tr>
+      <tr><td>Agile "molle"</td><td>Il peso si sposta, la figura oscilla</td><td>Corpo tonico, glutei e addome contratti</td></tr>
+      <tr><td>Salita a scatto</td><td>Carico improvviso sulla base</td><td>Trasferire il peso gradualmente, un appoggio alla volta</td></tr>
+      <tr><td>Smontaggio con un salto</td><td>Atterraggio scomposto, spinta sulla base</td><td>Scendere ripercorrendo gli appoggi, al segnale</td></tr>
+      <tr><td>Nessun segnale comune</td><td>Movimenti non sincronizzati</td><td>Un capogruppo che conta salita, tenuta e discesa</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- PREPARAZIONE FISICA -->
+<section id="preparazione">
+  <div class="wrap">
+    <h2>La preparazione fisica:</h2>
+    <div class="grid3">
+      <div class="card"><h3>Core stability</h3><p>Plank frontale e laterale, hollow body, superman, dead bug. Un core forte è la base di ogni figura, sia per chi sostiene sia per chi sale.</p></div>
+      <div class="card"><h3>Mobilità e polsi</h3><p>Circonduzioni di polsi e spalle, appoggi progressivi sui palmi, mobilità della colonna. I polsi lavorano molto in quadrupedia: vanno sempre preparati.</p></div>
+      <div class="card"><h3>Equilibrio e propriocezione</h3><p>Equilibri su un piede, su superfici instabili, a occhi chiusi; giochi di fiducia a coppie. Allenano il controllo fine indispensabile all'agile.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- A SCUOLA -->
+<section id="scuola">
+  <div class="wrap split">
+    <div>
+      <h2>L'acrosport a scuola:</h2>
+      <p>Il percorso in palestra segue una progressione:</p>
+      <ul class="lista">
+        <li><b>Riscaldamento e tonicità:</b> esercizi di core stability, plank, equilibri individuali.</li>
+        <li><b>Fiducia:</b> giochi a coppie di sostegno e "lasciarsi cadere" controllato.</li>
+        <li><b>Figure a due:</b> posizioni di base e prime figure statiche.</li>
+        <li><b>Figure a tre e di gruppo:</b> piramidi e passaggi tra le figure.</li>
+        <li><b>Coreografia finale:</b> 3-4 minuti con musica, 10 figure collegate da elementi di raccordo, in gruppi da 4 a 6.</li>
+      </ul>
+    </div>
+    <div class="card blu">
+      <h3>Il compito del gruppo:</h3>
+      <p>Gruppi da <b>minimo 4, massimo 6</b> componenti. Progettate una coreografia di <b>3-4 minuti</b> con <b>10 figure</b>, ognuna tenuta almeno 3 secondi:</p>
+      <ul style="margin:10px 0 0 20px;font-size:16px">
+        <li>almeno 3 figure a coppie o a tre (anche svolte in contemporanea);</li>
+        <li>almeno 3 figure con 4 o più componenti;</li>
+        <li>almeno 1 figura su tre livelli (piramide);</li>
+        <li>almeno 2 figure in contrappeso o sbilanciamento;</li>
+        <li>1 figura finale con tutto il gruppo.</li>
+      </ul>
+      <p style="margin-top:10px">Ogni componente deve fare almeno una volta da base e una da agile. Disegnate le 10 figure sulla scheda di progetto prima di provarle.</p>
+      <p style="margin-top:12px;opacity:.85">Competenze in gioco: collaborazione, progettazione, gestione del rischio, creatività.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- COREOGRAFIA -->
+<section id="coreografia">
+  <div class="wrap">
+    <h2>Costruire la coreografia:</h2>
+    <div class="grid2">
+      <div class="card"><h3>Struttura</h3><p><b>Entrata</b> (posizione iniziale ferma) → <b>sequenza delle 10 figure</b> con raccordi → <b>figura finale</b> con tutto il gruppo e chiusura ferma. Alternate figure semplici e complesse per gestire la fatica delle basi.</p></div>
+      <div class="card"><h3>Musica e tempo</h3><p>Contate la musica in <b>frasi da 8 tempi</b>: ogni figura dura circa una o due frasi (montaggio, tenuta di 3", smontaggio). Scegliete un brano con ritmo regolare e senza testo volgare.</p></div>
+      <div class="card"><h3>Raccordi</h3><p>Collegate le figure con capovolte, rotolamenti, ruote, andature, passi o onde. Il raccordo serve anche a <b>riposizionarsi</b> nello spazio per la figura successiva.</p></div>
+      <div class="card"><h3>Spazio e sincronia</h3><p>Usate <b>fronti</b> diversi, <b>livelli</b> (basso, medio, alto) e traiettorie. Movimenti all'<b>unisono</b> (tutti insieme) o in <b>canone</b> (uno dopo l'altro) rendono l'esercizio più espressivo.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUTAZIONE -->
+<section id="valutazione">
+  <div class="wrap">
+    <h2>Come viene valutato:</h2>
+    <table>
+      <tr><th>Indicatore</th><th>Cosa si osserva</th><th>Peso</th></tr>
+      <tr><td><b>Esecuzione e stabilità</b></td><td>Figure tenute ferme per 3", allineamenti corretti, linee pulite.</td><td>30%</td></tr>
+      <tr><td><b>Sicurezza</b></td><td>Appoggi corretti, parate attive, salita e discesa controllate.</td><td>25%</td></tr>
+      <tr><td><b>Difficoltà e varietà</b></td><td>10 figure richieste, livelli diversi, presenza di piramide e contrappesi, tutti i componenti in ruoli diversi.</td><td>20%</td></tr>
+      <tr><td><b>Coreografia</b></td><td>Raccordi fluidi, uso della musica e dello spazio, originalità.</td><td>15%</td></tr>
+      <tr><td><b>Collaborazione</b></td><td>Organizzazione del gruppo, rispetto dei ruoli, comunicazione.</td><td>10%</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- VERIFICA -->
+<section id="verifica" class="quiz">
+  <div class="wrap">
+    <h2>Mettiti alla prova:</h2>
+    <details><summary>1. Quali sono i tre ruoli dell'acrosport?</summary><p>Base (porteur), agile (voltigeur) e parata (aiutante).</p></details>
+    <details><summary>2. Dove può appoggiare i piedi l'agile sulla base in quadrupedia?</summary><p>Sulle spalle e sul bacino, cioè sopra le articolazioni. Mai al centro della schiena.</p></details>
+    <details><summary>3. Per quanto tempo va tenuta una figura statica?</summary><p>Almeno 3 secondi, in modo stabile.</p></details>
+    <details><summary>4. In che ordine si smonta una figura?</summary><p>In ordine inverso alla costruzione: scende per primo chi è salito per ultimo, senza saltare.</p></details>
+    <details><summary>5. Quando una figura è in equilibrio?</summary><p>Quando la proiezione a terra del baricentro comune cade dentro la base d'appoggio.</p></details>
+    <details><summary>6. Perché base e agile devono essere "tonici"?</summary><p>Un corpo rigido si comporta come un blocco unico: il carico resta concentrato e controllabile.</p></details>
+    <details><summary>7. Che cosa fa la parata se la figura cede?</summary><p>Non trattiene a forza: accompagna l'agile a terra rallentandone la caduta e proteggendo testa e schiena.</p></details>
+    <details><summary>8. Come si costruisce una piramide?</summary><p>Dal basso verso l'alto e dal centro verso l'esterno; si smonta in ordine inverso.</p></details>
+    <details><summary>9. Quali sono le specialità della ginnastica acrobatica agonistica?</summary><p>Coppia maschile, coppia femminile, coppia mista, gruppo femminile (3) e gruppo maschile (4).</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Liceo Statale "Galileo Galilei" — Verona · Scienze motorie e sportive</span>
+    <span>Prof. Andrea Bertelli</span>
+  </div>
+</footer>
+
+</body>
+</html>
