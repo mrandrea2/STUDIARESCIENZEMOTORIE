@@ -3,7 +3,7 @@
    (stile, script, lezioni, dati). Poi risponde subito dalla copia salvata
    e intanto la aggiorna in sottofondo: alla visita successiva vedi le novità.
    Se cambi molti file e vuoi forzare l'aggiornamento, aumenta VERSIONE. */
-const VERSIONE = "ssm-v5";
+const VERSIONE = "ssm-v6";
 const EXTRA = ["./", "index.html", "manifest.webmanifest", "assets/favicon.svg", "assets/icon-192.png", "assets/icon-512.png", "assets/icon-maskable-512.png", "assets/icon-180.png", "assets/logo-galilei.jpg", "acrosport.html"];
 
 self.addEventListener("install", e => {

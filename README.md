@@ -89,16 +89,12 @@ Ogni argomento ha la scheda **Laboratorio** (`data/laboratori.js`). Si possono a
 
 I modelli 3D arrivano da Sketchfab e si caricano solo quando lo studente preme «Apri il modello 3D».
 
-## Questa settimana studiamo…
-Apri `data/settimana.js` e cambia una riga per classe: scrivi l'identificativo dell'argomento
-(quello che compare nell'indirizzo dopo `#/argomento/`) e, se vuoi, una nota («verifica giovedì»).
-La pagina della classe (es. «Seconde» nel menu) e la home lo mostrano in alto, con il percorso.
-
 ## Percorso guidato
 Ogni argomento ha cinque passi con spunta e tempo stimato: video → lezione → schema → quiz → domanda aperta.
 Le spunte si mettono da sole (aprendo il video, arrivando all'ultima slide, aprendo gli schemi,
 finendo il quiz, confrontando una risposta aperta) e si possono anche togliere o mettere a mano.
 Le domande aperte, con risposta modello e punti chiave, sono in `data/domande.js`.
+I consigli «Come studiarlo» di ogni argomento sono in `data/consigli.js`.
 
 ## Nuovi argomenti, profilo fitness e orale
 - `data/nuovi-argomenti.js`: giochi, schemi e laboratorio di «Le capacità coordinative» (prime) e «Il primo soccorso» (seconde).

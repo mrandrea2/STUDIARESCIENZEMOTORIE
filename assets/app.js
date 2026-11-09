@@ -45,7 +45,6 @@
   const MAXT = GAME_KEYS.length * 3;
   const S = window.SCHEMI || {};
   const D = window.DOMANDE || {};
-  const W = window.SETTIMANA || {};
   const starsFor = p => (p >= 90 ? 3 : p >= 70 ? 2 : p >= 40 ? 1 : 0);
   const topicStars = tid => GAME_KEYS.reduce((a, g) => a + starsFor(getBest(tid, g)), 0);
   const passed = tid => GAME_KEYS.filter(g => getBest(tid, g) >= 70).length;
@@ -309,7 +308,7 @@
     const m = byId["metodo-di-studio"];
     return (m && m.evidenza || []).map((e, i) => `<a class="hl rv hl${i + 1}" href="${esc(e.url)}" target="_blank" rel="noopener" style="--i:${i}">
       <span class="hl-ic">${i ? I.bolt : I.brain}</span>
-      <span class="hl-tx"><b>${esc(e.titolo)}</b><span>${esc(e.testo)}</span><small>${esc(e.corto)} ↗</small></span>
+      <span class="hl-tx"><b>${esc(e.titolo)}</b><span>${esc(e.testo)}</span><small>Tocca per aprire ${I.arr}</small></span>
     </a>`).join("");
   }
   function studyBanner() {
@@ -346,7 +345,6 @@
             <span class="l">in <span class="gt">movimento.</span></span>
           </h1>
           <p class="lead">Lezioni, <b>schemi riassuntivi</b> e attività di ripasso di Scienze motorie e sportive, divisi per classe.</p>
-          <div class="cta-row"><a class="btn grad" href="${lastClass ? `#/classe/${lastClass}` : "#/classi"}">${lastClass ? `Vai alle ${PL[lastClass]}` : "Scegli la tua classe"} ${I.arr}</a></div>
         </div>
       </section>
 
@@ -356,11 +354,10 @@
       </section>
 
       <section class="wrap section"><div class="home-two">
-        <div class="rv" id="dailyBox">${dailyHtml()}</div>
+        <div class="rv daily-mini" id="dailyBox">${dailyHtml()}</div>
         <div style="display:grid;gap:12px;align-content:start;margin-top:12px">
-          ${lastClass && weekTopic(lastClass) ? `<div class="rv"><p class="kicker">Questa settimana nelle ${PL[lastClass]}</p>${topicCard(weekTopic(lastClass), 0).replace("tcard rv", "tcard")}</div>` : ""}
           ${installCard()}
-          ${lastT && !lastT.evidenza && lastT !== weekTopic(lastClass) ? `<div class="rv" style="--i:1"><p class="kicker">Riprendi da qui</p>${topicCard(lastT, 0).replace("tcard rv", "tcard")}</div>` : ""}
+          ${lastT && !lastT.evidenza ? `<div class="rv" style="--i:1"><p class="kicker">Riprendi da qui</p>${topicCard(lastT, 0).replace("tcard rv", "tcard")}</div>` : ""}
           <a class="card rv" href="#/trofei" style="--i:2;text-decoration:none;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center">
             <span style="width:62px;height:62px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:900;font-size:1.6rem">${l + 1}</span>
             <span><b style="font-size:1.2rem;display:block">I miei progressi</b><span class="muted" style="font-weight:700;font-size:.92rem">Livello «${LEVELS[l][1]}» · ★ ${s}${nx ? ` · ancora ${nx[0] - s} per «${nx[1]}»` : ""}</span>
@@ -377,7 +374,6 @@
         </div>
       </section>`;
     bindDaily();
-    studyBanner();
     let w = 0;
     const rot = $("#rot");
     if (!reduce) {
@@ -452,9 +448,7 @@
         </div>
         <div class="cta-row"><a class="btn white" href="#/sfida/${c}">${I.bolt} Sfida delle ${PL[c]}</a>${c === 5 && window.ORALE ? `<a class="btn ghost" href="#/orale">${I.mic} Verso l'orale</a>` : ""}</div>
       </div></section>
-      ${weekHtml(c)}
       <section class="wrap section" style="padding-top:10px">
-        ${weekTopic(c) ? `<div class="section-head rv"><h2 style="font-size:1.5rem">Tutti gli argomenti:</h2></div>` : ""}
         <div class="grid">${ts.map((t, i) => topicCard(t, i, i + 1)).join("")}</div>
       </section>
       <section class="wrap section"><div class="grid">${topicCard(byId["metodo-di-studio"])}</div></section>`;
@@ -955,6 +949,7 @@
     body.innerHTML = `
       <div class="lez-intro rv"><p class="kicker">Lezione</p><h2>${esc(L[t.id].titolo)}:</h2><p class="muted">${esc(L[t.id].sottotitolo)}.</p>
         <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button><a class="mode" href="#/stampa/${t.id}">${I.print}<span>Stampa la sintesi</span></a></div></div>
+      ${tipsHtml(t)}
       ${deckHtml(t)}
       ${vids.length ? `<section class="lez-vid rv"><h3 class="lez-h">Guarda e ascolta:</h3><div class="vid-grid">${vids.map(([x, i]) => videoHtml(x, i)).join("")}</div></section>` : ""}
       <div class="two" style="margin-top:18px">
@@ -1042,21 +1037,12 @@
     return d ? `<span class="chip pc${d === n ? " full" : ""}">${d === n ? "Percorso ✓" : `Percorso ${d}/${n}`}</span>` : "";
   }
 
-  /* ---------- Questa settimana studiamo… ---------- */
-  function weekTopic(c) {
-    const w = W[c]; const id = w && (typeof w === "string" ? w : w.argomento);
-    return (id && byId[id]) || null;
-  }
-  function weekHtml(c) {
-    const t = weekTopic(c); if (!t) return "";
-    const w = W[c], st = pathSteps(t), [done] = pathCount(t), next = st.find(s => !pathDone(t.id, s.k));
-    return `<section class="wrap section week-sec"><div class="week rv" style="${kVars(c)}">
-      <p class="kicker">Questa settimana studiamo</p>
-      <h2>${esc(t.titolo)}<em>${esc(t.sottotitolo || "")}</em></h2>
-      ${w && w.nota ? `<p class="wk-n">${esc(w.nota)}</p>` : ""}
-      <ol class="wk-steps">${st.map((s, i) => `<li class="${pathDone(t.id, s.k) ? "ok" : ""}"><span>${pathDone(t.id, s.k) ? I.check : i + 1}</span><b>${esc(s.h)}</b><small>${s.min} min</small></li>`).join("")}</ol>
-      <a class="btn white" href="${done && next ? next.href : `#/argomento/${t.id}`}">${!done ? "Inizia il percorso" : next ? "Continua: " + esc(next.h.toLowerCase()) : "Ripassa l'argomento"} ${I.arr}</a>
-    </div></section>`;
+  /* ---------- Come studiare l'argomento ---------- */
+  function tipsHtml(t) {
+    const c = (window.CONSIGLI || {})[t.id]; if (!c) return "";
+    return `<details class="tips rv"><summary>${I.brain}<span><b>Come studiarlo</b><small>${c.length} consigli per questo argomento</small></span></summary>
+      <ol>${c.map(([h, p]) => `<li><b>${esc(h)}</b><span>${esc(p)}</span></li>`).join("")}</ol>
+      <p class="tips-n">Il metodo: segui il percorso qui sopra, un passo alla volta, e torna sulle domande aperte qualche giorno dopo.</p></details>`;
   }
 
   /* ---------- App installabile e offline ---------- */

@@ -6,7 +6,7 @@ LEZIONI["le-capacita-coordinative"] = {
   titolo: "Muoversi con intelligenza",
   sottotitolo: "Capacità coordinative, equilibrio e apprendimento motorio",
   slides: [
-    { t: "cover", kicker: "Scienze motorie · Classe prima", title: "Muoversi con intelligenza", sub: "Capacità coordinative, equilibrio e apprendimento motorio" },
+    { t: "cover", kicker: "Scienze motorie · Classi prima e quarta", title: "Muoversi con intelligenza", sub: "Capacità coordinative, equilibrio e apprendimento motorio" },
 
     { t: "cards", kicker: "Per cominciare", title: "Forti non basta", cards: [
       { n: "1", h: "Il pallone che scappa", p: "Hai gambe forti, ma il controllo di palla non riesce." },

@@ -144,8 +144,8 @@ window.TOPICS = [
   {
     id: "le-capacita-coordinative",
     titolo: "Le capacità coordinative",
-    sottotitolo: "muoversi con intelligenza",
-    classi: [1],
+    sottotitolo: "coordinazione e apprendimento motorio",
+    classi: [1, 4],
     obiettivi: [
       "Distinguere movimento riflesso, volontario e automatizzato",
       "Capacità condizionali e coordinative: che cosa le differenzia",
@@ -625,6 +625,6 @@ window.CLASSI = {
   1: { nome: "Classe prima", temi: ["la-salute-dinamica", "sistema-scheletrico", "le-articolazioni", "sistema-muscolare", "le-capacita-coordinative"] },
   2: { nome: "Classe seconda", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "il-primo-soccorso", "i-metabolismi-energetici", "teoria-dellallenamento", "le-capacita-condizionali"] },
   3: { nome: "Classe terza", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "i-metabolismi-energetici", "teoria-dellallenamento", "dal-gioco-allo-sport", "le-capacita-condizionali", "apparato-digerente", "principi-per-una-sana-alimentazione", "alimentazione-e-sport-integratori-e-doping", "test-motori"] },
-  4: { nome: "Classe quarta", temi: ["il-sistema-nervoso", "il-sistema-endocrino", "il-sistema-immunitario", "pnei-lifestyle-e-salute", "teoria-dellallenamento", "adattamenti-in-quota-e-in-profondita"] },
+  4: { nome: "Classe quarta", temi: ["il-sistema-nervoso", "le-capacita-coordinative", "il-sistema-endocrino", "il-sistema-immunitario", "pnei-lifestyle-e-salute", "teoria-dellallenamento", "adattamenti-in-quota-e-in-profondita"] },
   5: { nome: "Classe quinta", temi: ["psicologia-dello-sport", "adattamenti-fisiologici-allallenamento", "alimentazione-e-sport-integratori-e-doping", "disabilita-e-sport-le-paralimpiadi"] }
 };
