@@ -84,9 +84,21 @@
     <p class="rp-n">Nelle lezioni trovi anche <b>Ascolta</b>, che legge le slide ad alta voce, e la <b>sintesi da stampare</b>.</p>`;
   document.body.appendChild(rpop);
   const applyOpt = (k, on) => {
-    root.classList.toggle(k, on); const i = $(`[data-o="${k}"]`, rpop); if (i) i.checked = on; bigBtn.setAttribute("aria-pressed", root.classList.contains("big") || root.classList.contains("dsa")); };
+    root.classList.toggle(k, on);
+    $$(`input[data-o="${k}"]`).forEach(i => { i.checked = on; });
+    $$(`button[data-o="${k}"]`).forEach(b => b.setAttribute("aria-pressed", String(on)));
+    bigBtn.setAttribute("aria-pressed", root.classList.contains("big") || root.classList.contains("dsa"));
+  };
+  const setOpt = (k, on) => { applyOpt(k, on); mem._pref[k] = on; save(); vib(10); };
+  window.syncOpts = () => { applyOpt("big", root.classList.contains("big")); applyOpt("dsa", root.classList.contains("dsa")); };
   applyOpt("big", !!mem._pref.big); applyOpt("dsa", !!mem._pref.dsa);
-  $$("[data-o]", rpop).forEach(i => i.addEventListener("change", () => { applyOpt(i.dataset.o, i.checked); mem._pref[i.dataset.o] = i.checked; save(); vib(10); }));
+  document.addEventListener("change", e => { const i = e.target; if (i.matches && i.matches("input[data-o]")) setOpt(i.dataset.o, i.checked); });
+  document.addEventListener("click", e => {
+    const b = e.target.closest && e.target.closest("button[data-o], button[data-listen]");
+    if (!b) return;
+    if (b.dataset.o) setOpt(b.dataset.o, !root.classList.contains(b.dataset.o));
+    else { const t = $("#dkTts"); if (t) { t.click(); t.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); } }
+  });
   const closePop = () => { rpop.hidden = true; bigBtn.setAttribute("aria-expanded", "false"); };
   bigBtn.addEventListener("click", e => { e.stopPropagation(); rpop.hidden = !rpop.hidden; bigBtn.setAttribute("aria-expanded", String(!rpop.hidden)); });
   document.addEventListener("click", e => { if (!rpop.hidden && !rpop.contains(e.target)) closePop(); });
@@ -146,6 +158,7 @@
     groups: sv('<rect x="3" y="4" width="7.5" height="16" rx="2"/><rect x="13.5" y="4" width="7.5" height="16" rx="2"/><path d="M6.7 8h.1M6.7 12h.1M17.2 8h.1"/>'),
     lab: sv('<path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.8-2.5L14 9V3"/><path d="M7.5 14h9"/>'),
     read: sv('<path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/>'),
+    access: sv('<circle cx="12" cy="4.5" r="2"/><path d="M4 8.5l8 1.5 8-1.5M12 10v4.5M12 14.5 8.5 21M12 14.5l3.5 6.5"/>'),
     check: sv('<path d="m5 12.5 4.5 4.5L19 7.5"/>', 3),
     ear: sv('<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>'),
     stop: sv('<rect x="6" y="6" width="12" height="12" rx="2"/>'),
@@ -352,6 +365,7 @@
         <div class="section-head rv"><h2>Scegli la tua <span class="gt">classe</span>:</h2></div>
         <div class="classes">${classTiles()}</div>
       </section>
+      ${a11yHtml(lastT)}
 
       <section class="wrap section"><div class="home-two">
         <div class="rv daily-mini" id="dailyBox">${dailyHtml()}</div>
@@ -949,7 +963,8 @@
     const docs = m.map((x, i) => [x, i]).filter(([x]) => ["pdf", "slides", "link", "form", "la"].includes(x.tipo));
     body.innerHTML = `
       <div class="lez-intro rv"><p class="kicker">Lezione</p><h2>${esc(L[t.id].titolo)}:</h2><p class="muted">${esc(L[t.id].sottotitolo)}.</p>
-        <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button><a class="mode" href="#/stampa/${t.id}">${I.print}<span>Stampa la sintesi</span></a></div></div>
+        <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button><a class="mode" href="#/stampa/${t.id}">${I.print}<span>Stampa la sintesi</span></a></div>
+        <div class="rd-bar" role="group" aria-label="Per leggere meglio"><span>${I.access} Per leggere meglio:</span><button type="button" data-o="big" aria-pressed="false">A+ <b>Testo grande</b></button><button type="button" data-o="dsa" aria-pressed="false"><i class="dsa-a">Aa</i> <b>Alta leggibilità</b></button><button type="button" data-listen>${I.ear} <b>Ascolta</b></button></div></div>
       ${tipsHtml(t)}
       ${deckHtml(t)}
       ${vids.length ? `<section class="lez-vid rv"><h3 class="lez-h">Guarda e ascolta:</h3><div class="vid-grid">${vids.map(([x, i]) => videoHtml(x, i)).join("")}</div></section>` : ""}
@@ -1036,6 +1051,22 @@
   function pathChip(t) {
     const [d, n] = pathCount(t);
     return d ? `<span class="chip pc${d === n ? " full" : ""}">${d === n ? "Percorso ✓" : `Percorso ${d}/${n}`}</span>` : "";
+  }
+
+  /* ---------- Accessibilità: banner in home ---------- */
+  function a11yHtml(lastT) {
+    const lz = lastT && L[lastT.id] ? lastT.id : "sistema-scheletrico";
+    return `<section class="wrap section"><div class="a11y rv">
+      <div class="a11y-h"><span class="a11y-ic">${I.access}</span><div><p class="kicker">Accessibilità · per DSA e per tutti</p><h2>Leggi meglio, ascolta, studia a modo tuo:</h2></div></div>
+      <div class="a11y-g">
+        <label class="a11y-t"><input type="checkbox" data-o="big"><span class="at-ic">A+</span><span class="at-tx"><b>Testo più grande</b><small>Ingrandisce tutto il sito</small></span><i class="at-sw"></i></label>
+        <label class="a11y-t"><input type="checkbox" data-o="dsa"><span class="at-ic dsa-a">Aa</span><span class="at-tx"><b>Alta leggibilità</b><small>Carattere per DSA, più spazio, niente corsivo</small></span><i class="at-sw"></i></label>
+        <a class="a11y-t" href="#/argomento/${lz}/lezione"><span class="at-ic">${I.ear}</span><span class="at-tx"><b>Ascolta le lezioni</b><small>Tocca «Ascolta» sulle slide: il sito le legge ad alta voce</small></span><em>Prova</em></a>
+        <div class="a11y-t"><span class="at-ic">${I.print}</span><span class="at-tx"><b>Sintesi da stampare</b><small>Ogni lezione in PDF, da evidenziare e annotare</small></span></div>
+        <div class="a11y-t"><span class="at-ic">${I.phone}</span><span class="at-tx"><b>Anche senza rete</b><small>Installa il sito sul telefono e studia sul bus</small></span></div>
+      </div>
+      <p class="note" style="margin:12px 0 0">Le impostazioni restano salvate su questo dispositivo. Le ritrovi sempre nel pulsante ${I.access.replace("<svg", '<svg style="width:16px;height:16px;vertical-align:-3px;stroke:currentColor;display:inline-block"')} <b>Aa</b> in alto.</p>
+    </div></section>`;
   }
 
   /* ---------- Come studiare l'argomento ---------- */
@@ -1573,6 +1604,7 @@
     const cl = a === "classe" ? Number(b) : (a === "argomento" || a === "stampa") && byId[b] ? topicClass(byId[b]) : a === "orale" ? 5 : 0;
     root.classList.toggle("printing", a === "stampa");
     $$(".bnav [data-nav]").forEach(x => x.classList.toggle("on", x.dataset.nav === navKey));
+    if (window.syncOpts) window.syncOpts();
     $$(".nav [data-nav]").forEach(x => x.classList.toggle("on", x.dataset.nav === navKey || (cl && x.dataset.nav === "c" + cl)));
     app.classList.remove("page"); void app.offsetWidth; app.classList.add("page");
     const t = (a === "argomento" || a === "stampa") && byId[b];

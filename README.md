@@ -113,7 +113,8 @@ le anteprime dei video non vengono caricate e YouTube, Drive, LearningApps e Ske
 Se aggiungi script esterni (statistiche, Vercel Analytics, caratteri da Google Fonts, immagini da altri siti), aggiorna la pagina privacy.
 
 ## Accessibilità e studio ovunque
-- Pulsante **Aa** in alto: testo più grande e modalità ad alta leggibilità (carattere Atkinson Hyperlegible, più spazio, niente corsivo).
+- Banner **Accessibilità** in home (interruttori immediati) e barra «Per leggere meglio» in ogni lezione.
+- Pulsante con l'omino e **Aa** in alto: testo più grande e modalità ad alta leggibilità (carattere Atkinson Hyperlegible, più spazio, niente corsivo).
 - **Ascolta** nella barra delle slide: legge la lezione ad alta voce con la voce italiana del dispositivo.
 - **Stampa la sintesi** (`#/stampa/<argomento>`): versione da stampare o salvare in PDF di ogni lezione, con domande di ripasso.
 - **App installabile e offline**: `manifest.webmanifest` + `sw.js`. Il service worker salva tutti i file richiamati da `index.html`;
