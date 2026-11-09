@@ -15,9 +15,8 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/icon-180.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Oswald:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -48,7 +47,7 @@
   <footer class="foot">
     <div class="wrap">
       <img class="lg" src="assets/logo-galilei.jpg" alt="Liceo Statale Galileo Galilei Verona" width="406" height="132" loading="lazy">
-      <div><b>Studiare Scienze Motorie e Sportive</b><br>© Prof. Andrea Bertelli · Liceo Statale «Galileo Galilei» · Verona<br>Liceo Scientifico a indirizzo sportivo</div>
+      <div><b>Studiare Scienze Motorie e Sportive</b><br>© Prof. Andrea Bertelli · Liceo Statale «Galileo Galilei» · Verona<br>Liceo Scientifico a indirizzo sportivo<br><a class="foot-l" href="#/privacy">Privacy e cookie</a> · nessun cookie, nessun tracciamento</div>
     </div>
   </footer>
 
@@ -79,6 +78,8 @@
   <script src="data/giochi-extra.js"></script>
   <script src="data/schemi.js"></script>
   <script src="assets/illustrazioni.js"></script>
+  <script src="data/fitness.js"></script>
+  <script src="assets/fitness.js"></script>
   <script src="data/laboratori.js"></script>
   <script src="data/nuovi-argomenti.js"></script>
   <script src="data/domande.js"></script>

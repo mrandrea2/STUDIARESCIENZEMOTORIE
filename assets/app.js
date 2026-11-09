@@ -84,7 +84,6 @@
     <p class="rp-n">Nelle lezioni trovi anche <b>Ascolta</b>, che legge le slide ad alta voce, e la <b>sintesi da stampare</b>.</p>`;
   document.body.appendChild(rpop);
   const applyOpt = (k, on) => {
-    if (k === "dsa" && on && !$("#fontDsa")) { const l = document.createElement("link"); l.id = "fontDsa"; l.rel = "stylesheet"; l.href = "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap"; document.head.appendChild(l); }
     root.classList.toggle(k, on); const i = $(`[data-o="${k}"]`, rpop); if (i) i.checked = on; bigBtn.setAttribute("aria-pressed", root.classList.contains("big") || root.classList.contains("dsa")); };
   applyOpt("big", !!mem._pref.big); applyOpt("dsa", !!mem._pref.dsa);
   $$("[data-o]", rpop).forEach(i => i.addEventListener("change", () => { applyOpt(i.dataset.o, i.checked); mem._pref[i.dataset.o] = i.checked; save(); vib(10); }));
@@ -345,6 +344,7 @@
             <span class="l">in <span class="gt">movimento.</span></span>
           </h1>
           <p class="lead">Lezioni, <b>schemi riassuntivi</b> e attività di ripasso di Scienze motorie e sportive, divisi per classe.</p>
+          ${window.fitBanner ? window.fitBanner() : ""}
         </div>
       </section>
 
@@ -605,8 +605,9 @@
     if ((t.extra || []).length) {
       body.insertAdjacentHTML("beforeend", `<div class="section-head" style="margin-top:26px"><h2 style="font-size:1.5rem">Altri giochi della classe:</h2></div>` + t.extra.map((m, i) => {
         const u = matUrls(m);
-        return `<div class="embed rv" style="--i:${i}"><header><b>${esc(m.titolo)}</b><a class="btn small ghost" href="${esc(u.open)}" target="_blank" rel="noopener">Apri ↗</a></header>${u.embed ? `<iframe src="${esc(u.embed)}" loading="lazy" title="${esc(m.titolo)}" allowfullscreen></iframe>` : `<div style="padding:16px">${esc(m.nota || "")}</div>`}</div>`;
+        return `<div class="embed rv" style="--i:${i}"><header><b>${esc(m.titolo)}</b><a class="btn small ghost" href="${esc(u.open)}" target="_blank" rel="noopener">Apri ↗</a></header>${u.embed ? `<button class="embed-load" type="button" data-src="${esc(u.embed)}" data-t="${esc(m.titolo)}">${I.play}<span>Carica il gioco</span><small>Si apre da un servizio esterno (${/learningapps/.test(u.embed) ? "LearningApps" : "Google"})</small></button>` : `<div style="padding:16px">${esc(m.nota || "")}</div>`}</div>`;
       }).join(""));
+      $$(".embed-load", body).forEach(b => b.addEventListener("click", () => { b.outerHTML = `<iframe src="${b.dataset.src}" title="${b.dataset.t}" allowfullscreen></iframe>`; }));
     }
   }
 
@@ -939,7 +940,7 @@
   }
 
   function videoHtml(m, i) {
-    if (m.tipo === "yt") return `<button class="vid" data-m="${i}"><span class="vth"><img src="https://i.ytimg.com/vi/${esc(m.id)}/hqdefault.jpg" alt="" loading="lazy"><i>${I.play}</i></span><b>${esc(m.titolo)}</b><small>YouTube</small></button>`;
+    if (m.tipo === "yt") return `<button class="vid" data-m="${i}"><span class="vth"><i>${I.play}</i></span><b>${esc(m.titolo)}</b><small>YouTube</small></button>`;
     return `<button class="vid" data-m="${i}"><span class="vth dv"><i>${m.tipo === "audio" ? I.audio : I.play}</i></span><b>${esc(m.titolo)}</b><small>${m.tipo === "audio" ? "Podcast" : "Video"} del prof.</small></button>`;
   }
   function tabLezione(body, t, sub) {
@@ -1117,7 +1118,7 @@
     if (!("speechSynthesis" in window) || !window.SpeechSynthesisUtterance) { btn.hidden = true; return; }
     const synth = window.speechSynthesis, slides = $$(".slide", deck), n = slides.length;
     let on = false, tok = 0;
-    const voice = () => { const vs = synth.getVoices() || []; return vs.find(v => /^it[-_]IT/i.test(v.lang) && /google|federica|alice|elsa|isabella|natural/i.test(v.name)) || vs.find(v => /^it/i.test(v.lang)); };
+    const voice = () => { const vs = (synth.getVoices() || []).filter(v => /^it/i.test(v.lang)); return vs.find(v => v.localService) || vs[0]; }; /* prima le voci installate sul dispositivo: il testo non esce dal telefono */
     const set = v => { on = v; btn.setAttribute("aria-pressed", String(v)); btn.classList.toggle("on", v); btn.innerHTML = v ? `${I.stop}<span>Stop</span>` : `${I.ear}<span>Ascolta</span>`; slides.forEach(s => s.classList.remove("speaking")); };
     const stop = () => { tok++; try { synth.cancel(); } catch (e) { /* niente */ } set(false); };
     const speak = k => {
@@ -1232,6 +1233,58 @@
           <ol class="goals">${O.pcto.parti.map(([a, b]) => `<li><b>${esc(a)}.</b> ${esc(b)}</li>`).join("")}</ol>
           <p class="note">${esc(O.pcto.consiglio)}</p></div>
       </section>`;
+  }
+
+  /* ---------- Privacy e cookie ---------- */
+  function pagePrivacy() {
+    setK(0);
+    app.innerHTML = `
+      <section class="band"><div class="wrap">
+        <a class="crumb" href="#/">${I.back}Home</a>
+        <p class="kicker">Informativa</p><h1>Privacy e cookie<em>che cosa fa, e che cosa non fa, questo sito</em></h1>
+      </div></section>
+      <section class="wrap section prv">
+        <div class="card prv-sum rv"><h2>In breve:</h2><ul>
+          <li><b>Nessun cookie.</b> Il sito non usa cookie, né tecnici né di profilazione.</li>
+          <li><b>Nessun tracciamento.</b> Niente statistiche, Google Analytics, pixel, pubblicità o profilazione.</li>
+          <li><b>Nessuna registrazione.</b> Non chiediamo nome, email, classe o altri dati personali.</li>
+          <li><b>I tuoi progressi restano sul tuo dispositivo</b> e non vengono inviati a nessuno, nemmeno al prof.</li>
+        </ul></div>
+
+        <div class="card rv"><h3>Che cosa resta sul tuo dispositivo</h3>
+          <p>Per farti ritrovare i progressi, il sito usa la memoria locale del browser (<i>localStorage</i>) e, se lo installi, la memoria dell'app per funzionare offline (<i>service worker</i>). Vi salva:</p>
+          <ul><li>stelle, livello, giochi completati, percorso degli argomenti;</li><li>preferenze: classe, testo grande, alta leggibilità, suoni;</li><li>le risposte che scrivi alle domande aperte;</li><li>i profili del Laboratorio fitness;</li><li>una copia delle pagine del sito, per aprirle senza rete.</li></ul>
+          <p>Questi dati non lasciano il dispositivo e il gestore del sito non può vederli. Sono strumenti tecnici necessari alle funzioni che usi tu: per questo, come prevedono l'art. 122 del Codice privacy e le Linee guida del Garante sui cookie (10 giugno 2021), non serve un banner di consenso.</p>
+          <button class="btn ghost" id="wipe" type="button">Cancella tutti i dati di questo sito dal dispositivo</button>
+          <p class="tnote" id="wipeMsg" aria-live="polite"></p>
+        </div>
+
+        <div class="card rv"><h3>Il server che ospita il sito</h3>
+          <p>Il sito è ospitato da Vercel Inc. Come ogni server web, per consegnare le pagine e per motivi di sicurezza riceve dati tecnici della richiesta, come l'indirizzo IP e il tipo di browser, che conserva nei propri registri per un periodo limitato. Il gestore del sito non usa questi dati e non ha attivato strumenti di statistica.</p>
+        </div>
+
+        <div class="card rv"><h3>Contenuti esterni: solo quando li apri tu</h3>
+          <p>Alcuni materiali arrivano da altri servizi. Nessuno si carica da solo: partono solo quando tocchi il pulsante per aprirli.</p>
+          <ul><li><b>Video</b>: YouTube in modalità privacy avanzata (youtube-nocookie.com).</li><li><b>Dispense e moduli</b>: Google Drive e Google Moduli.</li><li><b>Giochi esterni</b>: LearningApps.</li><li><b>Modelli 3D</b>: Sketchfab, con l'opzione «do not track».</li><li><b>Link</b> ad altri siti, anche tramite bit.ly.</li></ul>
+          <p>Quando apri uno di questi contenuti, il servizio riceve il tuo indirizzo IP e può usare cookie propri, secondo la sua informativa privacy.</p>
+        </div>
+
+        <div class="card rv"><h3>Altre informazioni</h3>
+          <ul><li><b>Caratteri tipografici</b>: sono ospitati sul sito, senza richieste a Google Fonts.</li>
+          <li><b>Ascolta la slide</b>: usa le voci del tuo browser e preferisce quelle installate sul dispositivo. Se il dispositivo offre solo voci online, il testo letto può essere elaborato dal fornitore del browser.</li>
+          <li><b>Studenti minorenni</b>: il sito non raccoglie dati personali, quindi non chiede alcun consenso ai genitori.</li></ul>
+          <p>Per domande: prof. Andrea Bertelli, Liceo Statale «Galileo Galilei» di Verona, attraverso i canali istituzionali della scuola.</p>
+          <p class="tnote">Ultimo aggiornamento: 9 novembre 2026.</p>
+        </div>
+      </section>`;
+    $("#wipe").onclick = async () => {
+      if (!window.confirm("Cancellare progressi, risposte, profili fitness e preferenze salvati da questo sito su questo dispositivo?")) return;
+      try { localStorage.clear(); } catch (e) { /* niente */ }
+      try { if (window.caches) for (const k of await caches.keys()) await caches.delete(k); } catch (e) { /* niente */ }
+      try { if (navigator.serviceWorker) for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister(); } catch (e) { /* niente */ }
+      $("#wipeMsg").textContent = "Fatto: i dati del sito sono stati cancellati. La pagina si ricarica.";
+      setTimeout(() => location.replace(location.pathname + "#/"), 1500);
+    };
   }
 
   /* ================= Metodo di studio ================= */
@@ -1513,6 +1566,8 @@
     else if (a === "trofei") { pageTrofei(); navKey = "trofei"; }
     else if (a === "cerca") { pageCerca(b); navKey = "cerca"; }
     else if (a === "orale") { pageOrale(); navKey = "classi"; }
+    else if (a === "fitness" && window.pageFitness) { setK(0); window.pageFitness(app); navKey = ""; }
+    else if (a === "privacy") { pagePrivacy(); navKey = ""; }
     else if (a === "stampa") { pageStampa(b); navKey = "classi"; }
     else pageHome();
     const cl = a === "classe" ? Number(b) : (a === "argomento" || a === "stampa") && byId[b] ? topicClass(byId[b]) : a === "orale" ? 5 : 0;

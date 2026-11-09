@@ -44,7 +44,7 @@ LEZIONI["apparato-cardio-circolatorio"] = {
       ["Pompa muscolare", "Contraendosi, i muscoli delle gambe spremono le vene verso l'alto."]
     ] },
 
-    { t: "cards", kicker: "Il sangue", title: "Un tessuto liquido", grid: 2, fig: { src: "https://commons.wikimedia.org/wiki/Special:FilePath/Red_White_Blood_cells.jpg?width=900", svg: "sangue", alt: "Globuli rossi, globulo bianco e piastrina al microscopio elettronico", cap: "Globuli rossi, globulo bianco e piastrina al microscopio", credit: "Foto: National Cancer Institute, pubblico dominio · Wikimedia Commons" }, cards: [
+    { t: "cards", kicker: "Il sangue", title: "Un tessuto liquido", grid: 2, fig: { svg: "sangue", cap: "Globuli rossi, globuli bianchi e piastrine" }, cards: [
       { n: "55%", h: "Plasma", p: "Acqua con proteine, sali, zuccheri e ormoni." },
       { n: "45%", h: "Parte corpuscolata", p: "È l'ematocrito: quasi tutta globuli rossi." },
       { h: "Globuli rossi", p: "Con l'emoglobina trasportano l'ossigeno." },

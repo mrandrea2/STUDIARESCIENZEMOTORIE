@@ -67,6 +67,7 @@
     const sec = (title, sub, arr, fn, cls) => arr.length ? `<section class="lab-sec"><h2 class="lab-h">${title}</h2>${sub ? `<p class="muted lab-sub">${sub}</p>` : ""}<div class="lab-grid ${cls || ""}">${arr.map(fn).join("")}</div></section>` : "";
     body.innerHTML = `
       <div class="lab-intro rv"><p class="kicker">Laboratorio</p><h2>Metti le mani sulla teoria:</h2><p class="muted">Esperienze da fare in palestra, in classe o a casa, strumenti per misurarti e modelli 3D da esplorare.</p></div>
+      ${items.some(x => x.t === "fitness") && window.fitBanner ? window.fitBanner(true) : ""}
       ${sec("Strumenti interattivi", "Misura, calcola, prova: i risultati restano solo sul tuo dispositivo.", tools, toolHtml, "two-col")}
       ${sec("Modelli 3D", "Ruota, ingrandisci, esplora. Si caricano solo quando li apri.", m3, m3dHtml, "two-col")}
       ${sec("Siti da esplorare", "", links, linkHtml, "two-col")}
@@ -371,44 +372,6 @@
       }
     },
 
-    /* ---------- profilo fitness: tabelle di N. Lovecchio ---------- */
-    fitness: {
-      titolo: "Il mio profilo fitness",
-      testo: "Inserisci i risultati dei test che hai fatto: per ognuno vedi in quale fascia si colloca la prova. Lascia vuoti quelli che non hai fatto.",
-      html: () => `<div class="seg2 ft-sex"><button type="button" data-s="F" class="on">Ragazza</button><button type="button" data-s="M">Ragazzo</button></div>
-        <div class="tgrid ft-in">${FIT.map(x => `<label class="tf"><span>${x.n} · <small>${x.u}</small></span><input data-f="${x.k}" type="text" inputmode="decimal" placeholder="${x.ph}"></label>`).join("")}</div>
-        <div class="ft-out"></div>
-        <div class="ft-act"><button type="button" class="btn small ft-save">Salva questo profilo</button><span class="tnote ft-msg"></span></div>
-        <div class="ft-hist"></div>
-        <p class="tnote">Fasce costruite sulla media ± deviazioni standard di studenti delle superiori (2017–2021). Fonte: N. Lovecchio, <i>Physical fitness</i>, guida per l'insegnante, Marietti Scuola. Il giudizio riguarda la prova, non la persona: un test è una misura, non un voto.</p>`,
-      bind: box => {
-        const KEY = "ssm-fitness-v1";
-        let sex = "F", hist = [];
-        try { hist = JSON.parse(localStorage.getItem(KEY) || "[]") || []; } catch (e) { hist = []; }
-        const val = k => { const raw = $(`[data-f="${k}"]`, box).value.trim(); if (!raw) return NaN; if (k === "mille" && raw.includes(":")) { const [m, s] = raw.split(":"); return num(m) * 60 + num(s); } return num(raw); };
-        const band = (x, v) => { const t = x[sex]; if (!(v > 0)) return -1; let i = 0; while (i < 4 && v >= t[i]) i++; return x.low ? 4 - i : i; };
-        const NAMES = ["scarsa", "debole", "media", "buona", "ottima"];
-        const draw = () => {
-          const rows = FIT.map(x => { const v = val(x.k), b = band(x, v); return { x, v, b }; }).filter(r => r.b >= 0);
-          $(".ft-out", box).innerHTML = rows.length ? rows.map(({ x, v, b }) => `<div class="ft-row"><div class="ft-l"><b>${x.n}</b><small>${x.cap}</small></div><div class="ft-bar">${NAMES.map((nm, i) => `<i class="${i === b ? "on f" + i : ""}" title="${nm}"></i>`).join("")}</div><span class="ft-v">Prova <b>${NAMES[b]}</b></span></div>`).join("") + `<p class="tnote">Il profilo mostra i tuoi punti di forza e quelli su cui lavorare. Ripeti i test fra qualche mese, nelle stesse condizioni, e confrontati con te stesso.</p>` : "";
-          return rows;
-        };
-        const drawHist = () => {
-          $(".ft-hist", box).innerHTML = hist.length ? `<b class="ft-hh">I profili salvati su questo dispositivo:</b>` + hist.slice(-4).reverse().map(h => `<div class="ft-h"><span>${esc(h.d)}</span>${FIT.filter(x => h.r[x.k] != null).map(x => `<em>${x.short} ${NAMES[h.r[x.k]]}</em>`).join("")}</div>`).join("") : "";
-        };
-        $$(".ft-sex button", box).forEach(b => b.addEventListener("click", () => { sex = b.dataset.s; $$(".ft-sex button", box).forEach(x => x.classList.toggle("on", x === b)); draw(); }));
-        $$("[data-f]", box).forEach(i => i.addEventListener("input", draw));
-        $(".ft-save", box).addEventListener("click", () => {
-          const rows = draw(); if (!rows.length) { $(".ft-msg", box).textContent = "Inserisci almeno un risultato."; return; }
-          const d = new Date(), r = {}; rows.forEach(({ x, b }) => { r[x.k] = b; });
-          hist.push({ d: d.toLocaleDateString("it-IT"), r }); hist = hist.slice(-12);
-          try { localStorage.setItem(KEY, JSON.stringify(hist)); } catch (e) { /* storage non disponibile */ }
-          $(".ft-msg", box).textContent = "Salvato."; drawHist();
-        });
-        drawHist();
-      }
-    },
-
     /* ---------- equilibrio: test della cicogna ---------- */
     equilibrio: {
       titolo: "Test della cicogna",
@@ -498,14 +461,4 @@
     }
   };
 
-  /* tabelle del profilo fitness (N. Lovecchio, Physical fitness, Marietti Scuola)
-     soglie tra le cinque fasce; low: true se il valore più basso è il migliore */
-  const FIT = [
-    { k: "cooper", n: "Test di Cooper", short: "Cooper", u: "metri in 12′", ph: "es. 2100", cap: "resistenza aerobica", F: [1580, 1670, 1745, 1815], M: [1925, 2080, 2210, 2335] },
-    { k: "mille", n: "1000 metri", short: "1000 m", u: "min:sec", ph: "es. 4:30", cap: "resistenza", low: true, F: [300, 340, 380, 420], M: [260, 300, 330, 370] },
-    { k: "addo", n: "Addominali in 30″", short: "Addominali", u: "ripetizioni", ph: "es. 20", cap: "forza resistente", F: [9, 16, 22, 28], M: [12, 20, 26, 32] },
-    { k: "salto", n: "Salto in lungo da fermo", short: "Salto", u: "cm", ph: "es. 180", cap: "forza esplosiva", F: [100, 145, 180, 214], M: [132, 181, 218, 254] },
-    { k: "navetta", n: "Navetta 10 × 5 m", short: "Navetta", u: "secondi", ph: "es. 19,5", cap: "agilità", low: true, F: [17.9, 20.5, 23, 26.5], M: [16.5, 18.5, 21, 24.5] },
-    { k: "sprint", n: "Sprint 30 m", short: "30 m", u: "secondi", ph: "es. 5,2", cap: "velocità", low: true, F: [5.6, 5.75, 5.9, 6.2], M: [4.7, 4.9, 5.12, 5.38] }
-  ];
 })();

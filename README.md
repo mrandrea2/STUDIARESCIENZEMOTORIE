@@ -98,9 +98,19 @@ I consigli «Come studiarlo» di ogni argomento sono in `data/consigli.js`.
 
 ## Nuovi argomenti, profilo fitness e orale
 - `data/nuovi-argomenti.js`: giochi, schemi e laboratorio di «Le capacità coordinative» (prime) e «Il primo soccorso» (seconde).
-- Laboratorio: «Il mio profilo fitness» (tabelle di N. Lovecchio, Marietti Scuola) in Test motori e Capacità condizionali;
-  test della cicogna, metronomo per la RCP, simulazione della chiamata al 112.
+- Laboratorio: test della cicogna, metronomo per la RCP, simulazione della chiamata al 112.
 - `data/orale.js`: la pagina «Verso l'orale» per le quinte (`#/orale`), con sei percorsi pluridisciplinari e la guida alla relazione PCTO.
+
+## Laboratorio fitness (`#/fitness`)
+Pagina con banner animato in home e nel laboratorio di Test motori e Capacità condizionali. Lo studente inserisce i risultati
+di Cooper, 1000 m, addominali 30″, salto in lungo da fermo, navetta 10 × 5 m e sprint 30 m: vede la fascia di ogni prova,
+il profilo delle capacità, un livello fisico stimato, il VO₂max stimato dal Cooper e un consiglio su che cosa allenare.
+Tabelle e protocolli sono in `data/fitness.js` (fasce di N. Lovecchio, Physical fitness, Marietti Scuola). I profili restano nel browser.
+
+## Privacy e cookie (`#/privacy`)
+Il sito non usa cookie né strumenti di statistica e non fa richieste automatiche a server esterni: i caratteri sono in `assets/fonts`,
+le anteprime dei video non vengono caricate e YouTube, Drive, LearningApps e Sketchfab partono solo quando lo studente li apre.
+Se aggiungi script esterni (statistiche, Vercel Analytics, caratteri da Google Fonts, immagini da altri siti), aggiorna la pagina privacy.
 
 ## Accessibilità e studio ovunque
 - Pulsante **Aa** in alto: testo più grande e modalità ad alta leggibilità (carattere Atkinson Hyperlegible, più spazio, niente corsivo).

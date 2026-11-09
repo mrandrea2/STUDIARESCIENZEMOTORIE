@@ -3,8 +3,8 @@
    (stile, script, lezioni, dati). Poi risponde subito dalla copia salvata
    e intanto la aggiorna in sottofondo: alla visita successiva vedi le novità.
    Se cambi molti file e vuoi forzare l'aggiornamento, aumenta VERSIONE. */
-const VERSIONE = "ssm-v6";
-const EXTRA = ["./", "index.html", "manifest.webmanifest", "assets/favicon.svg", "assets/icon-192.png", "assets/icon-512.png", "assets/icon-maskable-512.png", "assets/icon-180.png", "assets/logo-galilei.jpg", "acrosport.html"];
+const VERSIONE = "ssm-v7";
+const EXTRA = ["./", "index.html", "manifest.webmanifest", "assets/favicon.svg", "assets/icon-192.png", "assets/icon-512.png", "assets/icon-maskable-512.png", "assets/icon-180.png", "assets/logo-galilei.jpg", "acrosport.html", "assets/fonts/fonts.css", "assets/fonts/archivo-latin-wdth-normal.woff2", "assets/fonts/archivo-latin-ext-wdth-normal.woff2", "assets/fonts/oswald-latin-wght-normal.woff2", "assets/fonts/source-serif-4-latin-opsz-italic.woff2", "assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2", "assets/fonts/atkinson-hyperlegible-latin-700-normal.woff2", "assets/fonts/inter-latin-wght-normal.woff2", "assets/fonts/source-serif-4-latin-opsz-normal.woff2"];
 
 self.addEventListener("install", e => {
   e.waitUntil((async () => {
@@ -23,7 +23,7 @@ self.addEventListener("install", e => {
 self.addEventListener("activate", e => {
   e.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== VERSIONE && k !== "ssm-font").map(k => caches.delete(k)));
+    await Promise.all(keys.filter(k => k !== VERSIONE).map(k => caches.delete(k)));
     await self.clients.claim();
   })());
 });
@@ -33,14 +33,6 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
 
-  /* caratteri di Google Fonts: salvati alla prima visita */
-  if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
-    e.respondWith(caches.open("ssm-font").then(async c => {
-      const hit = await c.match(req); if (hit) return hit;
-      try { const r = await fetch(req); if (r.ok || r.type === "opaque") c.put(req, r.clone()); return r; } catch (err) { return Response.error(); }
-    }));
-    return;
-  }
   if (url.origin !== location.origin) return; /* video, PDF, modelli 3D: solo online */
 
   e.respondWith((async () => {
