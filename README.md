@@ -89,6 +89,30 @@ Ogni argomento ha la scheda **Laboratorio** (`data/laboratori.js`). Si possono a
 
 I modelli 3D arrivano da Sketchfab e si caricano solo quando lo studente preme «Apri il modello 3D».
 
+## Questa settimana studiamo…
+Apri `data/settimana.js` e cambia una riga per classe: scrivi l'identificativo dell'argomento
+(quello che compare nell'indirizzo dopo `#/argomento/`) e, se vuoi, una nota («verifica giovedì»).
+La pagina della classe (es. «Seconde» nel menu) e la home lo mostrano in alto, con il percorso.
+
+## Percorso guidato
+Ogni argomento ha cinque passi con spunta e tempo stimato: video → lezione → schema → quiz → domanda aperta.
+Le spunte si mettono da sole (aprendo il video, arrivando all'ultima slide, aprendo gli schemi,
+finendo il quiz, confrontando una risposta aperta) e si possono anche togliere o mettere a mano.
+Le domande aperte, con risposta modello e punti chiave, sono in `data/domande.js`.
+
+## Nuovi argomenti, profilo fitness e orale
+- `data/nuovi-argomenti.js`: giochi, schemi e laboratorio di «Le capacità coordinative» (prime) e «Il primo soccorso» (seconde).
+- Laboratorio: «Il mio profilo fitness» (tabelle di N. Lovecchio, Marietti Scuola) in Test motori e Capacità condizionali;
+  test della cicogna, metronomo per la RCP, simulazione della chiamata al 112.
+- `data/orale.js`: la pagina «Verso l'orale» per le quinte (`#/orale`), con sei percorsi pluridisciplinari e la guida alla relazione PCTO.
+
+## Accessibilità e studio ovunque
+- Pulsante **Aa** in alto: testo più grande e modalità ad alta leggibilità (carattere Atkinson Hyperlegible, più spazio, niente corsivo).
+- **Ascolta** nella barra delle slide: legge la lezione ad alta voce con la voce italiana del dispositivo.
+- **Stampa la sintesi** (`#/stampa/<argomento>`): versione da stampare o salvare in PDF di ogni lezione, con domande di ripasso.
+- **App installabile e offline**: `manifest.webmanifest` + `sw.js`. Il service worker salva tutti i file richiamati da `index.html`;
+  video, PDF di Drive e modelli 3D restano solo online. Se cambi molti file, aumenta `VERSIONE` in `sw.js`.
+
 ## Metodo di studio
 
 La pagina del metodo di studio e la home mostrano in evidenza i due link bit.ly/CERVELLOINGIOCO e bit.ly/SBLOCCAILTUOPOTENZIALE. Per cambiarli modifica `evidenza` nell'argomento «metodo-di-studio» in `data/topics.js`.

@@ -369,6 +369,143 @@
         };
         $$("[data-k]", box).forEach(i => i.addEventListener("input", calc));
       }
+    },
+
+    /* ---------- profilo fitness: tabelle di N. Lovecchio ---------- */
+    fitness: {
+      titolo: "Il mio profilo fitness",
+      testo: "Inserisci i risultati dei test che hai fatto: per ognuno vedi in quale fascia si colloca la prova. Lascia vuoti quelli che non hai fatto.",
+      html: () => `<div class="seg2 ft-sex"><button type="button" data-s="F" class="on">Ragazza</button><button type="button" data-s="M">Ragazzo</button></div>
+        <div class="tgrid ft-in">${FIT.map(x => `<label class="tf"><span>${x.n} · <small>${x.u}</small></span><input data-f="${x.k}" type="text" inputmode="decimal" placeholder="${x.ph}"></label>`).join("")}</div>
+        <div class="ft-out"></div>
+        <div class="ft-act"><button type="button" class="btn small ft-save">Salva questo profilo</button><span class="tnote ft-msg"></span></div>
+        <div class="ft-hist"></div>
+        <p class="tnote">Fasce costruite sulla media ± deviazioni standard di studenti delle superiori (2017–2021). Fonte: N. Lovecchio, <i>Physical fitness</i>, guida per l'insegnante, Marietti Scuola. Il giudizio riguarda la prova, non la persona: un test è una misura, non un voto.</p>`,
+      bind: box => {
+        const KEY = "ssm-fitness-v1";
+        let sex = "F", hist = [];
+        try { hist = JSON.parse(localStorage.getItem(KEY) || "[]") || []; } catch (e) { hist = []; }
+        const val = k => { const raw = $(`[data-f="${k}"]`, box).value.trim(); if (!raw) return NaN; if (k === "mille" && raw.includes(":")) { const [m, s] = raw.split(":"); return num(m) * 60 + num(s); } return num(raw); };
+        const band = (x, v) => { const t = x[sex]; if (!(v > 0)) return -1; let i = 0; while (i < 4 && v >= t[i]) i++; return x.low ? 4 - i : i; };
+        const NAMES = ["scarsa", "debole", "media", "buona", "ottima"];
+        const draw = () => {
+          const rows = FIT.map(x => { const v = val(x.k), b = band(x, v); return { x, v, b }; }).filter(r => r.b >= 0);
+          $(".ft-out", box).innerHTML = rows.length ? rows.map(({ x, v, b }) => `<div class="ft-row"><div class="ft-l"><b>${x.n}</b><small>${x.cap}</small></div><div class="ft-bar">${NAMES.map((nm, i) => `<i class="${i === b ? "on f" + i : ""}" title="${nm}"></i>`).join("")}</div><span class="ft-v">Prova <b>${NAMES[b]}</b></span></div>`).join("") + `<p class="tnote">Il profilo mostra i tuoi punti di forza e quelli su cui lavorare. Ripeti i test fra qualche mese, nelle stesse condizioni, e confrontati con te stesso.</p>` : "";
+          return rows;
+        };
+        const drawHist = () => {
+          $(".ft-hist", box).innerHTML = hist.length ? `<b class="ft-hh">I profili salvati su questo dispositivo:</b>` + hist.slice(-4).reverse().map(h => `<div class="ft-h"><span>${esc(h.d)}</span>${FIT.filter(x => h.r[x.k] != null).map(x => `<em>${x.short} ${NAMES[h.r[x.k]]}</em>`).join("")}</div>`).join("") : "";
+        };
+        $$(".ft-sex button", box).forEach(b => b.addEventListener("click", () => { sex = b.dataset.s; $$(".ft-sex button", box).forEach(x => x.classList.toggle("on", x === b)); draw(); }));
+        $$("[data-f]", box).forEach(i => i.addEventListener("input", draw));
+        $(".ft-save", box).addEventListener("click", () => {
+          const rows = draw(); if (!rows.length) { $(".ft-msg", box).textContent = "Inserisci almeno un risultato."; return; }
+          const d = new Date(), r = {}; rows.forEach(({ x, b }) => { r[x.k] = b; });
+          hist.push({ d: d.toLocaleDateString("it-IT"), r }); hist = hist.slice(-12);
+          try { localStorage.setItem(KEY, JSON.stringify(hist)); } catch (e) { /* storage non disponibile */ }
+          $(".ft-msg", box).textContent = "Salvato."; drawHist();
+        });
+        drawHist();
+      }
+    },
+
+    /* ---------- equilibrio: test della cicogna ---------- */
+    equilibrio: {
+      titolo: "Test della cicogna",
+      testo: "In piedi su una gamba, l'altro piede appoggiato al ginocchio, mani sui fianchi. Un compagno tocca «Via» e tocca di nuovo quando perdi l'equilibrio.",
+      html: () => `<div class="seg2 eq-c"><button type="button" class="on" data-c="Occhi aperti">Occhi aperti</button><button type="button" data-c="Occhi chiusi">Occhi chiusi</button><button type="button" data-c="Sul cuscino">Su un cuscino</button></div>
+        <button class="rx eq" type="button"><b>Via</b><small>tocca per far partire il tempo</small></button><div class="eq-res"></div>`,
+      bind: box => {
+        let cond = "Occhi aperti", t0 = 0, run = false, iv = null; const res = [];
+        const el = $(".eq", box);
+        $$(".eq-c button", box).forEach(b => b.addEventListener("click", () => { if (run) return; cond = b.dataset.c; $$(".eq-c button", box).forEach(x => x.classList.toggle("on", x === b)); }));
+        const show = () => {
+          const by = {}; res.forEach(r => { (by[r.c] = by[r.c] || []).push(r.s); });
+          $(".eq-res", box).innerHTML = Object.keys(by).map(c => `<div class="kvz b"><span>${esc(c)}</span><b>migliore ${f1(Math.max(...by[c]))} s</b><em>${by[c].map(f1).join(" · ")} s</em></div>`).join("") + (res.length ? `<p class="tnote">Confronta occhi aperti e chiusi: quanto conta la vista? Senza vista lavorano solo l'orecchio interno e i propriocettori.</p>` : "");
+        };
+        el.addEventListener("pointerdown", e => {
+          e.preventDefault();
+          if (!run) { run = true; t0 = performance.now(); el.className = "rx eq go"; $("small", el).textContent = "tocca quando perdi l'equilibrio"; iv = setInterval(() => { $("b", el).textContent = f1((performance.now() - t0) / 1000) + " s"; }, 100); }
+          else { run = false; clearInterval(iv); const s = (performance.now() - t0) / 1000; res.push({ c: cond, s }); el.className = "rx eq"; $("b", el).textContent = f1(s) + " s"; $("small", el).textContent = "tocca per una nuova prova"; show(); }
+        });
+        onLeave(() => clearInterval(iv));
+      }
+    },
+
+    /* ---------- RCP: metronomo delle compressioni ---------- */
+    rcp: {
+      titolo: "Il ritmo delle compressioni",
+      testo: "Allenati sul ritmo giusto: 100–120 compressioni al minuto. Avvia il metronomo e premi il cuscino (o tocca il riquadro) a tempo.",
+      html: () => `<div class="seg2 rcp-m"><button type="button" class="on" data-m="30">30 compressioni : 2 ventilazioni</button><button type="button" data-m="0">Solo compressioni</button></div>
+        <button class="rx rcp-pad" type="button"><b>Premi qui a tempo</b><small>misuro il tuo ritmo</small></button>
+        <div class="br-ctl"><button type="button" class="btn small rcp-go">Avvia il metronomo · 110/min</button><span class="br-cy rcp-n"></span></div>
+        <div class="tgrid">${out("rcpR", "Il tuo ritmo (compressioni al minuto)")}${out("rcpC", "Compressioni nel ciclo")}</div>`,
+      bind: box => {
+        let mode = 30, on = false, tm = null, n = 0, actx = null; const taps = [];
+        const pad = $(".rcp-pad", box), go = $(".rcp-go", box);
+        const beep = (f, d) => { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain(); o.frequency.value = f; g.gain.setValueAtTime(.18, t); g.gain.exponentialRampToValueAtTime(.001, t + d); o.connect(g).connect(actx.destination); o.start(t); o.stop(t + d); } catch (e) { /* audio non disponibile */ } };
+        const flash = () => { pad.classList.add("go"); setTimeout(() => pad.classList.remove("go"), 120); };
+        const tick = () => {
+          if (!on) return;
+          n++; beep(n === mode ? 660 : 880, .07); flash(); setOut(box, "rcpC", mode ? `${n} / ${mode}` : String(n));
+          if (mode && n >= mode) { $(".rcp-n", box).textContent = "2 ventilazioni"; tm = setTimeout(() => { n = 0; $(".rcp-n", box).textContent = ""; tick(); }, 4000); return; }
+          tm = setTimeout(tick, 60000 / 110);
+        };
+        const stop = () => { on = false; clearTimeout(tm); n = 0; go.textContent = "Avvia il metronomo · 110/min"; $(".rcp-n", box).textContent = ""; setOut(box, "rcpC", "—"); };
+        go.addEventListener("click", () => { if (on) return stop(); on = true; go.textContent = "Ferma"; tick(); });
+        $$(".rcp-m button", box).forEach(b => b.addEventListener("click", () => { mode = Number(b.dataset.m); $$(".rcp-m button", box).forEach(x => x.classList.toggle("on", x === b)); if (on) { stop(); } }));
+        pad.addEventListener("pointerdown", e => {
+          e.preventDefault(); const t = performance.now(); taps.push(t); while (taps.length > 9) taps.shift();
+          if (!on) flash();
+          if (taps.length >= 4 && t - taps[0] < 8000) {
+            const r = Math.round(60000 * (taps.length - 1) / (t - taps[0]));
+            setOut(box, "rcpR", r);
+            $("small", pad).textContent = r < 100 ? "troppo lento: accelera" : r > 120 ? "troppo veloce: rallenta" : "ritmo giusto!";
+          }
+        });
+        onLeave(stop);
+      }
+    },
+
+    /* ---------- la chiamata al 112 ---------- */
+    chiamata: {
+      titolo: "Simula la chiamata al 112",
+      testo: "Al parco, un signore di circa 60 anni si accascia mentre corre. Non risponde. L'operatore del 112 ti fa alcune domande: scegli la risposta più utile.",
+      html: () => `<div class="ch"></div>`,
+      bind: box => {
+        const Q = [
+          ["«112, qual è l'emergenza?»", ["«Venite subito, è grave!»", "«Un uomo è crollato a terra e non risponde.»", "«Non lo so, chiamo dopo.»"], 1, "Detto in una frase: che cosa è successo."],
+          ["«Dove vi trovate esattamente?»", ["«Al parco.»", "«Verona.»", "«Parco San Giacomo, ingresso di via Roma, vicino alla fontana.»"], 2, "Indirizzo preciso e un punto di riferimento: i soccorsi arrivano prima."],
+          ["«Respira normalmente?»", ["«Guardo, ascolto e sento per 10 secondi: no, fa solo dei respiri strani.»", "«Credo di sì.»", "«Non lo tocco.»"], 0, "I respiri «strani» e rari (gasping) non sono respiro normale: è arresto cardiaco."],
+          ["«C'è un defibrillatore vicino?»", ["«Non serve.»", "«Mando un ragazzo a prenderlo al bar del parco.»", "«Lo cerco io e intanto lo lascio solo.»"], 1, "Qualcuno va a prenderlo mentre tu resti con la persona."],
+          ["«Inizi le compressioni, la guido io.»", ["Metto il telefono in vivavoce e comprimo al centro del torace.", "Gli do dell'acqua.", "Lo metto seduto."], 0, "Vivavoce: hai le mani libere e l'operatore ti dà il ritmo."],
+          ["Arrivano i soccorritori. Tu…", ["Te ne vai.", "Racconti che cosa è successo e da quanto tempo fai le compressioni.", "Interrompi tutto e aspetti."], 1, "Le informazioni sui minuti trascorsi servono ai sanitari."]
+        ];
+        let i = 0, ok = 0; const el = $(".ch", box);
+        const draw = () => {
+          if (i >= Q.length) { el.innerHTML = `<div class="ch-end"><b>${ok} risposte utili su ${Q.length}</b><p class="tnote">Ricorda: dove, che cosa, quante persone, come stanno, il tuo numero. E non riattaccare per primo.</p><button type="button" class="btn small ch-re">Ricomincia</button></div>`; $(".ch-re", el).onclick = () => { i = 0; ok = 0; draw(); }; return; }
+          const [q, o, c, sp] = Q[i];
+          el.innerHTML = `<p class="ch-q"><span>${i + 1}/${Q.length}</span>${esc(q)}</p><div class="ch-o">${o.map((x, k) => `<button type="button" data-k="${k}">${esc(x)}</button>`).join("")}</div><p class="tnote ch-fb"></p>`;
+          $$(".ch-o button", el).forEach(b => b.addEventListener("click", () => {
+            const k = Number(b.dataset.k); if (k === c) ok++;
+            $$(".ch-o button", el).forEach((x, j) => { x.disabled = true; x.classList.add(j === c ? "right" : j === k ? "wrong" : "dim"); });
+            $(".ch-fb", el).innerHTML = `<b>${k === c ? "Giusto." : "Non proprio."}</b> ${esc(sp)} <button type="button" class="btn small ch-nx">Avanti</button>`;
+            $(".ch-nx", el).onclick = () => { i++; draw(); };
+          }));
+        };
+        draw();
+      }
     }
   };
+
+  /* tabelle del profilo fitness (N. Lovecchio, Physical fitness, Marietti Scuola)
+     soglie tra le cinque fasce; low: true se il valore più basso è il migliore */
+  const FIT = [
+    { k: "cooper", n: "Test di Cooper", short: "Cooper", u: "metri in 12′", ph: "es. 2100", cap: "resistenza aerobica", F: [1580, 1670, 1745, 1815], M: [1925, 2080, 2210, 2335] },
+    { k: "mille", n: "1000 metri", short: "1000 m", u: "min:sec", ph: "es. 4:30", cap: "resistenza", low: true, F: [300, 340, 380, 420], M: [260, 300, 330, 370] },
+    { k: "addo", n: "Addominali in 30″", short: "Addominali", u: "ripetizioni", ph: "es. 20", cap: "forza resistente", F: [9, 16, 22, 28], M: [12, 20, 26, 32] },
+    { k: "salto", n: "Salto in lungo da fermo", short: "Salto", u: "cm", ph: "es. 180", cap: "forza esplosiva", F: [100, 145, 180, 214], M: [132, 181, 218, 254] },
+    { k: "navetta", n: "Navetta 10 × 5 m", short: "Navetta", u: "secondi", ph: "es. 19,5", cap: "agilità", low: true, F: [17.9, 20.5, 23, 26.5], M: [16.5, 18.5, 21, 24.5] },
+    { k: "sprint", n: "Sprint 30 m", short: "30 m", u: "secondi", ph: "es. 5,2", cap: "velocità", low: true, F: [5.6, 5.75, 5.9, 6.2], M: [4.7, 4.9, 5.12, 5.38] }
+  ];
 })();

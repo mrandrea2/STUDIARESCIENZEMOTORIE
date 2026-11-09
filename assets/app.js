@@ -44,6 +44,8 @@
   const GAME_KEYS = ["quiz", "vf", "abbina", "completa", "ordina", "gruppi", "flash"];
   const MAXT = GAME_KEYS.length * 3;
   const S = window.SCHEMI || {};
+  const D = window.DOMANDE || {};
+  const W = window.SETTIMANA || {};
   const starsFor = p => (p >= 90 ? 3 : p >= 70 ? 2 : p >= 40 ? 1 : 0);
   const topicStars = tid => GAME_KEYS.reduce((a, g) => a + starsFor(getBest(tid, g)), 0);
   const passed = tid => GAME_KEYS.filter(g => getBest(tid, g) >= 70).length;
@@ -75,9 +77,23 @@
 
   /* ---------- Testo grande e suoni ---------- */
   const bigBtn = $("#bigBtn"), sndBtn = $("#sndBtn");
-  const applyBig = on => { root.classList.toggle("big", on); bigBtn.setAttribute("aria-pressed", on); };
-  applyBig(!!mem._pref.big);
-  bigBtn.addEventListener("click", () => { const on = !root.classList.contains("big"); applyBig(on); mem._pref.big = on; save(); vib(10); });
+  const rpop = document.createElement("div");
+  rpop.className = "rpop"; rpop.id = "rpop"; rpop.hidden = true; rpop.setAttribute("role", "dialog"); rpop.setAttribute("aria-label", "Leggibilità");
+  rpop.innerHTML = `<b class="rp-h">Leggibilità</b>
+    <label class="sw"><input type="checkbox" data-o="big"><i></i><span>Testo più grande</span></label>
+    <label class="sw"><input type="checkbox" data-o="dsa"><i></i><span>Alta leggibilità<small>carattere ad alta leggibilità, più spazio, niente corsivo: pensata per chi ha DSA</small></span></label>
+    <p class="rp-n">Nelle lezioni trovi anche <b>Ascolta</b>, che legge le slide ad alta voce, e la <b>sintesi da stampare</b>.</p>`;
+  document.body.appendChild(rpop);
+  const applyOpt = (k, on) => {
+    if (k === "dsa" && on && !$("#fontDsa")) { const l = document.createElement("link"); l.id = "fontDsa"; l.rel = "stylesheet"; l.href = "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap"; document.head.appendChild(l); }
+    root.classList.toggle(k, on); const i = $(`[data-o="${k}"]`, rpop); if (i) i.checked = on; bigBtn.setAttribute("aria-pressed", root.classList.contains("big") || root.classList.contains("dsa")); };
+  applyOpt("big", !!mem._pref.big); applyOpt("dsa", !!mem._pref.dsa);
+  $$("[data-o]", rpop).forEach(i => i.addEventListener("change", () => { applyOpt(i.dataset.o, i.checked); mem._pref[i.dataset.o] = i.checked; save(); vib(10); }));
+  const closePop = () => { rpop.hidden = true; bigBtn.setAttribute("aria-expanded", "false"); };
+  bigBtn.addEventListener("click", e => { e.stopPropagation(); rpop.hidden = !rpop.hidden; bigBtn.setAttribute("aria-expanded", String(!rpop.hidden)); });
+  document.addEventListener("click", e => { if (!rpop.hidden && !rpop.contains(e.target)) closePop(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closePop(); });
+  window.addEventListener("hashchange", closePop);
 
   let sndOn = mem._pref.snd !== false, actx = null;
   const SPK = on => `<svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/>${on ? '<path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>' : '<path d="m17 9 5 6M22 9l-5 6"/>'}</svg>`;
@@ -132,6 +148,14 @@
     groups: sv('<rect x="3" y="4" width="7.5" height="16" rx="2"/><rect x="13.5" y="4" width="7.5" height="16" rx="2"/><path d="M6.7 8h.1M6.7 12h.1M17.2 8h.1"/>'),
     lab: sv('<path d="M9 3h6M10 3v6L4.5 18.5A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.8-2.5L14 9V3"/><path d="M7.5 14h9"/>'),
     read: sv('<path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/>'),
+    check: sv('<path d="m5 12.5 4.5 4.5L19 7.5"/>', 3),
+    ear: sv('<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>'),
+    stop: sv('<rect x="6" y="6" width="12" height="12" rx="2"/>'),
+    print: sv('<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>'),
+    pen: sv('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>'),
+    route: sv('<circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H16a3.5 3.5 0 0 0 0-7H8a3.5 3.5 0 0 1 0-7h7.5"/>'),
+    mic: sv('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>'),
+    phone: sv('<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>'),
     calc: sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>')
   };
   const star = on => `<svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="${on ? "#FFD23F" : "rgba(255,255,255,.12)"}" stroke="${on ? "#FFD23F" : "rgba(255,255,255,.35)"}" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
@@ -251,7 +275,7 @@
       ${I.arr.replace("<svg", '<svg class="arr"')}
       <span class="meta">
         <span class="stars-row">${[0, 1, 2, 3, 4].map(x => star(st >= (x + 1) * MAXT / 5)).join("")}</span>
-        <span class="chips">${nDoc ? `<span class="chip">${nDoc} dispense</span>` : ""}${nVid ? `<span class="chip">${nVid} video</span>` : ""}</span>
+        <span class="chips">${pathChip(t)}${nDoc ? `<span class="chip">${nDoc} dispense</span>` : ""}${nVid ? `<span class="chip">${nVid} video</span>` : ""}</span>
       </span>
     </a>`;
   }
@@ -334,7 +358,9 @@
       <section class="wrap section"><div class="home-two">
         <div class="rv" id="dailyBox">${dailyHtml()}</div>
         <div style="display:grid;gap:12px;align-content:start;margin-top:12px">
-          ${lastT && !lastT.evidenza ? `<div class="rv" style="--i:1"><p class="kicker">Riprendi da qui</p>${topicCard(lastT, 0).replace("tcard rv", "tcard")}</div>` : ""}
+          ${lastClass && weekTopic(lastClass) ? `<div class="rv"><p class="kicker">Questa settimana nelle ${PL[lastClass]}</p>${topicCard(weekTopic(lastClass), 0).replace("tcard rv", "tcard")}</div>` : ""}
+          ${installCard()}
+          ${lastT && !lastT.evidenza && lastT !== weekTopic(lastClass) ? `<div class="rv" style="--i:1"><p class="kicker">Riprendi da qui</p>${topicCard(lastT, 0).replace("tcard rv", "tcard")}</div>` : ""}
           <a class="card rv" href="#/trofei" style="--i:2;text-decoration:none;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center">
             <span style="width:62px;height:62px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-weight:900;font-size:1.6rem">${l + 1}</span>
             <span><b style="font-size:1.2rem;display:block">I miei progressi</b><span class="muted" style="font-weight:700;font-size:.92rem">Livello «${LEVELS[l][1]}» · ★ ${s}${nx ? ` · ancora ${nx[0] - s} per «${nx[1]}»` : ""}</span>
@@ -424,9 +450,11 @@
           <div><p class="kicker">${ts.length} argomenti</p><h1>Classi ${PL[c]}<em>studia, ripassa, gioca</em></h1></div>
           ${ring(st, ts.length * MAXT, "stelle")}
         </div>
-        <div class="cta-row"><a class="btn white" href="#/sfida/${c}">${I.bolt} Sfida delle ${PL[c]}</a></div>
+        <div class="cta-row"><a class="btn white" href="#/sfida/${c}">${I.bolt} Sfida delle ${PL[c]}</a>${c === 5 && window.ORALE ? `<a class="btn ghost" href="#/orale">${I.mic} Verso l'orale</a>` : ""}</div>
       </div></section>
+      ${weekHtml(c)}
       <section class="wrap section" style="padding-top:10px">
+        ${weekTopic(c) ? `<div class="section-head rv"><h2 style="font-size:1.5rem">Tutti gli argomenti:</h2></div>` : ""}
         <div class="grid">${ts.map((t, i) => topicCard(t, i, i + 1)).join("")}</div>
       </section>
       <section class="wrap section"><div class="grid">${topicCard(byId["metodo-di-studio"])}</div></section>`;
@@ -492,14 +520,18 @@
           <div><p class="kicker">${esc(classLabel(t.classi))}</p><h1>${esc(t.titolo)}<em>${esc(t.sottotitolo || "")}</em></h1></div>
           ${g ? ring(topicStars(t.id), MAXT, "stelle") : ""}
         </div>
+        ${pathHtml(t, curStep(tab, game))}
       </div></section>`}
       <div class="seg-wrap" ${inGame ? 'style="margin-top:0"' : ""}><div class="wrap">
         <nav class="seg${tabs.length > 3 ? " four" : ""}${tabs.length > 4 ? " five" : ""}" aria-label="Sezioni">${tabs.map(([key, l, ic]) => `<a href="#/argomento/${t.id}/${key}" class="${tab === key ? "on" : ""}">${ic}<span>${key === "lab" ? '<i class="lg">Laboratorio</i><i class="sh">Lab</i>' : l}</span></a>`).join("")}</nav>
       </div></div>
       <section class="wrap"><div id="tabBody"></div></section>`;
     animateRing();
+    bindPath();
 
     const body = $("#tabBody");
+    if (tab === "domande" && D[t.id]) return tabDomande(body, t);
+    if (tab === "stampa") { location.replace(`#/stampa/${t.id}`); return; }
     if (tab === "ripassa" && g) return gameFlash(body, t);
     if (tab === "gioca" && g) {
       if (game === "quiz") return gameQuiz(body, t);
@@ -511,7 +543,7 @@
       return gamePicker(body, t);
     }
     if (tab === "schemi" && S[t.id]) return tabSchemi(body, t);
-    if (tab === "lezione" && hasLez) return tabLezione(body, t);
+    if (tab === "lezione" && hasLez) return tabLezione(body, t, game);
     if (tab === "lab" && LAB[t.id]) return tabLab(body, t);
     return tabStudia(body, t);
   }
@@ -595,6 +627,7 @@
     const before = levelOf(totalStars());
     const nuovo = setBest(t.id, gameKey, pct);
     markActive(); updateLvl();
+    if (gameKey === "quiz") markStep(t.id, "quiz");
     const after = levelOf(totalStars());
     if (after > before) setTimeout(() => { toast(after + 1, `Livello ${after + 1}: ${LEVELS[after][1]}!`, "Hai sbloccato un nuovo livello"); sfx("lvl"); confetti(220); }, 1300);
     return nuovo;
@@ -857,6 +890,7 @@
     const D = L[t.id], n = D.slides.length;
     return `<div class="deck" id="deck" tabindex="0" aria-roledescription="presentazione" aria-label="${esc(D.titolo)}">
       <div class="deck-top"><span class="deck-c"><b id="dkN">1</b> / ${n}</span><div class="deck-prog"><i id="dkP"></i></div>
+        <button class="dbtn tts" id="dkTts" aria-label="Ascolta la slide" aria-pressed="false">${I.ear}<span>Ascolta</span></button>
         <button class="dbtn" id="dkIdx" aria-label="Indice delle slide">${sv('<path d="M4 6h16M4 12h16M4 18h10"/>')}</button>
         <button class="dbtn" id="dkFs" aria-label="Schermo intero">${sv('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>')}</button></div>
       <div class="deck-stage" id="dkS">${D.slides.map((s, i) => `<section class="slide${i ? "" : " on"}" data-i="${i}" aria-hidden="${i ? "true" : "false"}">${slideHtml(s, i, n, D.titolo)}</section>`).join("")}</div>
@@ -885,8 +919,10 @@
       $("#dkPrev", deck).disabled = k === 0;
       $("#dkNext", deck).classList.toggle("fin", k === n - 1);
       mem._pref[key] = k; save(); sfx("flip");
-      if (k === n - 1) { markActive(); }
+      if (k === n - 1) { markActive(); markStep(t.id, "lezione"); }
+      if (deck._onGo) deck._onGo(k);
     };
+    deck._go = go; deck._cur = () => cur;
     $("#dkPrev", deck).onclick = () => go(cur - 1);
     $("#dkNext", deck).onclick = () => { if (cur === n - 1) { location.hash = `#/argomento/${t.id}/schemi`; return; } go(cur + 1); };
     dots.forEach(d => d.onclick = () => go(Number(d.dataset.i)));
@@ -905,19 +941,20 @@
     $("#dkP", deck).style.width = (1 / n * 100) + "%";
     const saved = mem._pref[key];
     if (saved > 0 && saved < n) go(saved, 1);
+    bindTts(deck, t);
   }
 
   function videoHtml(m, i) {
     if (m.tipo === "yt") return `<button class="vid" data-m="${i}"><span class="vth"><img src="https://i.ytimg.com/vi/${esc(m.id)}/hqdefault.jpg" alt="" loading="lazy"><i>${I.play}</i></span><b>${esc(m.titolo)}</b><small>YouTube</small></button>`;
     return `<button class="vid" data-m="${i}"><span class="vth dv"><i>${m.tipo === "audio" ? I.audio : I.play}</i></span><b>${esc(m.titolo)}</b><small>${m.tipo === "audio" ? "Podcast" : "Video"} del prof.</small></button>`;
   }
-  function tabLezione(body, t) {
+  function tabLezione(body, t, sub) {
     const m = t.materiali || [];
     const vids = m.map((x, i) => [x, i]).filter(([x]) => ["yt", "video", "audio"].includes(x.tipo));
     const docs = m.map((x, i) => [x, i]).filter(([x]) => ["pdf", "slides", "link", "form", "la"].includes(x.tipo));
     body.innerHTML = `
       <div class="lez-intro rv"><p class="kicker">Lezione</p><h2>${esc(L[t.id].titolo)}:</h2><p class="muted">${esc(L[t.id].sottotitolo)}.</p>
-        <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button></div></div>
+        <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button><a class="mode" href="#/stampa/${t.id}">${I.print}<span>Stampa la sintesi</span></a></div></div>
       ${deckHtml(t)}
       ${vids.length ? `<section class="lez-vid rv"><h3 class="lez-h">Guarda e ascolta:</h3><div class="vid-grid">${vids.map(([x, i]) => videoHtml(x, i)).join("")}</div></section>` : ""}
       <div class="two" style="margin-top:18px">
@@ -928,21 +965,287 @@
           ${G[t.id] ? `<div class="card play-card rv"><h3>Hai studiato?</h3><p>Ripassa con gli schemi e mettiti alla prova con 7 attività.</p><div class="cta-row" style="margin:0"><a class="btn white full" href="#/argomento/${t.id}/schemi">${I.map} Schemi riassuntivi</a><a class="btn ghost full" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a></div></div>` : ""}
         </div>
       </div>`;
-    $$("[data-m]", body).forEach(b => b.addEventListener("click", () => openViewer(m[Number(b.dataset.m)])));
+    $$("[data-m]", body).forEach(b => b.addEventListener("click", () => { const x = m[Number(b.dataset.m)]; openViewer(x); if (["yt", "video", "audio"].includes(x.tipo)) markStep(t.id, "video"); }));
     bindDeck(body, t);
     const deck = $("#deck", body);
+    if ("IntersectionObserver" in window) {
+      const last = $$(".slide", deck).pop();
+      const ob = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && deck.classList.contains("read")) { markStep(t.id, "lezione"); ob.disconnect(); } }), { threshold: .5 });
+      ob.observe(last); stopOnLeave(() => ob.disconnect());
+    }
+    if (sub === "video" && vids.length) {
+      setTimeout(() => { const v = $(".lez-vid", body); if (v) v.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); openViewer(vids[0][0]); markStep(t.id, "video"); }, 350);
+    }
     const setMode = md => {
-      $$(".lez-mode .mode", body).forEach(b => b.classList.toggle("on", b.dataset.mode === md));
+      $$(".lez-mode button.mode", body).forEach(b => b.classList.toggle("on", b.dataset.mode === md));
       deck.classList.toggle("read", md === "read");
       mem._pref.mode = md; save();
     };
-    $$(".lez-mode .mode", body).forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+    $$(".lez-mode button.mode", body).forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
     if (mem._pref.mode === "read") setMode("read");
   }
 
   function tabLab(body, t) {
     if (window.renderLab) window.renderLab(body, t, LAB[t.id]);
     reveal();
+  }
+
+  /* ================= Percorso guidato ================= */
+  function pathSteps(t) {
+    const m = t.materiali || [], out = [];
+    const vi = m.findIndex(x => ["yt", "video", "audio"].includes(x.tipo));
+    if (vi >= 0) out.push({ k: "video", h: m[vi].tipo === "audio" ? "Ascolta il podcast" : "Guarda il video", min: 10, href: `#/argomento/${t.id}/lezione/video` });
+    out.push(L[t.id] ? { k: "lezione", h: "Leggi la lezione", min: Math.max(10, Math.round(L[t.id].slides.length * 1.3)), href: `#/argomento/${t.id}/lezione` } : { k: "lezione", h: "Studia i materiali", min: 20, href: `#/argomento/${t.id}/studia` });
+    if (S[t.id]) out.push({ k: "schema", h: "Guarda lo schema", min: 5, href: `#/argomento/${t.id}/schemi` });
+    if (G[t.id]) out.push({ k: "quiz", h: "Fai il quiz", min: Math.max(5, Math.ceil(G[t.id].quiz.length * .6)), href: `#/argomento/${t.id}/gioca/quiz` });
+    if (D[t.id]) out.push({ k: "domanda", h: "Rispondi alla domanda aperta", min: 10, href: `#/argomento/${t.id}/domande` });
+    return out;
+  }
+  const pathDone = (id, k) => !!(mem._path && mem._path[id] && mem._path[id][k]);
+  const pathCount = t => { const st = pathSteps(t); return [st.filter(s => pathDone(t.id, s.k)).length, st.length]; };
+  function markStep(id, k, on = true) {
+    const t = byId[id]; if (!t || !pathSteps(t).some(s => s.k === k)) return;
+    mem._path = mem._path || {}; mem._path[id] = mem._path[id] || {};
+    if (!!mem._path[id][k] === on) return;
+    if (on) mem._path[id][k] = today(); else delete mem._path[id][k];
+    save(); refreshPath(id);
+    if (on) {
+      markActive();
+      const [d, n] = pathCount(t);
+      if (d === n) setTimeout(() => { toast("✓", "Percorso completato!", t.titolo); sfx("win"); confetti(160); }, 500);
+    }
+  }
+  const curStep = (tab, game) => tab === "lezione" ? (game === "video" ? "video" : "lezione") : tab === "schemi" ? "schema" : tab === "gioca" && game === "quiz" ? "quiz" : tab === "domande" ? "domanda" : "";
+  function pathHtml(t, cur) {
+    const st = pathSteps(t), [done] = pathCount(t), next = st.find(s => !pathDone(t.id, s.k)), tot = st.reduce((a, s) => a + s.min, 0);
+    return `<div class="path" id="path" data-id="${t.id}" data-cur="${cur || ""}">
+      <div class="path-h"><b>${I.route} Il tuo percorso</b><span>${done}/${st.length} passi · circa ${tot} minuti</span></div>
+      <ol class="path-s">${st.map((s, i) => { const ok = pathDone(t.id, s.k); return `<li class="${ok ? "ok" : ""}${next === s ? " nx" : ""}${cur === s.k ? " cur" : ""}">
+        <button class="pck" type="button" data-k="${s.k}" aria-pressed="${ok}" aria-label="${ok ? "Fatto" : "Da fare"}: ${esc(s.h)}">${ok ? I.check : i + 1}</button>
+        <a href="${s.href}"><b>${esc(s.h)}</b><small>${s.min} min${next === s ? " · prossimo" : ""}</small></a></li>`; }).join("")}</ol>
+    </div>`;
+  }
+  function refreshPath(id) {
+    const el = $("#path"); if (!el || el.dataset.id !== id) return;
+    const sc = $(".path-s", el).scrollLeft;
+    el.outerHTML = pathHtml(byId[id], el.dataset.cur); bindPath();
+    $(".path-s").scrollLeft = sc;
+  }
+  function bindPath() {
+    const el = $("#path"); if (!el) return;
+    $$(".pck", el).forEach(b => b.onclick = () => { vib(10); sfx("tap"); markStep(el.dataset.id, b.dataset.k, !pathDone(el.dataset.id, b.dataset.k)); });
+    const c = $(".cur", el) || $(".nx", el), ol = $(".path-s", el);
+    if (c && ol.scrollWidth > ol.clientWidth) ol.scrollLeft = Math.max(0, c.offsetLeft - 16);
+  }
+  function pathChip(t) {
+    const [d, n] = pathCount(t);
+    return d ? `<span class="chip pc${d === n ? " full" : ""}">${d === n ? "Percorso ✓" : `Percorso ${d}/${n}`}</span>` : "";
+  }
+
+  /* ---------- Questa settimana studiamo… ---------- */
+  function weekTopic(c) {
+    const w = W[c]; const id = w && (typeof w === "string" ? w : w.argomento);
+    return (id && byId[id]) || null;
+  }
+  function weekHtml(c) {
+    const t = weekTopic(c); if (!t) return "";
+    const w = W[c], st = pathSteps(t), [done] = pathCount(t), next = st.find(s => !pathDone(t.id, s.k));
+    return `<section class="wrap section week-sec"><div class="week rv" style="${kVars(c)}">
+      <p class="kicker">Questa settimana studiamo</p>
+      <h2>${esc(t.titolo)}<em>${esc(t.sottotitolo || "")}</em></h2>
+      ${w && w.nota ? `<p class="wk-n">${esc(w.nota)}</p>` : ""}
+      <ol class="wk-steps">${st.map((s, i) => `<li class="${pathDone(t.id, s.k) ? "ok" : ""}"><span>${pathDone(t.id, s.k) ? I.check : i + 1}</span><b>${esc(s.h)}</b><small>${s.min} min</small></li>`).join("")}</ol>
+      <a class="btn white" href="${done && next ? next.href : `#/argomento/${t.id}`}">${!done ? "Inizia il percorso" : next ? "Continua: " + esc(next.h.toLowerCase()) : "Ripassa l'argomento"} ${I.arr}</a>
+    </div></section>`;
+  }
+
+  /* ---------- App installabile e offline ---------- */
+  let installEv = null;
+  const standalone = () => !!((window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone);
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  function installCard() {
+    if (standalone()) return "";
+    return `<div class="card inst rv" id="instCard"${installEv || isIOS ? "" : " hidden"}><h3>${I.phone} Studia anche senza rete</h3>
+      <p>Installa il sito sul telefono: lezioni, schemi e giochi si aprono anche sul bus o in palestra, senza connessione.</p>
+      ${isIOS ? `<p class="note" style="margin:0">Su iPhone e iPad: tocca <b>Condividi</b>, poi <b>Aggiungi alla schermata Home</b>.</p>` : `<button class="btn white full" id="instBtn" type="button">Installa l'app</button>`}</div>`;
+  }
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEv = e; const c = $("#instCard"); if (c) c.hidden = false; });
+  window.addEventListener("appinstalled", () => { installEv = null; const c = $("#instCard"); if (c) c.remove(); });
+  document.addEventListener("click", e => {
+    if (!e.target.closest || !e.target.closest("#instBtn") || !installEv) return;
+    installEv.prompt(); installEv.userChoice.finally(() => { installEv = null; const c = $("#instCard"); if (c) c.hidden = true; });
+  });
+  window.addEventListener("offline", () => toast("⚡", "Sei offline", "Lezioni, schemi e giochi funzionano; video e PDF tornano con la rete."));
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => { /* niente offline */ }));
+
+  /* ---------- Domande aperte ---------- */
+  function tabDomande(body, t) {
+    const Q = D[t.id];
+    mem._ans = mem._ans || {}; const A = mem._ans[t.id] = mem._ans[t.id] || {};
+    body.innerHTML = `
+      <div class="dom-intro rv"><p class="kicker">Domande aperte</p><h2>Scrivi, poi confronta:</h2>
+        <p class="muted">Rispondi con parole tue, come in una verifica o all'interrogazione. Poi apri la risposta modello e spunta i punti chiave che hai toccato. Quello che scrivi resta solo su questo dispositivo.</p></div>
+      <div class="dom-list">${Q.map(([q, r, pts], i) => `<article class="card dom rv" data-i="${i}" style="--i:${i % 2}">
+        <span class="dom-n">${i + 1}</span><h3>${esc(q)}</h3>
+        <textarea rows="5" placeholder="Scrivi qui la tua risposta…" aria-label="La tua risposta alla domanda ${i + 1}">${esc((A[i] && A[i].t) || "")}</textarea>
+        <div class="dom-act"><button class="btn small dom-go" type="button">${I.check} Confronta</button><span class="dom-sc" aria-live="polite"></span></div>
+        <div class="dom-m" hidden><b class="dom-l">Risposta modello</b><p>${esc(r)}</p><b class="dom-l">Quali punti chiave hai toccato?</b>
+          <div class="dom-pts">${pts.map((p, k) => `<label><input type="checkbox" data-k="${k}"><span>${esc(p)}</span></label>`).join("")}</div></div>
+      </article>`).join("")}</div>
+      <div class="cta-row" style="justify-content:center;margin-top:20px"><a class="btn ghost" href="#/stampa/${t.id}">${I.print} Sintesi da stampare</a><a class="btn grad" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a></div>`;
+    $$(".dom", body).forEach(card => {
+      const i = Number(card.dataset.i), pts = Q[i][2], ta = $("textarea", card), m = $(".dom-m", card), sc = $(".dom-sc", card);
+      const st = () => (A[i] = A[i] || { t: "", p: [] });
+      const score = () => {
+        const n = (st().p || []).length, pct = n / pts.length;
+        sc.textContent = `${n}/${pts.length} punti chiave · ${pct >= .75 ? "risposta completa!" : pct >= .5 ? "quasi: aggiungi i punti mancanti" : "rileggi la lezione e riprova"}`;
+        sc.className = "dom-sc " + (pct >= .75 ? "ok" : pct >= .5 ? "mid" : "no");
+      };
+      const open = () => {
+        m.hidden = false; st().shown = true;
+        $$("input", m).forEach(x => { x.checked = (st().p || []).includes(Number(x.dataset.k)); });
+        score(); save(); markStep(t.id, "domanda");
+      };
+      ta.addEventListener("input", () => { st().t = ta.value; save(); });
+      $(".dom-go", card).onclick = () => {
+        if (ta.value.trim().length < 15 && m.hidden) { sc.textContent = "Scrivi almeno qualche riga prima di confrontare."; sc.className = "dom-sc no"; ta.focus(); return; }
+        vib(10); sfx("flip"); open(); m.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      };
+      $$("input", m).forEach(x => x.addEventListener("change", () => {
+        st().p = $$("input", m).filter(y => y.checked).map(y => Number(y.dataset.k)); save(); score(); sfx(x.checked ? "ok" : "tap");
+      }));
+      if (A[i] && A[i].shown) open();
+    });
+  }
+
+  /* ---------- Ascolta la slide (sintesi vocale del browser) ---------- */
+  function slideParts(el) {
+    const c = el.cloneNode(true);
+    $$(".sf, .im, svg, .ln", c).forEach(x => x.remove());
+    $$("h2, h3, p, li, th, td, figcaption, .sh, .sc span, .sbig, .send li", c).forEach(x => x.append("\n"));
+    return c.textContent.replace(/→/g, ", ").replace(/·/g, ",").replace(/≈/g, "circa ").replace(/×/g, " per ").replace(/–/g, " - ")
+      .split(/\n+/).map(x => x.replace(/\s+/g, " ").trim()).filter(x => x && x !== ",");
+  }
+  function bindTts(deck, t) {
+    const btn = $("#dkTts", deck); if (!btn) return;
+    if (!("speechSynthesis" in window) || !window.SpeechSynthesisUtterance) { btn.hidden = true; return; }
+    const synth = window.speechSynthesis, slides = $$(".slide", deck), n = slides.length;
+    let on = false, tok = 0;
+    const voice = () => { const vs = synth.getVoices() || []; return vs.find(v => /^it[-_]IT/i.test(v.lang) && /google|federica|alice|elsa|isabella|natural/i.test(v.name)) || vs.find(v => /^it/i.test(v.lang)); };
+    const set = v => { on = v; btn.setAttribute("aria-pressed", String(v)); btn.classList.toggle("on", v); btn.innerHTML = v ? `${I.stop}<span>Stop</span>` : `${I.ear}<span>Ascolta</span>`; slides.forEach(s => s.classList.remove("speaking")); };
+    const stop = () => { tok++; try { synth.cancel(); } catch (e) { /* niente */ } set(false); };
+    const speak = k => {
+      const my = ++tok; try { synth.cancel(); } catch (e) { /* niente */ }
+      slides.forEach((s, j) => s.classList.toggle("speaking", j === k && deck.classList.contains("read")));
+      const parts = slideParts(slides[k]); let i = 0;
+      const next = () => {
+        if (!on || my !== tok) return;
+        if (i >= parts.length) {
+          if (k >= n - 1) { stop(); return; }
+          if (deck.classList.contains("read")) { slides[k + 1].scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); speak(k + 1); }
+          else deck._go(k + 1);
+          return;
+        }
+        const u = new SpeechSynthesisUtterance(parts[i++]);
+        u.lang = "it-IT"; u.rate = .96; const v = voice(); if (v) u.voice = v;
+        u.onend = () => setTimeout(next, 120);
+        u.onerror = e => { if (e.error !== "interrupted" && e.error !== "canceled") setTimeout(next, 120); };
+        synth.speak(u);
+      };
+      next();
+    };
+    deck._onGo = k => { if (on && !deck.classList.contains("read")) speak(k); };
+    btn.addEventListener("click", () => {
+      if (on) return stop();
+      set(true); vib(10);
+      let k = deck._cur();
+      if (deck.classList.contains("read")) { k = slides.findIndex(s => s.getBoundingClientRect().bottom > 140); if (k < 0) k = 0; }
+      speak(k);
+    });
+    stopOnLeave(stop);
+    window.addEventListener("pagehide", stop);
+  }
+
+  /* ---------- Sintesi stampabile ---------- */
+  function slidePrint(s) {
+    const ILL = window.ILL || {};
+    const ul = a => `<ul>${a.map(x => `<li>${x}</li>`).join("")}</ul>`;
+    const ol = a => `<ol>${a.map(x => `<li>${x}</li>`).join("")}</ol>`;
+    let b = "";
+    switch (s.t) {
+      case "cards": b = (s.lead ? `<p>${esc(s.lead)}</p>` : "") + ul(s.cards.map(c => `<b>${esc(c.h)}${c.n && !/^\d+$/.test(c.n) ? ` (${esc(c.n)})` : ""}:</b> ${esc(c.p)}`)); break;
+      case "steps": b = ol(s.steps.map(c => `<b>${esc(c.h)}:</b> ${esc(c.p)}`)); break;
+      case "list": b = ol(s.items.map(([a, c]) => `<b>${esc(a)}:</b> ${esc(c)}`)); break;
+      case "points": b = (s.lead ? `<p>${esc(s.lead)}</p>` : "") + ul(s.items.map(x => Array.isArray(x) ? `<b>${esc(x[0])}</b> ${esc(x[1])}` : esc(x))); break;
+      case "split": b = (s.lead ? `<p>${esc(s.lead)}</p>` : "") + `<div class="sh-2">${[s.left, s.right].map(c => `<div><b>${esc(c.h)}</b>${ul(c.items.map(esc))}</div>`).join("")}</div>`; break;
+      case "key": b = `<p>${esc(s.lead)}</p>` + ul(s.defs.map(([a, c]) => `<b>${esc(a)}</b> = ${esc(c)}`)); break;
+      case "stats": b = ul(s.stats.map(c => `<b>${esc(c.big)}</b>${c.h ? ` ${esc(c.h)}` : ""}: ${esc(c.p)}`)); break;
+      case "formula": b = `<p class="sh-f">${rich(s.big)}</p><p>${esc(s.caption)}</p>` + ul(s.cols.map(c => `<b>${esc(c.h)}:</b> ${esc(c.p)}`)); break;
+      case "stack": b = ul(s.rows.map(r => `<b>${esc(r.h)}:</b> ${esc(r.v)} · ${esc(r.p)}`)); break;
+      case "table": b = `<table><thead><tr>${s.head.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${s.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`; break;
+      case "end": return `<section class="sh-box sh-end"><h2>${esc(s.title)}</h2>${ol(s.items.map(esc))}</section>`;
+      default: return "";
+    }
+    const fig = s.fig && s.fig.svg && ILL[s.fig.svg] ? `<figure class="sh-fig">${ILL[s.fig.svg]}${s.fig.cap ? `<figcaption>${esc(s.fig.cap)}</figcaption>` : ""}</figure>` : "";
+    return `<section class="sh-s${fig ? " has-fig" : ""}"><p class="sh-k">${esc(s.kicker || "")}</p><h2>${rich(s.title)}</h2>${fig}${b}${s.note ? `<p class="sh-note">${esc(s.note)}</p>` : ""}</section>`;
+  }
+  function pageStampa(id) {
+    const t = byId[id];
+    if (!t || !L[t.id]) return pageHome();
+    setK(topicClass(t));
+    const Z = L[t.id], fonti = Z.slides.find(s => s.t === "fonti"), Q = D[t.id] || [];
+    const d = new Date().toLocaleDateString("it-IT");
+    app.innerHTML = `
+      <section class="wrap pr-bar noprint">
+        <a class="crumb" href="#/argomento/${t.id}">${I.back}Torna alla lezione</a>
+        <div class="pr-row"><button class="btn grad" id="prBtn" type="button">${I.print} Stampa o salva in PDF</button>
+        <p class="note">Nella finestra di stampa scegli <b>Salva come PDF</b> per tenerla sul telefono o sul computer.</p></div>
+      </section>
+      <article class="sheet">
+        <header class="sh-h"><p>Scienze motorie e sportive · ${esc(classLabel(t.classi))} · Prof. Andrea Bertelli · Liceo Galilei Verona</p>
+          <h1>${esc(t.titolo)}</h1><p class="sh-sub">${esc(Z.titolo)}: ${esc(Z.sottotitolo)}</p></header>
+        ${(t.obiettivi || []).length ? `<section class="sh-box"><h2>Che cosa devi sapere</h2><ol>${t.obiettivi.map(o => `<li>${esc(o)}</li>`).join("")}</ol></section>` : ""}
+        ${Z.slides.map(slidePrint).join("")}
+        ${(t.sintesi || []).length ? `<section class="sh-s"><h2>Parole chiave</h2><dl class="sh-dl">${t.sintesi.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl></section>` : ""}
+        ${Q.length ? `<section class="sh-s sh-q"><h2>Domande per il ripasso</h2>${Q.map(([q, r], i) => `<div class="sh-qa"><p><b>${i + 1}. ${esc(q)}</b></p><p>${esc(r)}</p></div>`).join("")}</section>` : ""}
+        ${fonti ? `<section class="sh-s sh-fonti"><h2>Fonti</h2><ul>${fonti.items.map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>` : ""}
+        <footer class="sh-foot">Studiare Scienze Motorie e Sportive · sintesi stampata il ${d}</footer>
+      </article>`;
+    $("#prBtn").onclick = () => window.print();
+  }
+
+  /* ---------- Verso l'orale (classe quinta) ---------- */
+  function pageOrale() {
+    const O = window.ORALE; if (!O) return pageHome();
+    setK(5);
+    app.innerHTML = `
+      <section class="band"><div class="wrap">
+        <span class="ghost" aria-hidden="true">5</span>
+        <a class="crumb" href="#/classe/5">${I.back}Quinte</a>
+        <p class="kicker">Esame di Stato</p><h1>Verso l'orale<em>sei percorsi tra corpo, sport e mondo</em></h1>
+        <p class="lead" style="max-width:62ch">${esc(O.intro)}</p>
+      </div></section>
+      <section class="wrap section" style="padding-top:10px">
+        <div class="orl-list">${O.percorsi.map((p, i) => `<details class="card orl rv" style="--i:${i % 2}"${i ? "" : " open"}>
+          <summary><span class="orl-n">${i + 1}</span><span><b>${esc(p.titolo)}</b><small>${p.collegamenti.map(c => esc(c[0])).join(" · ")}</small></span></summary>
+          <p class="orl-idea">${esc(p.idea)}</p>
+          <div class="orl-g">
+            <div><h4>Parti da qui</h4><div class="chips">${p.argomenti.filter(id => byId[id]).map(id => `<a class="chip" href="#/argomento/${id}">${esc(byId[id].titolo)}</a>`).join("")}</div>
+              <h4>Domande guida</h4><ol>${p.domande.map(d => `<li>${esc(d)}</li>`).join("")}</ol>
+              <h4>Spunti ed esempi</h4><ul>${p.spunti.map(d => `<li>${esc(d)}</li>`).join("")}</ul></div>
+            <div><h4>Collegamenti</h4><dl class="orl-dl">${p.collegamenti.map(([a, b]) => `<dt>${esc(a)}</dt><dd>${esc(b)}</dd>`).join("")}</dl></div>
+          </div>
+        </details>`).join("")}</div>
+      </section>
+      <section class="wrap section">
+        <div class="section-head rv"><h2>Come costruire un <span class="gt">collegamento</span>:</h2></div>
+        <ol class="orl-met">${O.metodo.map(([a, b], i) => `<li class="card rv" style="--i:${i}"><span>${i + 1}</span><b>${esc(a)}</b><p>${esc(b)}</p></li>`).join("")}</ol>
+      </section>
+      <section class="wrap section">
+        <div class="card orl-pcto rv"><p class="kicker">PCTO</p><h3>La relazione sul percorso:</h3><p class="muted">${esc(O.pcto.intro)}</p>
+          <ol class="goals">${O.pcto.parti.map(([a, b]) => `<li><b>${esc(a)}.</b> ${esc(b)}</li>`).join("")}</ol>
+          <p class="note">${esc(O.pcto.consiglio)}</p></div>
+      </section>`;
   }
 
   /* ================= Metodo di studio ================= */
@@ -1000,6 +1303,7 @@
   }
   function tabSchemi(body, t) {
     const list = S[t.id] || [];
+    markStep(t.id, "schema");
     body.innerHTML = `<p class="note" style="margin:8px 0 16px">${list.length} schemi per ripassare l'argomento a colpo d'occhio. Prova a spiegarli ad alta voce, poi mettiti alla prova.</p>
       <div class="schemi">${list.map((sc, i) => `<div class="card schema sc-${sc.tipo} rv" style="--i:${i % 2}">${schemaHtml(sc, i + 1)}</div>`).join("")}</div>
       ${G[t.id] ? `<div class="cta-row" style="justify-content:center"><a class="btn grad" href="#/argomento/${t.id}/gioca">${I.game} Mettiti alla prova</a></div>` : ""}`;
@@ -1222,12 +1526,15 @@
     else if (a === "sfida") { pageSfida(b); navKey = "sfida"; }
     else if (a === "trofei") { pageTrofei(); navKey = "trofei"; }
     else if (a === "cerca") { pageCerca(b); navKey = "cerca"; }
+    else if (a === "orale") { pageOrale(); navKey = "classi"; }
+    else if (a === "stampa") { pageStampa(b); navKey = "classi"; }
     else pageHome();
-    const cl = a === "classe" ? Number(b) : a === "argomento" && byId[b] ? topicClass(byId[b]) : 0;
+    const cl = a === "classe" ? Number(b) : (a === "argomento" || a === "stampa") && byId[b] ? topicClass(byId[b]) : a === "orale" ? 5 : 0;
+    root.classList.toggle("printing", a === "stampa");
     $$(".bnav [data-nav]").forEach(x => x.classList.toggle("on", x.dataset.nav === navKey));
     $$(".nav [data-nav]").forEach(x => x.classList.toggle("on", x.dataset.nav === navKey || (cl && x.dataset.nav === "c" + cl)));
     app.classList.remove("page"); void app.offsetWidth; app.classList.add("page");
-    const t = a === "argomento" && byId[b];
+    const t = (a === "argomento" || a === "stampa") && byId[b];
     document.title = (t ? t.titolo + " · " : "") + "Studiare Scienze Motorie e Sportive";
     const seg = a === "argomento" && c && c !== "studia" && $(".seg-wrap");
     if (seg && !(c === "gioca" && d) && c !== "ripassa") window.scrollTo(0, seg.offsetTop - 62); else window.scrollTo(0, 0);

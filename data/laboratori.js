@@ -66,6 +66,7 @@ window.LAB = {
     { t: "esperienza", titolo: "Il mio microciclo", dove: "a casa", tempo: "1 settimana", obiettivo: "Programmare e registrare una settimana di allenamento.", materiale: ["Quaderno o foglio di calcolo"], passi: ["Scrivi le sedute della settimana con obiettivo, durata e contenuti.", "Dopo ogni seduta annota la fatica percepita (0–10).", "Calcola il carico: fatica × minuti.", "Alla fine della settimana controlla l'alternanza tra giorni duri e leggeri."], osserva: ["Ci sono stati due giorni duri di fila?", "Dove hai inserito il recupero?"] }
   ],
   "le-capacita-condizionali": [
+    { t: "tool", tool: "fitness" },
     { t: "tool", tool: "reazione" },
     { t: "tool", tool: "cooper" },
     { t: "esperienza", titolo: "Il circuito delle capacità", dove: "in palestra", tempo: "45 minuti", obiettivo: "Misurare forza, resistenza, velocità e flessibilità.", materiale: ["Metro", "Cronometro", "Coni", "Palla medica 2–3 kg", "Cassetta sit and reach"], passi: ["Forza esplosiva: salto in lungo da fermo e lancio della palla medica.", "Forza resistente: addominali in 30 secondi.", "Velocità: 30 metri da fermo.", "Flessibilità: sit and reach.", "Resistenza: navetta o Cooper in un'altra lezione.", "Annota tutto e ripeti fra due mesi."], osserva: ["Qual è la tua capacità più forte? E quella da migliorare?", "Quale metodo di allenamento sceglieresti per migliorarla?"] },
@@ -95,6 +96,7 @@ window.LAB = {
     { t: "esperienza", titolo: "Indagine sugli integratori", dove: "in classe", tempo: "40 minuti", obiettivo: "Valutare in modo critico la pubblicità degli integratori.", materiale: ["Pubblicità e siti di integratori", "Lista proibita WADA"], passi: ["In gruppo analizzate un integratore: che cosa promette?", "Cercate che cosa dicono le fonti scientifiche e le linee guida.", "Controllate se contiene sostanze presenti nella Lista proibita.", "Presentate il risultato: utile, inutile o rischioso?"], osserva: ["Quali frasi della pubblicità sono esagerate?", "Che cosa si intende per responsabilità oggettiva dell'atleta?"] }
   ],
   "test-motori": [
+    { t: "tool", tool: "fitness" },
     { t: "tool", tool: "reazione" },
     { t: "tool", tool: "cooper" },
     { t: "esperienza", titolo: "La batteria di classe", dove: "in palestra", tempo: "2 lezioni", obiettivo: "Eseguire una batteria di test standardizzati e confrontare i risultati nel tempo.", materiale: ["Metro", "Cronometro", "Coni", "Palla medica", "Cassetta sit and reach", "Audio del test navetta"], passi: ["Riscaldamento uguale per tutti.", "Salto in lungo da fermo (2 prove).", "Lancio della palla medica (2 prove).", "Sit and reach (2 prove).", "Navetta 10 × 5 m.", "Test navetta di Léger in una lezione a parte.", "Annota tutto in una tabella con data e condizioni."], osserva: ["I test rispettavano validità, affidabilità e standardizzazione?", "Fra tre mesi ripeti: dove sei migliorato?"] }

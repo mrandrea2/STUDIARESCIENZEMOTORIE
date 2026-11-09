@@ -587,6 +587,95 @@ window.ILL = (function () {
       <path class="lo dr" d="M190 135 H226 M216 125 l12 10 -12 10"/>
       <g class="fi" style="--k:1"><rect class="o" x="236" y="60" width="160" height="150" rx="16"/>${lab(316, 96, "Modello sociale", "tw", "middle")}${lab(316, 130, "la disabilità nasce", "tw sm", "middle")}${lab(316, 146, "dalle barriere", "tw sm", "middle")}${lab(316, 162, "dell'ambiente", "tw sm", "middle")}</g>
       ${lab(208, 250, "Oggi: approccio bio-psico-sociale", "", "middle")}
-    `, "0 0 420 270")
+    `, "0 0 420 270"),
+
+    /* ---------- CAPACITÀ COORDINATIVE ---------- */
+    capacita: S(`
+      <rect class="n" x="125" y="16" width="170" height="44" rx="12"/>${lab(210, 44, "Capacità motorie", "tw", "middle")}
+      <path class="ln" d="M210 60 V80 M100 80 H320 M100 80 V100 M320 80 V100"/>
+      <g class="fi" style="--k:0"><rect class="b" x="20" y="100" width="160" height="52" rx="12"/>${lab(100, 124, "Condizionali", "tw", "middle")}${lab(100, 142, "quantitative · muscoli", "tw sm", "middle")}
+        ${["Forza", "Resistenza", "Velocità"].map((a, k) => `<rect class="b2" x="38" y="${168 + k * 40}" width="124" height="32" rx="9"/>${lab(100, 189 + k * 40, a, "", "middle")}`).join("")}</g>
+      <g class="fi" style="--k:1"><rect class="o" x="240" y="100" width="160" height="52" rx="12"/>${lab(320, 124, "Coordinative", "tw", "middle")}${lab(320, 142, "qualitative · nervi", "tw sm", "middle")}
+        <rect class="o2" x="258" y="168" width="124" height="44" rx="9"/>${lab(320, 186, "Generali", "", "middle")}${lab(320, 203, "apprendimento…", "sm", "middle")}
+        <rect class="o2" x="258" y="220" width="124" height="44" rx="9"/>${lab(320, 238, "Speciali", "", "middle")}${lab(320, 255, "equilibrio, ritmo…", "sm", "middle")}</g>
+      ${lab(210, 296, "Mobilità articolare: capacità «di confine»", "sm", "middle")}
+    `, "0 0 420 306"),
+    controllo: S(`
+      ${[["Percettivo", "i sensi", 20, "b"], ["Elaborativo", "il cervello", 150, "n"], ["Effettore", "i muscoli", 280, "o"]].map(([a, b, x, c], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${c}" x="${x}" y="70" width="110" height="70" rx="14"/>${lab(x + 55, 100, a, "tw", "middle")}${lab(x + 55, 120, b, "tw sm", "middle")}</g>`).join("")}
+      <path class="ln" d="M132 105 h14 M140 98 l8 7 -8 7 M262 105 h14 M270 98 l8 7 -8 7"/>
+      <path class="lbl dr" d="M335 142 C335 220 300 236 205 236 C110 236 75 220 75 142"/>
+      <path class="b" d="M75 140 l-8 13 h16z"/>
+      <rect class="b2" x="130" y="214" width="150" height="44" rx="12"/>${lab(205, 234, "Controllo", "", "middle")}${lab(205, 250, "feedback: com'è andata?", "sm", "middle")}
+      ${lab(200, 36, "Dal segnale al gesto, e ritorno", "", "middle")}
+    `, "0 0 400 280"),
+    equilibrio: S(`
+      <g class="fi" style="--k:0">
+        <circle class="n" cx="100" cy="56" r="14"/><path class="ln" d="M100 70 V150 M100 92 L70 120 M100 92 L130 120 M100 150 L94 228 M100 150 L106 228"/>
+        <circle class="o" cx="100" cy="146" r="7"/><path class="ld" d="M100 146 V244"/>
+        <rect class="b2" x="86" y="232" width="28" height="12" rx="4"/>
+        ${lab(100, 270, "Base stretta", "", "middle")}${lab(100, 287, "baricentro alto: instabile", "sm", "middle")}
+      </g>
+      <g class="fi" style="--k:1">
+        <circle class="n" cx="300" cy="86" r="14"/><path class="ln" d="M300 100 V164 M300 118 L262 138 M300 118 L338 138 M300 164 L262 196 L250 232 M300 164 L338 196 L350 232"/>
+        <circle class="o" cx="300" cy="166" r="7"/><path class="ld" d="M300 166 V244"/>
+        <rect class="b" x="236" y="232" width="128" height="12" rx="4"/>
+        ${lab(300, 270, "Base larga, ginocchia flesse", "", "middle")}${lab(300, 287, "baricentro basso: stabile", "sm", "middle")}
+      </g>
+      <circle class="o" cx="186" cy="30" r="6"/>${lab(198, 35, "baricentro")}
+    `, "0 0 400 300"),
+    fasi: S(`
+      ${[["Coordinazione grezza", "rigido, errori", "b2"], ["Coordinazione fine", "preciso, fluido", "b"], ["Disponibilità variabile", "adattabile", "o"]].map(([a, b, c], k) =>
+        `<g class="gr" style="--k:${k}"><rect class="${c}" x="${30 + k * 122}" y="${190 - k * 60}" width="110" height="${70 + k * 60}" rx="10"/></g>${lab(85 + k * 122, 176 - k * 60, (k + 1) + "", k === 2 ? "to" : "tb", "middle")}${lab(85 + k * 122, 284, a.split(" ")[0], "", "middle")}${lab(85 + k * 122, 300, a.split(" ").slice(1).join(" "), "", "middle")}${lab(85 + k * 122, 318, b, "sm", "middle")}`).join("")}
+      <path class="lo dr" d="M40 120 C140 110 240 70 380 30"/>
+      ${lab(30, 30, "Le fasi dell'apprendimento motorio")}
+    `, "0 0 410 330"),
+
+    /* ---------- PRIMO SOCCORSO ---------- */
+    catena: S(`
+      ${[["1", "Allarme", "chiama il 112"], ["2", "RCP", "compressioni subito"], ["3", "DAE", "defibrillatore"], ["4", "Soccorso", "avanzato"]].map(([n, a, b], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${k % 2 ? "b" : "o"}" x="${14 + k * 98}" y="60" width="82" height="82" rx="41" fill-opacity=".14"/><rect fill="none" stroke="${k % 2 ? "#3A6BC4" : "#E8692F"}" stroke-width="7" x="${14 + k * 98}" y="60" width="82" height="82" rx="41"/>${lab(55 + k * 98, 110, n, k % 2 ? "tb" : "to", "middle")}${lab(55 + k * 98, 172, a, "", "middle")}${lab(55 + k * 98, 190, b, "sm", "middle")}</g>`).join("")}
+      ${lab(200, 32, "La catena della sopravvivenza", "", "middle")}
+      ${lab(200, 232, "Ogni minuto senza RCP riduce del 10% le probabilità", "sm", "middle")}${lab(200, 250, "di sopravvivere a un arresto cardiaco", "sm", "middle")}
+    `, "0 0 400 266"),
+    rcp: S(`
+      <path class="b3 sk" d="M40 220 C40 196 70 186 120 186 L300 186 C340 186 366 196 366 220 Z"/>
+      <circle class="b3 sk" cx="56" cy="196" r="26"/>
+      <rect class="g" x="20" y="222" width="370" height="10" rx="5"/>${lab(390, 252, "piano rigido", "sm", "end")}
+      <path class="sk o2" d="M178 186 L172 120 C172 108 196 104 200 116 L206 186Z"/>
+      <path class="sk o2" d="M150 120 C150 100 230 100 230 120 L222 132 L158 132Z"/>
+      <path class="ln" d="M190 104 V40"/><path class="ln" d="M180 40 H200"/>
+      <path class="lo" d="M250 120 V170 M240 160 l10 12 10 -12"/>
+      ${lab(268, 140, "5–6 cm")}${lab(268, 158, "metà inferiore", "sm")}${lab(268, 172, "dello sterno", "sm")}
+      ${lab(206, 40, "100–120 al minuto", "to")}${lab(206, 60, "braccia tese, spalle", "sm")}${lab(206, 76, "sopra le mani", "sm")}
+      ${lab(206, 100, "rapporto 30 : 2", "sm")}
+    `, "0 0 400 270"),
+    pls: S(`
+      <rect class="g" x="20" y="226" width="360" height="8" rx="4"/>
+      <circle class="b3 sk" cx="80" cy="170" r="24"/>
+      <path class="b3 sk" d="M104 152 C140 140 220 140 262 156 L262 206 C220 220 140 220 104 204Z"/>
+      <path class="sk b3" d="M262 166 L330 196 L320 226 L262 214Z"/>
+      <path class="sk b2" d="M260 176 L300 140 L340 150 L328 168 L300 166 L268 200Z"/>
+      <path class="sk b2" d="M150 156 C120 130 92 126 70 140 L80 156 C96 150 118 152 136 170Z"/>
+      ${lead(76, 196, 76, 254)}${lab(40, 272, "bocca verso terra:", "sm")}${lab(40, 288, "la saliva esce", "sm")}
+      ${lead(110, 148, 110, 92)}${lab(80, 84, "mano sotto la guancia", "sm")}
+      ${lead(318, 156, 340, 92)}${lab(300, 84, "gamba piegata:", "sm")}${lab(300, 100, "il corpo non rotola", "sm")}
+      ${lab(20, 36, "Posizione laterale di sicurezza", "to")}${lab(20, 56, "se respira ma non è cosciente", "sm")}
+    `, "0 0 400 300"),
+    rice: S(`
+      ${[["R", "Rest", "riposo"], ["I", "Ice", "ghiaccio"], ["C", "Compression", "compressione"], ["E", "Elevation", "arto in alto"]].map(([a, b, c], k) =>
+        `<g class="fi" style="--k:${k}"><rect class="${["n", "b", "o", "b2"][k]}" x="${18 + k * 96}" y="70" width="84" height="110" rx="14"/>${lab(60 + k * 96, 138, a, k === 3 ? "" : "tw", "middle")}${lab(60 + k * 96, 208, b, "", "middle")}${lab(60 + k * 96, 226, c, "sm", "middle")}</g>`).join("")}
+      ${lab(200, 40, "Dopo un trauma a muscoli e articolazioni", "", "middle")}
+      ${lab(200, 266, "Ghiaccio mai a contatto diretto con la pelle", "sm", "middle")}
+    `, "0 0 400 280"),
+    pressione: S(`
+      <circle class="b3 sk" cx="200" cy="44" r="24"/>
+      <path class="b3 sk" d="M170 70 H230 L250 170 H150Z"/>
+      <path class="b3 sk" d="M170 76 L120 150 L108 220 M230 76 L280 150 L292 220" fill="none"/>
+      <path class="b3 sk" d="M160 170 L150 290 M240 170 L250 290" fill="none"/>
+      ${[[134, 128, "Omerale", 30, 120], [174, 186, "Femorale", 30, 214]].map(([x, y, t, lx, ly], k) => `<g class="fi" style="--k:${k}"><circle class="o" cx="${x}" cy="${y}" r="9"/>${lab(lx, ly, t)}</g>`).join("")}
+      <path class="lt" d="M126 128 L98 120 M166 186 L104 210"/>
+      ${lab(390, 100, "1. Premi sulla ferita", "", "end")}${lab(390, 118, "con garza e mano", "sm", "end")}${lab(390, 160, "2. Se non basta:", "", "end")}${lab(390, 178, "premi l'arteria contro", "sm", "end")}${lab(390, 194, "l'osso, a monte", "sm", "end")}
+    `, "0 0 400 300")
   };
 })();

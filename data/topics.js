@@ -141,7 +141,58 @@ window.TOPICS = [
     ]
   },
 
+  {
+    id: "le-capacita-coordinative",
+    titolo: "Le capacità coordinative",
+    sottotitolo: "muoversi con intelligenza",
+    classi: [1],
+    obiettivi: [
+      "Distinguere movimento riflesso, volontario e automatizzato",
+      "Capacità condizionali e coordinative: che cosa le differenzia",
+      "Le capacità coordinative generali e speciali",
+      "L'equilibrio: statico, dinamico, in volo, e come migliorarlo",
+      "Il controllo motorio: percezione, elaborazione, esecuzione, feedback",
+      "Le fasi dell'apprendimento motorio e come si allena la coordinazione"
+    ],
+    sintesi: [
+      ["Capacità coordinative", "Dipendono dal sistema nervoso: organizzano e regolano il movimento, lo rendono preciso ed economico."],
+      ["Generali", "Apprendimento motorio, controllo motorio, adattamento e trasformazione del movimento."],
+      ["Speciali", "Combinazione, differenziazione, orientamento, ritmo, reazione, equilibrio, fantasia motoria."],
+      ["Equilibrio", "Statico, dinamico, in volo. Base larga, baricentro basso e sguardo fisso aumentano la stabilità."],
+      ["Controllo motorio", "Sistema percettivo, elaborativo, effettore e di controllo (feedback)."],
+      ["Apprendimento", "Coordinazione grezza → coordinazione fine → disponibilità variabile."]
+    ],
+    materiali: [
+      { tipo: "link", url: "https://www.mobilesport.ch/wp-content/uploads/2013/10/praxis_2008_38_Koordination_i.pdf", titolo: "Esercizi di coordinazione", nota: "mobilesport.ch · Ufficio federale dello sport (CH)" }
+    ]
+  },
+
   /* ---------------- CLASSE SECONDA / TERZA ---------------- */
+  {
+    id: "il-primo-soccorso",
+    titolo: "Il primo soccorso",
+    sottotitolo: "sapere cosa fare",
+    classi: [2],
+    obiettivi: [
+      "Il dovere di soccorso e il codice di comportamento",
+      "Chiamare il 112 nel modo giusto",
+      "Valutare coscienza e respiro; la posizione laterale di sicurezza",
+      "La rianimazione cardiopolmonare e il defibrillatore (DAE)",
+      "Il soffocamento da corpo estraneo",
+      "Traumi, ferite ed emorragie: che cosa fare e che cosa non fare"
+    ],
+    sintesi: [
+      ["Codice di comportamento", "Sicurezza della scena, valutazione, chiamata al 112, intervento con ciò che sai fare."],
+      ["112", "Dove, che cosa è successo, quante persone, come stanno, il tuo numero."],
+      ["RCP", "Mani al centro del torace, 5–6 cm, 100–120 al minuto, 30 compressioni e 2 ventilazioni."],
+      ["DAE", "Lo può usare chiunque: si accende e guida con la voce."],
+      ["Posizione laterale di sicurezza", "Per chi respira ma non è cosciente: le vie aeree restano libere."],
+      ["RICE", "Riposo, ghiaccio, compressione, elevazione: per distorsioni, stiramenti e contusioni."]
+    ],
+    materiali: [
+      { tipo: "link", url: "https://www.ircouncil.it/", titolo: "Italian Resuscitation Council", nota: "Linee guida e corsi BLSD" }
+    ]
+  },
   {
     id: "apparato-cardio-circolatorio",
     titolo: "Apparato cardio-circolatorio",
@@ -571,8 +622,8 @@ window.TOPICS = [
 
 /* Ordine degli argomenti nell'indice di ogni classe */
 window.CLASSI = {
-  1: { nome: "Classe prima", temi: ["la-salute-dinamica", "sistema-scheletrico", "le-articolazioni", "sistema-muscolare"] },
-  2: { nome: "Classe seconda", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "i-metabolismi-energetici", "teoria-dellallenamento", "le-capacita-condizionali"] },
+  1: { nome: "Classe prima", temi: ["la-salute-dinamica", "sistema-scheletrico", "le-articolazioni", "sistema-muscolare", "le-capacita-coordinative"] },
+  2: { nome: "Classe seconda", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "il-primo-soccorso", "i-metabolismi-energetici", "teoria-dellallenamento", "le-capacita-condizionali"] },
   3: { nome: "Classe terza", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "i-metabolismi-energetici", "teoria-dellallenamento", "dal-gioco-allo-sport", "le-capacita-condizionali", "apparato-digerente", "principi-per-una-sana-alimentazione", "alimentazione-e-sport-integratori-e-doping", "test-motori"] },
   4: { nome: "Classe quarta", temi: ["il-sistema-nervoso", "il-sistema-endocrino", "il-sistema-immunitario", "pnei-lifestyle-e-salute", "teoria-dellallenamento", "adattamenti-in-quota-e-in-profondita"] },
   5: { nome: "Classe quinta", temi: ["psicologia-dello-sport", "adattamenti-fisiologici-allallenamento", "alimentazione-e-sport-integratori-e-doping", "disabilita-e-sport-le-paralimpiadi"] }

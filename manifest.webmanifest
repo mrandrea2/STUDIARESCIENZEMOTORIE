@@ -1,13 +1,27 @@
 {
   "name": "Studiare Scienze Motorie e Sportive",
   "short_name": "Scienze Motorie",
-  "description": "Slide, video e giochi di Scienze motorie e sportive. Prof. Andrea Bertelli, Liceo Galilei Verona.",
+  "description": "Lezioni, schemi, laboratorio e giochi di Scienze motorie e sportive. Prof. Andrea Bertelli, Liceo Galilei Verona. Funziona anche offline.",
+  "id": "./",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#0A0D24",
   "theme_color": "#0A0D24",
   "lang": "it",
+  "categories": ["education", "sports"],
   "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
     { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Prime", "url": "./#/classe/1" },
+    { "name": "Seconde", "url": "./#/classe/2" },
+    { "name": "Terze", "url": "./#/classe/3" },
+    { "name": "Quarte", "url": "./#/classe/4" },
+    { "name": "Quinte", "url": "./#/classe/5" }
   ]
 }
