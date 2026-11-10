@@ -1108,7 +1108,12 @@
     installEv.prompt(); installEv.userChoice.finally(() => { installEv = null; const c = $("#instCard"); if (c) c.hidden = true; });
   });
   window.addEventListener("offline", () => toast("⚡", "Sei offline", "Lezioni, schemi e giochi funzionano; video e PDF tornano con la rete."));
-  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => { /* niente offline */ }));
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    /* quando arriva una versione nuova del sito, ricarica una volta sola per mostrarla */
+    const had = !!navigator.serviceWorker.controller; let done = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (had && !done) { done = true; location.reload(); } });
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then(r => r.update()).catch(() => { /* niente offline */ }));
+  }
 
   /* ---------- Domande aperte ---------- */
   function tabDomande(body, t) {

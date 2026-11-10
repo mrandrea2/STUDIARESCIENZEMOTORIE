@@ -1,9 +1,10 @@
 /* Service worker: rende il sito installabile e consultabile anche senza rete.
    Al primo avvio salva la pagina e tutti i file che index.html richiama
-   (stile, script, lezioni, dati). Poi risponde subito dalla copia salvata
-   e intanto la aggiorna in sottofondo: alla visita successiva vedi le novità.
+   (stile, script, lezioni, dati). Con la rete chiede sempre la versione
+   aggiornata (e la salva); senza rete, o se la rete è troppo lenta,
+   risponde con la copia salvata.
    Se cambi molti file e vuoi forzare l'aggiornamento, aumenta VERSIONE. */
-const VERSIONE = "ssm-v11";
+const VERSIONE = "ssm-v12";
 const EXTRA = ["./", "index.html", "manifest.webmanifest", "assets/favicon.svg", "assets/icon-192.png", "assets/icon-512.png", "assets/icon-maskable-512.png", "assets/icon-180.png", "assets/logo-galilei.jpg", "acrosport.html", "assets/fonts/fonts.css", "assets/fonts/archivo-latin-wdth-normal.woff2", "assets/fonts/archivo-latin-ext-wdth-normal.woff2", "assets/fonts/oswald-latin-wght-normal.woff2", "assets/fonts/source-serif-4-latin-opsz-italic.woff2", "assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2", "assets/fonts/atkinson-hyperlegible-latin-700-normal.woff2", "assets/fonts/inter-latin-wght-normal.woff2", "assets/fonts/source-serif-4-latin-opsz-normal.woff2"];
 
 self.addEventListener("install", e => {
@@ -38,8 +39,11 @@ self.addEventListener("fetch", e => {
   e.respondWith((async () => {
     const cache = await caches.open(VERSIONE);
     const key = req.mode === "navigate" ? "index.html" : req;
+    const net = fetch(req, { cache: "no-cache" }).then(r => { if (r.ok) cache.put(key, r.clone()); return r; }).catch(() => null);
+    const slow = new Promise(res => setTimeout(() => res("lenta"), 3500));
+    const first = await Promise.race([net, slow]);
+    if (first && first !== "lenta") return first;
     const hit = await cache.match(key, { ignoreSearch: true });
-    const net = fetch(req).then(r => { if (r.ok) cache.put(key, r.clone()); return r; }).catch(() => null);
     if (hit) { e.waitUntil(net); return hit; }
     const r = await net;
     return r || (req.mode === "navigate" ? cache.match("index.html") : Response.error());
