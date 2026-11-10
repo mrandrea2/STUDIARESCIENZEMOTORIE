@@ -1620,3 +1620,100 @@ label.a11y-t:hover, a.a11y-t:hover { background: rgba(255, 255, 255, .14); }
 .rd-bar button[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: #062b20; }
 .a11y-t em { justify-self: start; }
 @media (min-width: 1100px) { .a11y-t em, .a11y-t .at-sw { grid-column: 1; align-self: end; } .a11y-t .at-ic { grid-row: 1; } }
+
+/* =========================================================
+   v7 — animazioni leggere e layout rifinito
+   Le animazioni continue usano solo transform e opacity (le gestisce
+   la scheda grafica), si fermano fuori schermo e rispettano
+   «riduci movimento». Niente ridisegni continui di sfondi e ombre.
+   ========================================================= */
+.anim-off, .anim-off *, .anim-off::before, .anim-off::after, .anim-off *::before, .anim-off *::after { animation-play-state: paused !important; }
+
+/* sfumature: ferme, si muovono solo dove serve */
+.top::after { animation: none; background-size: 100% 100%; }
+.gt { animation: none; background-size: 100% 100%; }
+.hero .gt { background-size: 200% 100%; animation: flow 6s linear infinite; }
+.hub-c, .daily { animation: none; }
+.btn.grad { animation: none; background-size: 200% 100%; background-position: 0 0; transition: background-position .7s var(--ease), transform .25s var(--spring), box-shadow .25s; }
+.btn.grad:hover, .btn.grad:focus-visible { background-position: 100% 0; }
+
+/* banner fitness: la sfumatura scorre su un livello a parte */
+.fitban { background: #C2247F; animation: rise .7s var(--ease) .25s both; max-width: min(640px, 100%); }
+.fitban::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 200%; z-index: -2; background: linear-gradient(90deg, #FF5A1F, #F0287A, #9B3DF0, #2F7BFF, #FF5A1F, #F0287A, #9B3DF0, #2F7BFF, #FF5A1F); animation: slideX 12s linear infinite; will-change: transform; }
+.fitban.small { animation: none; }
+@keyframes slideX { to { transform: translateX(-50%); } }
+
+/* riquadri del metodo: respiro al posto dell'ombra animata */
+.hl { animation: hlBreath 3.4s ease-in-out infinite; }
+.hl2 { animation-delay: -1.7s; }
+.hl:hover, .hl:focus-visible { animation: none; }
+@keyframes hlBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.018); } }
+
+/* anello dell'accessibilità: un cerchio che si allarga */
+.a11y-ic { animation: none; position: relative; box-shadow: none; }
+.a11y-ic::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 3px solid #5C9BFF; animation: ringOut 2.6s ease-out infinite; pointer-events: none; }
+@keyframes ringOut { 0% { transform: scale(1); opacity: .75; } 75%, 100% { transform: scale(1.6); opacity: 0; } }
+.sbanner .ic { animation: none; }
+
+.hero .blob, .a11y::before { will-change: transform; }
+.stats div, .crumb, .path { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.path { background: rgba(10, 13, 36, .5); }
+
+/* comparsa allo scorrimento: più corta e più rapida */
+.rv { transform: translateY(22px); transition: opacity .5s var(--ease), transform .5s var(--ease); transition-delay: calc(var(--i, 0) * 55ms); }
+
+@media (prefers-reduced-motion: reduce) { .fitban::before, .a11y-ic::after, .hl { animation: none !important; } }
+
+/* ---------- layout ---------- */
+.hero .wrap > *, .band .row > * { min-width: 0; }
+.band .row > .ring { flex: none; }
+.kicker { align-items: flex-start; }
+.kicker::before { flex: none; margin-top: .42em; }
+.band h1 { hyphens: auto; overflow-wrap: break-word; }
+.xl { display: inline; }
+.sheet table { table-layout: fixed; }
+.sheet th, .sheet td { overflow-wrap: anywhere; }
+
+@media (max-width: 599px) {
+  .hero h1 { font-size: clamp(2.5rem, 13.2vw, 4rem); }
+  .hero { padding-top: 20px; }
+  .band h1 { font-size: clamp(2rem, 9.6vw, 2.9rem); }
+  .ring { width: 76px; height: 76px; }
+  .ring b { font-size: 1.05rem; }
+  .fitban { grid-template-columns: 52px 1fr; padding: 16px 14px 20px; }
+  .fb-ic { width: 52px; height: 52px; border-radius: 16px; }
+  .fb-ic svg { width: 30px; height: 30px; }
+  .xl { display: none; }
+  .lez-intro p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .lez-mode { flex-wrap: nowrap; border-radius: 999px; max-width: 100%; }
+  .lez-mode .mode { padding: 9px 12px; font-size: .9rem; white-space: nowrap; }
+  .rd-bar { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 10px -16px 0; padding: 2px 16px; }
+  .rd-bar::-webkit-scrollbar { display: none; }
+  .rd-bar > span { font-size: 0; gap: 0; }
+  .rd-bar > span svg { width: 22px; height: 22px; }
+  .rd-bar button { flex: none; padding: 8px 12px; }
+  .flash-ctrl .btn { font-size: .98rem; padding: 0 10px; white-space: nowrap; }
+}
+@media (min-width: 700px) {
+  .path-s { grid-auto-columns: 1fr; }
+  .path-s li { min-width: 0; }
+}
+@media (min-width: 700px) and (max-width: 899px) {
+  .classes { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .path-s a b { font-size: .84rem; }
+  .path-s li { grid-template-columns: 32px 1fr; padding: 7px 8px 7px 6px; }
+  .pck { width: 32px; height: 32px; }
+  .path-s a::after { inset: 0 0 0 44px; }
+}
+@media (min-width: 760px) and (max-width: 1099px) { .a11y-g > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
+.logo-card { max-width: 100%; }
+.logo-card span { min-width: 0; }
+@media (max-width: 599px) {
+  .logo-card { gap: 10px; padding: 8px 12px 8px 8px; }
+  .logo-card img { height: 42px; flex: none; }
+  .logo-card span { font-size: .72rem; line-height: 1.2; }
+  .logo-card span small { font-size: .68rem; }
+  .band .kicker { letter-spacing: .1em; font-size: .72rem; }
+}
+.hero .rot.gt { animation: none; background-size: 100% 100%; }
+.lez-mode .mode svg { width: 18px; height: 18px; flex: none; }

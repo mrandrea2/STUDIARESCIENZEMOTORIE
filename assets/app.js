@@ -212,7 +212,16 @@
     setTimeout(() => el.remove(), 3700);
   }
   let io = null;
+  /* le animazioni continue si fermano quando l'elemento esce dallo schermo */
+  let mo = null;
+  function watchMotion() {
+    if (reduce || !("IntersectionObserver" in window)) return;
+    if (!mo) mo = new IntersectionObserver(en => en.forEach(x => x.target.classList.toggle("anim-off", !x.isIntersecting)), { rootMargin: "60px" });
+    mo.disconnect();
+    $$(".hero, .fitban, .a11y, .hl, .medal, .m3d-go, .fit-band, .sbanner").forEach(e => mo.observe(e));
+  }
   function reveal() {
+    watchMotion();
     const els = $$(".rv:not(.in)");
     if (reduce || !("IntersectionObserver" in window)) { els.forEach(e => e.classList.add("in")); return; }
     if (!io) io = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } }), { threshold: .08, rootMargin: "0px 0px -30px 0px" });
@@ -348,7 +357,7 @@
     app.innerHTML = `
       <section class="hero">
         <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
-        <div class="streaks" aria-hidden="true">${[0, 1, 2, 3, 4].map(() => `<div>${streakTxt.repeat(4)}${streakTxt.repeat(4)}</div>`).join("")}</div>
+        <div class="streaks" aria-hidden="true">${[0, 1, 2, 3, 4].map(() => `<div>${streakTxt.repeat(2)}${streakTxt.repeat(2)}</div>`).join("")}</div>
         <div class="wrap">
           <div class="logo-card"><img src="assets/logo-galilei.jpg" alt="Logo Liceo Galilei Verona" width="406" height="132"><span>LICEO SCIENTIFICO<br>INDIRIZZO SPORTIVO<small>Scienze motorie e sportive</small></span></div>
           <h1 aria-label="Studia il corpo in movimento">
@@ -963,10 +972,10 @@
     const docs = m.map((x, i) => [x, i]).filter(([x]) => ["pdf", "slides", "link", "form", "la"].includes(x.tipo));
     body.innerHTML = `
       <div class="lez-intro rv"><p class="kicker">Lezione</p><h2>${esc(L[t.id].titolo)}:</h2><p class="muted">${esc(L[t.id].sottotitolo)}.</p>
-        <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button><a class="mode" href="#/stampa/${t.id}">${I.print}<span>Stampa la sintesi</span></a></div>
+        <div class="lez-mode"><button class="mode on" data-mode="slide">${I.slides}<span>Slide</span></button><button class="mode" data-mode="read">${I.read}<span>Leggi tutto</span></button><a class="mode" href="#/stampa/${t.id}">${I.print}<span>Stampa<span class="xl"> la sintesi</span></span></a></div>
         <div class="rd-bar" role="group" aria-label="Per leggere meglio"><span>${I.access} Per leggere meglio:</span><button type="button" data-o="big" aria-pressed="false">A+ <b>Testo grande</b></button><button type="button" data-o="dsa" aria-pressed="false"><i class="dsa-a">Aa</i> <b>Alta leggibilità</b></button><button type="button" data-listen>${I.ear} <b>Ascolta</b></button></div></div>
-      ${tipsHtml(t)}
       ${deckHtml(t)}
+      ${tipsHtml(t)}
       ${vids.length ? `<section class="lez-vid rv"><h3 class="lez-h">Guarda e ascolta:</h3><div class="vid-grid">${vids.map(([x, i]) => videoHtml(x, i)).join("")}</div></section>` : ""}
       <div class="two" style="margin-top:18px">
         <div class="col"><div class="card rv"><h3>Obiettivi della lezione:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
@@ -1045,7 +1054,7 @@
   function bindPath() {
     const el = $("#path"); if (!el) return;
     $$(".pck", el).forEach(b => b.onclick = () => { vib(10); sfx("tap"); markStep(el.dataset.id, b.dataset.k, !pathDone(el.dataset.id, b.dataset.k)); });
-    const c = $(".cur", el) || $(".nx", el), ol = $(".path-s", el);
+    const c = $(".nx", el) || $(".cur", el), ol = $(".path-s", el);
     if (c && ol.scrollWidth > ol.clientWidth) ol.scrollLeft = Math.max(0, c.offsetLeft - 16);
   }
   function pathChip(t) {
