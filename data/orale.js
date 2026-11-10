@@ -2,7 +2,7 @@
    VERSO L'ORALE — classe quinta
    Sei percorsi pluridisciplinari in cui le Scienze motorie
    si collegano alle altre discipline, la guida per costruire
-   un collegamento e lo schema della relazione PCTO.
+   un collegamento e lo schema della relazione FSL (Formazione scuola-lavoro).
    Testi originali del prof. A. Bertelli, a partire dagli spunti
    della guida per l'insegnante del libro di testo.
    ========================================================= */
@@ -108,7 +108,7 @@ window.ORALE = {
     ["Chiudi con un'opinione", "La commissione apprezza un pensiero personale, motivato e rispettoso."]
   ],
   pcto: {
-    intro: "Nella relazione sul PCTO racconti un'esperienza, che cosa hai imparato e come si collega al tuo percorso. Bastano 5–8 minuti.",
+    intro: "Nella relazione sulla FSL (Formazione scuola-lavoro, il vecchio PCTO) racconti un'esperienza, che cosa hai imparato e come si collega al tuo percorso. Bastano 5–8 minuti.",
     parti: [
       ["Presentazione", "Dove, quando, quante ore, con quale ente o società sportiva."],
       ["Attività svolte", "Che cosa hai fatto concretamente: compiti, ruoli, strumenti."],

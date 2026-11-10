@@ -477,7 +477,7 @@
       <section class="wrap section orl-cls">
         <div class="section-head rv"><p class="kicker">Esame di Stato</p><h2>Percorsi per l'<span class="gt">esame</span>:</h2><p class="muted">Sei temi per collegare le Scienze motorie alle altre discipline nel colloquio orale.</p></div>
         <div class="orl-cards">${window.ORALE.percorsi.map((p, i) => `<a class="card orl-card rv" style="--i:${i % 3}" href="#/orale/${i + 1}"><span class="orl-n">${i + 1}</span><span><b>${esc(p.titolo)}</b><small>${p.collegamenti.slice(0, 3).map(x => esc(x[0])).join(" · ")}</small></span>${I.arr}</a>`).join("")}</div>
-        <a class="btn ghost full rv" href="#/orale">${I.mic} Metodo per i collegamenti e relazione PCTO</a>
+        <a class="btn ghost full rv" href="#/orale">${I.mic} Metodo per i collegamenti e relazione FSL</a>
       </section>` : ""}
       <section class="wrap section"><div class="grid">${topicCard(byId["metodo-di-studio"])}</div></section>`;
     animateRing();
@@ -1275,7 +1275,7 @@
         <ol class="orl-met">${O.metodo.map(([a, b], i) => `<li class="card rv" style="--i:${i}"><span>${i + 1}</span><b>${esc(a)}</b><p>${esc(b)}</p></li>`).join("")}</ol>
       </section>
       <section class="wrap section">
-        <div class="card orl-pcto rv"><p class="kicker">PCTO</p><h3>La relazione sul percorso:</h3><p class="muted">${esc(O.pcto.intro)}</p>
+        <div class="card orl-pcto rv"><p class="kicker">FSL · Formazione scuola-lavoro</p><h3>La relazione sul percorso:</h3><p class="muted">${esc(O.pcto.intro)}</p>
           <ol class="goals">${O.pcto.parti.map(([a, b]) => `<li><b>${esc(a)}.</b> ${esc(b)}</li>`).join("")}</ol>
           <p class="note">${esc(O.pcto.consiglio)}</p></div>
       </section>`;

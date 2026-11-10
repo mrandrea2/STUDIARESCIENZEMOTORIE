@@ -99,7 +99,7 @@ I consigli «Come studiarlo» di ogni argomento sono in `data/consigli.js`.
 ## Nuovi argomenti, profilo fitness e orale
 - `data/nuovi-argomenti.js`: giochi, schemi e laboratorio di «Le capacità coordinative» (prime) e «Il primo soccorso» (seconde).
 - Laboratorio: test della cicogna, metronomo per la RCP, simulazione della chiamata al 112.
-- `data/orale.js`: la pagina «Verso l'orale» per le quinte (`#/orale`), con sei percorsi pluridisciplinari e la guida alla relazione PCTO.
+- `data/orale.js`: la pagina «Verso l'orale» per le quinte (`#/orale`), con sei percorsi pluridisciplinari e la guida alla relazione FSL (Formazione scuola-lavoro).
 
 ## Laboratorio fitness (`#/fitness`)
 Pagina con banner animato in home e nel laboratorio di Test motori e Capacità condizionali. Lo studente inserisce i risultati
