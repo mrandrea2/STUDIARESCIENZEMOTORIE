@@ -97,7 +97,7 @@ Le domande aperte, con risposta modello e punti chiave, sono in `data/domande.js
 I consigli «Come studiarlo» di ogni argomento sono in `data/consigli.js`.
 
 ## Nuovi argomenti, profilo fitness e orale
-- `data/nuovi-argomenti.js`: giochi, schemi e laboratorio di «Le capacità coordinative» (prime) e «Il primo soccorso» (seconde).
+- `data/nuovi-argomenti.js`: giochi, schemi e laboratorio di «Le capacità coordinative» (terze), «L'apprendimento motorio» (quarte, lezione in `data/lezioni/l-apprendimento-motorio.js`) e «Il primo soccorso» (seconde).
 - Laboratorio: test della cicogna, metronomo per la RCP, simulazione della chiamata al 112.
 - `data/orale.js`: la pagina «Verso l'orale» per le quinte (`#/orale`), con sei percorsi pluridisciplinari e la guida alla relazione FSL (Formazione scuola-lavoro).
 

@@ -6,7 +6,7 @@ LEZIONI["le-capacita-coordinative"] = {
   titolo: "Muoversi con intelligenza",
   sottotitolo: "Capacità coordinative, equilibrio e apprendimento motorio",
   slides: [
-    { t: "cover", kicker: "Scienze motorie · Classi prima e quarta", title: "Muoversi con intelligenza", sub: "Capacità coordinative, equilibrio e apprendimento motorio" },
+    { t: "cover", kicker: "Scienze motorie · Classe terza", title: "Muoversi con intelligenza", sub: "Capacità coordinative, equilibrio e apprendimento motorio" },
 
     { t: "cards", kicker: "Per cominciare", title: "Forti non basta", cards: [
       { n: "1", h: "Il pallone che scappa", p: "Hai gambe forti, ma il controllo di palla non riesce." },
@@ -96,7 +96,7 @@ LEZIONI["le-capacita-coordinative"] = {
       "Generali: apprendimento, controllo, adattamento. Speciali: combinazione, differenziazione, orientamento, ritmo, reazione, equilibrio, fantasia.",
       "L'equilibrio può essere statico, dinamico o in volo; base larga e baricentro basso danno stabilità.",
       "Il controllo motorio passa da percezione, elaborazione, esecuzione e feedback.",
-      "Si impara in tre fasi: grezza, fine, disponibilità variabile."
+      "Si impara in tre fasi: grezza, fine, disponibilità variabile. In quarta lo approfondirai con le teorie dell'apprendimento motorio."
     ] },
 
     { t: "fonti", kicker: "Fonti", title: "Per approfondire", items: [

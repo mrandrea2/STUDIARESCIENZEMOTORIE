@@ -73,7 +73,7 @@ window.ORALE = {
       id: "linguaggio",
       titolo: "Il linguaggio del corpo",
       idea: "Il corpo comunica prima delle parole: gesti, postura, sguardo, distanza. Nello sport, nella danza e nella vita la comunicazione non verbale esprime emozioni e costruisce relazioni.",
-      argomenti: ["il-sistema-nervoso", "psicologia-dello-sport", "le-capacita-coordinative"],
+      argomenti: ["il-sistema-nervoso", "l-apprendimento-motorio", "psicologia-dello-sport", "le-capacita-coordinative"],
       collegamenti: [
         ["Scienze", "Neuroni specchio, emozioni e sistema limbico."],
         ["Arte", "Il corpo in movimento: Boccioni, Degas, Matisse «La danza»."],

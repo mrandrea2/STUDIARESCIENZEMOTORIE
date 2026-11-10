@@ -144,15 +144,15 @@ window.TOPICS = [
   {
     id: "le-capacita-coordinative",
     titolo: "Le capacità coordinative",
-    sottotitolo: "coordinazione e apprendimento motorio",
-    classi: [1, 4],
+    sottotitolo: "coordinazione ed equilibrio",
+    classi: [3],
     obiettivi: [
       "Distinguere movimento riflesso, volontario e automatizzato",
       "Capacità condizionali e coordinative: che cosa le differenzia",
       "Le capacità coordinative generali e speciali",
       "L'equilibrio: statico, dinamico, in volo, e come migliorarlo",
       "Il controllo motorio: percezione, elaborazione, esecuzione, feedback",
-      "Le fasi dell'apprendimento motorio e come si allena la coordinazione"
+      "Le fasi dell'apprendimento motorio e come si allena la coordinazione (in quarta lo approfondirai)"
     ],
     sintesi: [
       ["Capacità coordinative", "Dipendono dal sistema nervoso: organizzano e regolano il movimento, lo rendono preciso ed economico."],
@@ -165,6 +165,30 @@ window.TOPICS = [
     materiali: [
       { tipo: "link", url: "https://www.mobilesport.ch/wp-content/uploads/2013/10/praxis_2008_38_Koordination_i.pdf", titolo: "Esercizi di coordinazione", nota: "mobilesport.ch · Ufficio federale dello sport (CH)" }
     ]
+  },
+
+  {
+    id: "l-apprendimento-motorio",
+    titolo: "L'apprendimento motorio",
+    sottotitolo: "come si impara un gesto",
+    classi: [4],
+    obiettivi: [
+      "Distinguere apprendimento e prestazione",
+      "Controllo ad anello aperto e ad anello chiuso",
+      "Le teorie: Adams, Schmidt (schema e programma motorio generalizzato), approccio ecologico",
+      "Le fasi dell'apprendimento secondo Fitts e Posner e secondo Meinel e Schnabel",
+      "Memoria motoria, feedback, organizzazione della pratica e focus dell'attenzione",
+      "Collegare l'apprendimento motorio alle capacità coordinative studiate in terza"
+    ],
+    sintesi: [
+      ["Apprendimento", "Cambiamento relativamente stabile della capacità di eseguire un gesto, dovuto a pratica ed esperienza. Si verifica con test di ritenzione e di transfer."],
+      ["Controllo", "Anello aperto: gesto rapido senza correzioni. Anello chiuso: il feedback corregge durante il gesto."],
+      ["Teorie", "Adams: traccia mnestica e percettiva. Schmidt: programma motorio generalizzato e schema. Approccio ecologico: individuo, compito e ambiente."],
+      ["Fasi", "Cognitiva → associativa → autonoma (Fitts e Posner); grezza → fine → disponibilità variabile (Meinel e Schnabel)."],
+      ["Pratica", "Variata e casuale: più fatica subito, più apprendimento dopo. Feedback ridotto gradualmente. Focus esterno sull'effetto del gesto."],
+      ["Collegamento", "L'apprendimento motorio è la capacità coordinativa generale che sta alla base di tutte le altre."]
+    ],
+    materiali: []
   },
 
   /* ---------------- CLASSE SECONDA / TERZA ---------------- */
@@ -622,9 +646,9 @@ window.TOPICS = [
 
 /* Ordine degli argomenti nell'indice di ogni classe */
 window.CLASSI = {
-  1: { nome: "Classe prima", temi: ["la-salute-dinamica", "sistema-scheletrico", "le-articolazioni", "sistema-muscolare", "le-capacita-coordinative"] },
+  1: { nome: "Classe prima", temi: ["la-salute-dinamica", "sistema-scheletrico", "le-articolazioni", "sistema-muscolare"] },
   2: { nome: "Classe seconda", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "il-primo-soccorso", "i-metabolismi-energetici", "teoria-dellallenamento", "le-capacita-condizionali"] },
-  3: { nome: "Classe terza", temi: ["i-metabolismi-energetici", "teoria-dellallenamento", "dal-gioco-allo-sport", "le-capacita-condizionali", "apparato-digerente", "principi-per-una-sana-alimentazione", "alimentazione-e-sport-integratori-e-doping", "test-motori"] },
-  4: { nome: "Classe quarta", temi: ["il-sistema-nervoso", "le-capacita-coordinative", "il-sistema-endocrino", "il-sistema-immunitario", "pnei-lifestyle-e-salute", "teoria-dellallenamento", "adattamenti-in-quota-e-in-profondita"] },
+  3: { nome: "Classe terza", temi: ["i-metabolismi-energetici", "teoria-dellallenamento", "dal-gioco-allo-sport", "le-capacita-condizionali", "le-capacita-coordinative", "apparato-digerente", "principi-per-una-sana-alimentazione", "alimentazione-e-sport-integratori-e-doping", "test-motori"] },
+  4: { nome: "Classe quarta", temi: ["il-sistema-nervoso", "l-apprendimento-motorio", "il-sistema-endocrino", "il-sistema-immunitario", "pnei-lifestyle-e-salute", "teoria-dellallenamento", "adattamenti-in-quota-e-in-profondita"] },
   5: { nome: "Classe quinta", temi: ["psicologia-dello-sport", "adattamenti-fisiologici-allallenamento", "alimentazione-e-sport-integratori-e-doping", "disabilita-e-sport-le-paralimpiadi"] }
 };

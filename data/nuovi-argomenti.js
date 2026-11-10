@@ -1,6 +1,6 @@
 /* =========================================================
    NUOVI ARGOMENTI — giochi, schemi e laboratorio per
-   «Le capacità coordinative» (prima) e «Il primo soccorso» (seconda).
+   «Le capacità coordinative» (terza), «L'apprendimento motorio» (quarta) e «Il primo soccorso» (seconda).
    Formati identici a giochi-*.js, schemi.js e laboratori.js.
    ========================================================= */
 window.GAMES = window.GAMES || {};
@@ -195,4 +195,100 @@ LAB["il-primo-soccorso"] = [
   { t: "tool", tool: "chiamata" },
   { t: "esperienza", titolo: "La posizione laterale di sicurezza", dove: "in palestra, sui materassi", tempo: "20 minuti", obiettivo: "Saper mettere in posizione laterale di sicurezza un compagno in tre passaggi.", materiale: ["Materassini"], passi: ["Il compagno è supino. Ti inginocchi al suo fianco.", "Il braccio vicino a te va ad angolo retto, con il palmo verso l'alto.", "Porta il braccio lontano sul petto e appoggia il dorso della sua mano sulla guancia vicino a te.", "Piega il ginocchio lontano, con il piede a terra.", "Tenendo mano e ginocchio, giralo verso di te.", "Sistema la gamba in alto ad angolo retto e inclina la testa indietro, bocca verso terra.", "Scambiatevi i ruoli e cronometrate: entro 30 secondi?"], osserva: ["Perché la bocca deve essere rivolta verso terra?", "Che cosa controlli dopo averlo girato?"], sicurezza: "Movimenti lenti: è un'esercitazione, il compagno collabora." },
   { t: "esperienza", titolo: "Il kit di primo soccorso della palestra", dove: "in palestra", tempo: "15 minuti", obiettivo: "Sapere dove si trovano e a che cosa servono gli strumenti di soccorso.", materiale: ["Cassetta di primo soccorso della scuola"], passi: ["Con l'insegnante, apri la cassetta e fai l'elenco di ciò che contiene.", "Per ogni oggetto scrivi a che cosa serve: guanti, garze sterili, bende, ghiaccio istantaneo, disinfettante, forbici.", "Cerca nella scuola il DAE e il cartello verde che lo segnala.", "Disegna la piantina con il percorso più veloce dalla palestra al DAE."], osserva: ["Quanto tempo serve per andare a prendere il DAE?", "Chi lo va a prendere mentre tu fai le compressioni?"] }
+];
+
+/* ---------------- L'APPRENDIMENTO MOTORIO (quarta) ---------------- */
+GAMES["l-apprendimento-motorio"] = {
+  quiz: [
+    ["Che cosa si intende per apprendimento motorio?", ["Riuscire un gesto una volta", "Un cambiamento relativamente stabile nel saper eseguire un gesto, frutto della pratica", "Aumentare la forza muscolare", "Ricordare le regole di uno sport"], 1, "L'apprendimento è stabile nel tempo; una prova riuscita è solo prestazione."],
+    ["Come si verifica davvero che un gesto è stato appreso?", ["Con una prova subito dopo l'allenamento", "Con test di ritenzione e di transfer", "Chiedendo all'allievo", "Misurando la frequenza cardiaca"], 1, "Ritenzione: giorni dopo. Transfer: in una situazione nuova."],
+    ["Uno smash a pallavolo è guidato soprattutto…", ["Ad anello chiuso", "Ad anello aperto", "Dal sistema endocrino", "Dal riflesso rotuleo"], 1, "È troppo rapido per essere corretto durante l'esecuzione."],
+    ["Restare in equilibrio su una trave è un controllo…", ["Ad anello aperto", "Ad anello chiuso", "Riflesso", "Casuale"], 1, "Le informazioni dei sensi correggono di continuo la posizione."],
+    ["Chi ha proposto la teoria dello schema e il programma motorio generalizzato?", ["Adams", "Schmidt", "Fitts", "Pavlov"], 1, "R. A. Schmidt, 1975."],
+    ["Nel programma motorio generalizzato resta invariato…", ["La durata totale del gesto", "La forza totale", "L'ordine delle fasi e il ritmo interno", "La mano che usi"], 2, "Durata, forza e segmento sono parametri che puoi cambiare."],
+    ["Secondo Bernstein il principiante…", ["Usa tutte le articolazioni liberamente", "Blocca molte articolazioni e muove il corpo «a pezzi»", "Non ha bisogno di feedback", "È già nella fase autonoma"], 1, "Riduce i gradi di libertà per avere meno cose da controllare."],
+    ["Le fasi di Fitts e Posner sono…", ["Grezza, fine, variabile", "Cognitiva, associativa, autonoma", "Allarme, resistenza, esaurimento", "Carico, recupero, supercompensazione"], 1, "Corrispondono a grezza, fine e disponibilità variabile di Meinel e Schnabel."],
+    ["In quale memoria si conservano i gesti come andare in bici?", ["Sensoriale", "A breve termine", "Procedurale", "Dichiarativa"], 2, "È la memoria del saper fare."],
+    ["Un feedback dato dopo ogni singola prova…", ["È sempre il migliore", "Può creare dipendenza dall'insegnante", "Non ha effetti", "Serve solo ai principianti esperti"], 1, "Meglio ridurlo gradualmente e lasciare spazio all'autovalutazione."],
+    ["Alternare in modo casuale gesti diversi durante la seduta…", ["Peggiora l'apprendimento", "Peggiora un po' la prestazione subito ma migliora l'apprendimento", "Non cambia nulla", "Va bene solo per i professionisti"], 1, "È l'effetto dell'interferenza contestuale."],
+    ["«Manda la palla dentro il canestro» è un esempio di…", ["Focus interno", "Focus esterno", "Feedback intrinseco", "Transfer negativo"], 1, "L'attenzione è sull'effetto del gesto, non sul corpo."],
+    ["I neuroni specchio si attivano…", ["Solo quando dormi", "Quando agisci e quando osservi qualcuno agire", "Solo durante la corsa", "Solo nei bambini"], 1, "Scoperti dal gruppo di G. Rizzolatti a Parma."],
+    ["Nell'approccio ecologico l'insegnante soprattutto…", ["Spiega ogni dettaglio tecnico", "Modifica i vincoli di compito e ambiente", "Corregge ogni errore", "Fa ripetere sempre lo stesso esercizio"], 1, "Campo, attrezzo e regole fanno emergere il gesto adatto."]
+  ],
+  vf: [
+    ["Prestazione e apprendimento sono la stessa cosa.", false, "La prestazione è ciò che vedi oggi; l'apprendimento è ciò che resta."],
+    ["Un gesto che dura meno di due decimi di secondo non può essere corretto mentre avviene.", true, "Il feedback non fa in tempo: il gesto è ad anello aperto."],
+    ["Secondo Schmidt nella memoria è salvato ogni singolo gesto possibile.", false, "C'è un programma generale con regole per adattarlo."],
+    ["La pratica variata rinforza lo schema motorio.", true, "Variare forza, distanza e direzione rende il gesto adattabile."],
+    ["Il sonno aiuta a consolidare i gesti praticati.", true, "Durante la notte il cervello consolida l'apprendimento."],
+    ["Il focus interno sul corpo dà quasi sempre i risultati migliori.", false, "Di solito il focus esterno porta a gesti più fluidi."],
+    ["L'immaginazione motoria può sostituire del tutto la pratica.", false, "Aiuta, soprattutto se unita alla pratica reale."],
+    ["Allenare una mano può migliorare un po' anche l'altra.", true, "È il transfer bilaterale."]
+  ],
+  flash: [
+    ["Apprendimento motorio", "Cambiamento relativamente stabile nel saper eseguire un gesto, dovuto a pratica ed esperienza."],
+    ["Test di ritenzione", "Verifica del gesto dopo un periodo senza pratica."],
+    ["Anello aperto", "Controllo senza correzioni durante il gesto: gesti rapidi."],
+    ["Anello chiuso", "Controllo con feedback che corregge durante il gesto: gesti lenti e precisi."],
+    ["Programma motorio generalizzato", "Programma con parti fisse (ordine, ritmo) e parametri variabili (durata, forza, segmento)."],
+    ["Gradi di libertà", "I tanti modi in cui articolazioni e muscoli possono realizzare un gesto (Bernstein)."],
+    ["Interferenza contestuale", "Alternare compiti diversi rende la seduta più difficile ma l'apprendimento più solido."],
+    ["Focus esterno", "Attenzione sull'effetto del gesto, non sui movimenti del corpo."],
+    ["Conoscenza della prestazione", "Feedback su come è stato eseguito il gesto."],
+    ["Vincoli di Newell", "Individuo, compito e ambiente: insieme determinano il movimento."]
+  ],
+  abbina: [
+    ["Adams", "Teoria del circuito chiuso"], ["Schmidt", "Teoria dello schema"], ["Bernstein", "Gradi di libertà"],
+    ["Fitts e Posner", "Fasi cognitiva, associativa, autonoma"], ["Wulf", "Focus esterno"], ["Rizzolatti", "Neuroni specchio"],
+    ["Newell", "Vincoli individuo-compito-ambiente"], ["Gibson", "Affordance"]
+  ],
+  completa: [
+    "I gesti rapidi sono controllati ad anello {aperto}.",
+    "Schmidt parla di programma motorio {generalizzato}.",
+    "La seconda fase di Fitts e Posner è quella {associativa}.",
+    "I gesti si conservano nella memoria {procedurale}.",
+    "Pensare all'effetto del gesto è un focus {esterno}.",
+    "L'apprendimento si verifica con test di ritenzione e di {transfer}."
+  ],
+  ordina: [
+    ["Le fasi di Fitts e Posner", ["Cognitiva", "Associativa", "Autonoma"]],
+    ["Il feedback che si riduce", ["Correzione dopo ogni prova", "Correzione ogni due o tre prove", "L'allievo si autovaluta e chiede il feedback", "Il gesto si autocorregge da solo"]]
+  ],
+  gruppi: ["Anello aperto o anello chiuso?", [
+    ["Anello aperto", ["Smash", "Pugno nel pugilato", "Battuta al tennis"]],
+    ["Anello chiuso", ["Equilibrio sulla trave", "Infilare un ago", "Camminare sulla slackline"]]
+  ]]
+};
+
+SCHEMI["l-apprendimento-motorio"] = [
+  { tipo: "compare", titolo: "Le teorie dell'apprendimento motorio", colonne: [
+    { nome: "Adams (1971)", sotto: "circuito chiuso", voci: ["Traccia mnestica: avvia il gesto", "Traccia percettiva: come deve sentirsi", "Si impara riducendo l'errore", "Poco adatta ai gesti rapidi"] },
+    { nome: "Schmidt (1975)", sotto: "teoria dello schema", voci: ["Programma motorio generalizzato", "Parti fisse e parametri variabili", "Schemi di richiamo e di riconoscimento", "La pratica variata rinforza lo schema"] },
+    { nome: "Approccio ecologico", sotto: "Bernstein, Gibson, Newell", voci: ["Gradi di libertà", "Affordance", "Vincoli: individuo, compito, ambiente", "L'allievo esplora soluzioni"] }
+  ] },
+  { tipo: "flow", titolo: "Le fasi: due modelli a confronto", voci: [
+    ["Cognitiva · coordinazione grezza", "Capisci il compito, pensi a ogni dettaglio, gesto rigido e con molti errori."],
+    ["Associativa · coordinazione fine", "Colleghi le parti, errori in calo, gesto fluido in condizioni note."],
+    ["Autonoma · disponibilità variabile", "Gesto automatico e adattabile, mente libera per le scelte di gioco."]
+  ] },
+  { tipo: "hub", titolo: "Come favorire l'apprendimento", centro: "Apprendere", voci: [
+    ["Pratica variata e casuale", "Più difficile durante la seduta, più solida nel tempo."],
+    ["Pratica distribuita", "Meglio più sedute brevi che una lunghissima."],
+    ["Feedback ridotto", "Diminuirlo man mano e lasciare spazio all'autovalutazione."],
+    ["Focus esterno", "Attenzione sull'effetto del gesto."],
+    ["Osservazione e immaginazione", "Dimostrazioni, video, ripasso mentale del gesto."]
+  ] },
+  { tipo: "cycle", titolo: "Il controllo ad anello chiuso", voci: [
+    ["Obiettivo", "Che cosa voglio ottenere con il gesto."],
+    ["Esecuzione", "Il programma motorio arriva ai muscoli."],
+    ["Feedback", "Vista, propriocettori e tatto informano su come sta andando."],
+    ["Confronto e correzione", "Il cervello confronta con l'obiettivo e corregge."]
+  ] }
+];
+
+LAB["l-apprendimento-motorio"] = [
+  { t: "tool", tool: "reazione" },
+  { t: "esperienza", titolo: "A blocchi o casuale?", dove: "in palestra", tempo: "2 lezioni a distanza di una settimana", obiettivo: "Verificare su di voi l'effetto dell'interferenza contestuale.", materiale: ["Palloni da basket o da pallavolo", "Coni per segnare tre distanze", "Foglio per i risultati"], passi: ["Dividete la classe in due gruppi con livello simile.", "Gruppo A, a blocchi: 10 tiri da vicino, poi 10 da media distanza, poi 10 da lontano.", "Gruppo B, casuale: gli stessi 30 tiri, ma la distanza cambia a ogni tiro.", "Annotate i canestri di ciascuno durante la seduta.", "Una settimana dopo, senza allenarsi in mezzo, rifate tutti lo stesso test casuale."], osserva: ["Quale gruppo ha segnato di più durante la prima seduta?", "Quale gruppo ha fatto meglio una settimana dopo? Come lo spieghi?"] },
+  { t: "esperienza", titolo: "Focus interno o esterno?", dove: "in palestra", tempo: "20 minuti", obiettivo: "Sentire la differenza tra pensare al corpo e pensare all'effetto.", materiale: ["Palline da tennis o sacchetti", "Un cerchio a terra a 4 metri"], passi: ["A coppie: 10 lanci nel cerchio pensando al braccio («distendi il gomito, chiudi il polso»).", "Altri 10 lanci pensando solo alla traiettoria («disegna un arco che finisce nel cerchio»).", "Il compagno conta i centri e osserva quanto è fluido il gesto.", "Invertite i ruoli e cambiate l'ordine delle due prove."], osserva: ["Con quale istruzione hai fatto più centri?", "Quale istruzione ti ha fatto sentire più rigido?"] },
+  { t: "esperienza", titolo: "La firma e il programma motorio", dove: "in classe", tempo: "10 minuti", obiettivo: "Riconoscere parti fisse e parametri del programma motorio generalizzato.", materiale: ["Fogli", "Penna", "Lavagna"], passi: ["Scrivi la tua firma normale sul foglio.", "Scrivila molto piccola, poi molto grande alla lavagna.", "Prova con la mano non dominante e infine con la penna tra le dita del piede, su un foglio a terra.", "Confronta le firme."], osserva: ["Che cosa resta uguale in tutte le firme?", "Quali parametri sono cambiati?"] }
 ];

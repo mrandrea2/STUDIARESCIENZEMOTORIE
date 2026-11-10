@@ -631,6 +631,17 @@ window.ILL = (function () {
       ${lab(30, 30, "Le fasi dell'apprendimento motorio")}
     `, "0 0 410 330"),
 
+    anello: S(`
+      ${lab(20, 28, "Anello aperto", "to")}${lab(150, 28, "gesti rapidi: nessuna correzione", "sm")}
+      ${[["Programma", "o2"], ["Muscoli", "b2"], ["Gesto", "b2"]].map(([t, c], k) => `<g class="fi" style="--k:${k}"><rect class="${c}" x="${20 + k * 130}" y="44" width="104" height="48" rx="10"/>${lab(72 + k * 130, 74, t, "", "middle")}</g>`).join("")}
+      <path class="ln" d="M126 68 H146 M138 61 l8 7 -8 7 M256 68 H276 M268 61 l8 7 -8 7"/>
+      ${lab(20, 150, "Anello chiuso", "tb")}${lab(150, 150, "gesti lenti e di precisione", "sm")}
+      ${[["Confronto", "o2"], ["Muscoli", "b2"], ["Gesto", "b2"]].map(([t, c], k) => `<g class="fi" style="--k:${k + 3}"><rect class="${c}" x="${20 + k * 130}" y="166" width="104" height="48" rx="10"/>${lab(72 + k * 130, 196, t, "", "middle")}</g>`).join("")}
+      <path class="ln" d="M126 190 H146 M138 183 l8 7 -8 7 M256 190 H276 M268 183 l8 7 -8 7"/>
+      <path class="lbl dr" d="M332 214 V250 H72 V222"/><path class="b" d="M72 216 l-7 11 h14z"/>
+      ${lab(202, 270, "feedback: occhi, propriocettori, tatto", "sm", "middle")}
+    `, "0 0 400 284"),
+
     /* ---------- PRIMO SOCCORSO ---------- */
     catena: S(`
       ${[["1", "Allarme", "chiama il 112"], ["2", "RCP", "compressioni subito"], ["3", "DAE", "defibrillatore"], ["4", "Soccorso", "avanzato"]].map(([n, a, b], k) =>

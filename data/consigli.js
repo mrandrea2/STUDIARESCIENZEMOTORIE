@@ -29,6 +29,11 @@ window.CONSIGLI = {
     ["Una per sport", "Per ognuna delle sette capacità trova un esempio nel tuo sport preferito."],
     ["Osserva come impari", "Mentre impari un gesto nuovo, riconosci le tre fasi su di te: grezza, fine, disponibilità variabile."]
   ],
+  "l-apprendimento-motorio": [
+    ["Riprendi la terza", "Prima rileggi la sintesi delle capacità coordinative: questa lezione parte da lì."],
+    ["Teoria e autore", "Fai una tabella con tre colonne: autore, idea principale, esempio sportivo. Adams, Schmidt, Bernstein, Fitts e Posner, Wulf, Newell."],
+    ["Provalo su di te", "Fai le esperienze del Laboratorio, la firma e i tiri a blocchi o casuali: le teorie diventano risultati che hai visto."]
+  ],
   "apparato-cardio-circolatorio": [
     ["Segui il sangue", "Disegna il cuore e traccia con due colori il percorso della piccola e della grande circolazione."],
     ["Misurati", "Prendi il battito a riposo e dopo 30 piegamenti: vedi gli aggiustamenti che studi."],
