@@ -327,10 +327,10 @@
   const WORDS = ["il cuore", "i muscoli", "il respiro", "le ossa", "la mente", "lo sport", "l'energia"];
   function evidenzaCards() {
     const m = byId["metodo-di-studio"];
-    return (m && m.evidenza || []).map((e, i) => `<a class="hl rv hl${i + 1}" href="${esc(e.url)}" target="_blank" rel="noopener" style="--i:${i}">
+    return (m && m.evidenza || []).map((e, i) => `<div class="hl nolink rv hl${i + 1}" style="--i:${i}">
       <span class="hl-ic">${i ? I.bolt : I.brain}</span>
-      <span class="hl-tx"><b>${esc(e.titolo)}</b><span>${esc(e.testo)}</span><small>Tocca per aprire ${I.arr}</small></span>
-    </a>`).join("");
+      <span class="hl-tx"><b>${esc(e.titolo)}</b><span>${esc(e.testo)}</span></span>
+    </div>`).join("");
   }
   function studyBanner() {
     if (mem._pref.banner === today()) return;
@@ -392,7 +392,7 @@
 
       <section class="metodo-band rv">
         <div class="wrap">
-          <div class="mb-txt"><p class="kicker">Per tutte le classi</p><h2>Metodo di <span class="gt">studio</span>:</h2><p class="muted">Due app per capire come impara il tuo cervello e per organizzarti meglio.</p></div>
+          <div class="mb-txt"><p class="kicker">Per tutte le classi</p><h2>Metodo di <span class="gt">studio</span>:</h2><p class="muted">Due percorsi per capire come impara il tuo cervello e per organizzarti meglio.</p></div>
           <div class="hl-grid">${evidenzaCards()}</div>
         </div>
       </section>`;
@@ -473,7 +473,12 @@
       </div></section>
       <section class="wrap section" style="padding-top:10px">
         <div class="grid">${ts.map((t, i) => topicCard(t, i, i + 1)).join("")}</div>
-      </section>
+      </section>${c === 5 && window.ORALE ? `
+      <section class="wrap section orl-cls">
+        <div class="section-head rv"><p class="kicker">Esame di Stato</p><h2>Percorsi per l'<span class="gt">esame</span>:</h2><p class="muted">Sei temi per collegare le Scienze motorie alle altre discipline nel colloquio orale.</p></div>
+        <div class="orl-cards">${window.ORALE.percorsi.map((p, i) => `<a class="card orl-card rv" style="--i:${i % 3}" href="#/orale/${i + 1}"><span class="orl-n">${i + 1}</span><span><b>${esc(p.titolo)}</b><small>${p.collegamenti.slice(0, 3).map(x => esc(x[0])).join(" · ")}</small></span>${I.arr}</a>`).join("")}</div>
+        <a class="btn ghost full rv" href="#/orale">${I.mic} Metodo per i collegamenti e relazione PCTO</a>
+      </section>` : ""}
       <section class="wrap section"><div class="grid">${topicCard(byId["metodo-di-studio"])}</div></section>`;
     animateRing();
   }
@@ -1242,8 +1247,9 @@
   }
 
   /* ---------- Verso l'orale (classe quinta) ---------- */
-  function pageOrale() {
+  function pageOrale(n) {
     const O = window.ORALE; if (!O) return pageHome();
+    const op = Math.min(Math.max(Number(n) || 1, 1), O.percorsi.length) - 1;
     setK(5);
     app.innerHTML = `
       <section class="band"><div class="wrap">
@@ -1253,7 +1259,7 @@
         <p class="lead" style="max-width:62ch">${esc(O.intro)}</p>
       </div></section>
       <section class="wrap section" style="padding-top:10px">
-        <div class="orl-list">${O.percorsi.map((p, i) => `<details class="card orl rv" style="--i:${i % 2}"${i ? "" : " open"}>
+        <div class="orl-list">${O.percorsi.map((p, i) => `<details class="card orl rv" style="--i:${i % 2}" id="perc-${i + 1}"${i === op ? " open" : ""}>
           <summary><span class="orl-n">${i + 1}</span><span><b>${esc(p.titolo)}</b><small>${p.collegamenti.map(c => esc(c[0])).join(" · ")}</small></span></summary>
           <p class="orl-idea">${esc(p.idea)}</p>
           <div class="orl-g">
@@ -1273,6 +1279,7 @@
           <ol class="goals">${O.pcto.parti.map(([a, b]) => `<li><b>${esc(a)}.</b> ${esc(b)}</li>`).join("")}</ol>
           <p class="note">${esc(O.pcto.consiglio)}</p></div>
       </section>`;
+    if (n) setTimeout(() => { const d = $("#perc-" + (op + 1)); if (d) d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }, 120);
   }
 
   /* ---------- Privacy e cookie ---------- */
@@ -1340,7 +1347,7 @@
         <div class="hl-grid">${evidenzaCards()}</div>
       </section>
       <section class="wrap section">
-        <div class="card rv"><h3>Con queste due app imparerai a:</h3><ol class="goals">${t.obiettivi.map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
+        <div class="card rv"><h3>Con questi due percorsi imparerai a:</h3><ol class="goals">${t.obiettivi.map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
       </section>`;
   }
 
@@ -1605,7 +1612,7 @@
     else if (a === "sfida") { pageSfida(b); navKey = "sfida"; }
     else if (a === "trofei") { pageTrofei(); navKey = "trofei"; }
     else if (a === "cerca") { pageCerca(b); navKey = "cerca"; }
-    else if (a === "orale") { pageOrale(); navKey = "classi"; }
+    else if (a === "orale") { pageOrale(b); navKey = "classi"; }
     else if (a === "fitness" && window.pageFitness) { setK(0); window.pageFitness(app); navKey = ""; }
     else if (a === "privacy") { pagePrivacy(); navKey = ""; }
     else if (a === "stampa") { pageStampa(b); navKey = "classi"; }

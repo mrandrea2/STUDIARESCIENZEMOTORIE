@@ -1717,3 +1717,16 @@ label.a11y-t:hover, a.a11y-t:hover { background: rgba(255, 255, 255, .14); }
 }
 .hero .rot.gt { animation: none; background-size: 100% 100%; }
 .lez-mode .mode svg { width: 18px; height: 18px; flex: none; }
+
+/* v8 — riquadri metodo senza link, percorsi d'esame in quinta */
+.hl.nolink { cursor: default; }
+.hl.nolink:active { transform: none; }
+.orl-cls .section-head p.muted { margin-top: 4px; }
+.orl-cards { display: grid; gap: 12px; margin: 14px 0 16px; }
+@media (min-width: 700px) { .orl-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .orl-cards { grid-template-columns: repeat(3, 1fr); } }
+.orl-card { display: grid; grid-template-columns: 48px 1fr 22px; gap: 14px; align-items: center; padding: 16px 18px; text-decoration: none; color: inherit; transition: transform .25s var(--spring); }
+.orl-card:hover { transform: translateY(-3px); }
+.orl-card b { display: block; font-size: 1.15rem; line-height: 1.15; }
+.orl-card small { display: block; margin-top: 4px; color: var(--muted); font-weight: 700; font-size: .82rem; }
+.orl-card > svg { width: 22px; height: 22px; stroke: var(--k); }

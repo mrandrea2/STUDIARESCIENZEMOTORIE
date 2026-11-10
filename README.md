@@ -122,7 +122,7 @@ Se aggiungi script esterni (statistiche, Vercel Analytics, caratteri da Google F
 
 ## Metodo di studio
 
-La pagina del metodo di studio e la home mostrano in evidenza i due link bit.ly/CERVELLOINGIOCO e bit.ly/SBLOCCAILTUOPOTENZIALE. Per cambiarli modifica `evidenza` nell'argomento «metodo-di-studio» in `data/topics.js`.
+La pagina del metodo di studio e la home presentano i due percorsi «Cervello in gioco» e «Sblocca il tuo potenziale» (riquadri senza link). Per cambiarli modifica `evidenza` nell'argomento «metodo-di-studio» in `data/topics.js`. In quinta la pagina della classe mostra i sei percorsi per l'esame, che rimandano a `#/orale/<n>`.
 
 ## Importante: condivisione dei file Drive
 

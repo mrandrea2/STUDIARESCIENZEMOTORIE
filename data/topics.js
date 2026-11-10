@@ -29,8 +29,8 @@ window.TOPICS = [
       "Allenare attenzione e concentrazione"
     ],
     evidenza: [
-      { url: "https://bit.ly/CERVELLOINGIOCO", titolo: "Cervello in gioco", testo: "Scopri come funziona il tuo cervello quando studi, ricordi e ti concentri.", corto: "bit.ly/CERVELLOINGIOCO" },
-      { url: "https://bit.ly/SBLOCCAILTUOPOTENZIALE", titolo: "Sblocca il tuo potenziale", testo: "Strategie pratiche per organizzarti, studiare meglio e ottenere di più.", corto: "bit.ly/SBLOCCAILTUOPOTENZIALE" }
+      { titolo: "Cervello in gioco", testo: "Scopri come funziona il tuo cervello quando studi, ricordi e ti concentri." },
+      { titolo: "Sblocca il tuo potenziale", testo: "Strategie pratiche per organizzarti, studiare meglio e ottenere di più." }
     ],
     materiali: []
   },
@@ -197,7 +197,7 @@ window.TOPICS = [
     id: "apparato-cardio-circolatorio",
     titolo: "Apparato cardio-circolatorio",
     sottotitolo: "il cuore dell'atleta",
-    classi: [2, 3],
+    classi: [2],
     obiettivi: [
       "Struttura e funzione del cuore",
       "Il ciclo cardiaco",
@@ -223,7 +223,7 @@ window.TOPICS = [
     id: "apparato-respiratorio",
     titolo: "Apparato respiratorio",
     sottotitolo: "il respiro e lo sport",
-    classi: [2, 3],
+    classi: [2],
     obiettivi: [
       "Struttura dell'apparato respiratorio",
       "Il processo di ventilazione polmonare",
@@ -624,7 +624,7 @@ window.TOPICS = [
 window.CLASSI = {
   1: { nome: "Classe prima", temi: ["la-salute-dinamica", "sistema-scheletrico", "le-articolazioni", "sistema-muscolare", "le-capacita-coordinative"] },
   2: { nome: "Classe seconda", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "il-primo-soccorso", "i-metabolismi-energetici", "teoria-dellallenamento", "le-capacita-condizionali"] },
-  3: { nome: "Classe terza", temi: ["apparato-cardio-circolatorio", "apparato-respiratorio", "i-metabolismi-energetici", "teoria-dellallenamento", "dal-gioco-allo-sport", "le-capacita-condizionali", "apparato-digerente", "principi-per-una-sana-alimentazione", "alimentazione-e-sport-integratori-e-doping", "test-motori"] },
+  3: { nome: "Classe terza", temi: ["i-metabolismi-energetici", "teoria-dellallenamento", "dal-gioco-allo-sport", "le-capacita-condizionali", "apparato-digerente", "principi-per-una-sana-alimentazione", "alimentazione-e-sport-integratori-e-doping", "test-motori"] },
   4: { nome: "Classe quarta", temi: ["il-sistema-nervoso", "le-capacita-coordinative", "il-sistema-endocrino", "il-sistema-immunitario", "pnei-lifestyle-e-salute", "teoria-dellallenamento", "adattamenti-in-quota-e-in-profondita"] },
   5: { nome: "Classe quinta", temi: ["psicologia-dello-sport", "adattamenti-fisiologici-allallenamento", "alimentazione-e-sport-integratori-e-doping", "disabilita-e-sport-le-paralimpiadi"] }
 };
