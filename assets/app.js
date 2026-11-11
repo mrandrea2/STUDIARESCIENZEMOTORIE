@@ -545,7 +545,7 @@
         ${pathHtml(t, curStep(tab, game))}
       </div></section>`}
       <div class="seg-wrap" ${inGame ? 'style="margin-top:0"' : ""}><div class="wrap">
-        <nav class="seg${tabs.length > 3 ? " four" : ""}${tabs.length > 4 ? " five" : ""}" aria-label="Sezioni">${tabs.map(([key, l, ic]) => `<a href="#/argomento/${t.id}/${key}" class="${tab === key ? "on" : ""}">${ic}<span>${key === "lab" ? '<i class="lg">Laboratorio</i><i class="sh">Lab</i>' : l}</span></a>`).join("")}</nav>
+        <nav class="seg${tabs.length > 3 ? " four" : ""}${tabs.length > 4 ? " five" : ""}" aria-label="Sezioni">${tabs.map(([key, l, ic]) => `<a href="#/argomento/${t.id}/${key}" class="tb-${key}${tab === key ? " on" : ""}">${ic}<span>${key === "lab" ? '<i class="lg">Laboratorio</i><i class="sh">Lab</i>' : l}</span></a>`).join("")}</nav>
       </div></div>
       <section class="wrap"><div id="tabBody"></div></section>`;
     animateRing();
@@ -578,14 +578,14 @@
 
   function tabStudia(body, t) {
     const m = t.materiali || [];
-    const groups = [["Lezioni e dispense", ["pdf", "slides"]], ["Video", ["video", "yt"]], ["Podcast", ["audio"]], ["Link utili", ["link"]]];
+    const groups = [["Dispense e approfondimenti", ["pdf", "slides"]], ["Video", ["video", "yt"]], ["Podcast", ["audio"]], ["Link utili", ["link"]]];
     const matHtml = groups.map(([name, tipi]) => {
       const items = m.map((x, i) => [x, i]).filter(([x]) => tipi.includes(x.tipo));
       return items.length ? `<div class="mat-group"><h4>${name}</h4>${items.map(([x, i]) => matButton(x, i)).join("")}</div>` : "";
     }).join("");
     const sintesi = (t.sintesi || []).length ? `<div class="card sintesi rv"><h3>In sintesi:</h3><dl>${t.sintesi.map(([a, b]) => `<div class="item"><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl></div>` : "";
     const domande = (t.domande || []).length ? `<div class="card rv"><h3>Domande guida:</h3><ol class="domande">${t.domande.map(d => `<li>${esc(d)}</li>`).join("")}</ol><p class="note">Rispondi sul quaderno dopo aver guardato i materiali.</p></div>` : "";
-    const giochi = G[t.id] ? `<div class="card play-card rv"><h3>Hai studiato?</h3><p>Ripassa con 7 attività diverse e conquista tutte le ${MAXT} stelle.</p><div class="cta-row" style="margin:0"><a class="btn white full" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a><a class="btn ghost full" href="#/argomento/${t.id}/schemi">${I.map} Schemi riassuntivi</a></div></div>` : "";
+    const giochi = studyTiles(t);
     body.innerHTML = `<div class="two">
       <div class="col">
         <div class="card rv"><h3>Cosa imparerai:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
@@ -984,10 +984,10 @@
       ${vids.length ? `<section class="lez-vid rv"><h3 class="lez-h">Guarda e ascolta:</h3><div class="vid-grid">${vids.map(([x, i]) => videoHtml(x, i)).join("")}</div></section>` : ""}
       <div class="two" style="margin-top:18px">
         <div class="col"><div class="card rv"><h3>Obiettivi della lezione:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
-          ${docs.length ? `<div class="card rv" style="--i:1"><h3>Le slide e le dispense del prof.:</h3>${docs.map(([x, i]) => matButton(x, i)).join("")}</div>` : ""}</div>
+          ${docs.length ? `<div class="card rv" style="--i:1"><h3>Dispense e approfondimenti:</h3>${docs.map(([x, i]) => matButton(x, i)).join("")}</div>` : ""}</div>
         <div class="col">
           ${LAB[t.id] ? `<div class="card lab-cta rv"><h3>Ora sperimenta:</h3><p>Esperienze pratiche, strumenti per misurarti${(LAB[t.id] || []).some(x => x.t === "3d") ? " e modelli 3D" : ""}.</p><a class="btn white full" href="#/argomento/${t.id}/lab">${I.lab} Vai al laboratorio</a></div>` : ""}
-          ${G[t.id] ? `<div class="card play-card rv"><h3>Hai studiato?</h3><p>Ripassa con gli schemi e mettiti alla prova con 7 attività.</p><div class="cta-row" style="margin:0"><a class="btn white full" href="#/argomento/${t.id}/schemi">${I.map} Schemi riassuntivi</a><a class="btn ghost full" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a></div></div>` : ""}
+          ${studyTiles(t)}
         </div>
       </div>`;
     $$("[data-m]", body).forEach(b => b.addEventListener("click", () => { const x = m[Number(b.dataset.m)]; openViewer(x); if (["yt", "video", "audio"].includes(x.tipo)) markStep(t.id, "video"); }));
@@ -1016,6 +1016,12 @@
   }
 
   /* ================= Percorso guidato ================= */
+  /* riquadri «Schemi» e «Ripasso»: due colori ben distinti */
+  function studyTiles(t) {
+    const sc = S[t.id] ? `<a class="stile st-schemi rv" href="#/argomento/${t.id}/schemi"><span class="stile-ic">${I.map}</span><span class="stile-tx"><b>Schemi</b><span>Mappe e tabelle per fissare i concetti</span></span>${I.arr}</a>` : "";
+    const gi = G[t.id] ? `<a class="stile st-ripasso rv" href="#/argomento/${t.id}/gioca" style="--i:1"><span class="stile-ic">${I.game}</span><span class="stile-tx"><b>Ripasso</b><span>Quiz e 6 giochi · fino a ${MAXT} stelle</span></span>${I.arr}</a>` : "";
+    return sc || gi ? `<div class="stiles">${sc}${gi}</div>` : "";
+  }
   function pathSteps(t) {
     const m = t.materiali || [], out = [];
     const vi = m.findIndex(x => ["yt", "video", "audio"].includes(x.tipo));

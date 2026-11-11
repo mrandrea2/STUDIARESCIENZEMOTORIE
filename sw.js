@@ -4,7 +4,7 @@
    aggiornata (e la salva); senza rete, o se la rete è troppo lenta,
    risponde con la copia salvata.
    Se cambi molti file e vuoi forzare l'aggiornamento, aumenta VERSIONE. */
-const VERSIONE = "ssm-v13";
+const VERSIONE = "ssm-v14";
 const EXTRA = ["./", "index.html", "manifest.webmanifest", "assets/favicon.svg", "assets/icon-192.png", "assets/icon-512.png", "assets/icon-maskable-512.png", "assets/icon-180.png", "assets/logo-galilei.jpg", "acrosport.html", "assets/fonts/fonts.css", "assets/fonts/archivo-latin-wdth-normal.woff2", "assets/fonts/archivo-latin-ext-wdth-normal.woff2", "assets/fonts/oswald-latin-wght-normal.woff2", "assets/fonts/source-serif-4-latin-opsz-italic.woff2", "assets/fonts/atkinson-hyperlegible-latin-400-normal.woff2", "assets/fonts/atkinson-hyperlegible-latin-700-normal.woff2", "assets/fonts/inter-latin-wght-normal.woff2", "assets/fonts/source-serif-4-latin-opsz-normal.woff2"];
 
 self.addEventListener("install", e => {

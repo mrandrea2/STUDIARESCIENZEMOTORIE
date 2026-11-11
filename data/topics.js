@@ -50,10 +50,6 @@ window.TOPICS = [
       "Alimentazione, movimento e sonno per una vita più sana"
     ],
     materiali: [
-      { tipo: "slides", id: "1teDkSsA7zorIVl0ivHJ5mHJbqrQULmswZSjrA28XDfI", titolo: "Più movimento = più vita", nota: "Lezione del prof. Bertelli" },
-      { tipo: "slides", id: "1x7-U9F-RdCT4d5Ip6Po4RELuQuz1vwxjEyoG-5DcIy8", titolo: "Ogni movimento conta", nota: "Lezione del prof. Bertelli" },
-      { tipo: "slides", id: "11kBn81xXsRipIi1xSJ_HIMsuUqAUgdmz7vh8P8BIygw", titolo: "Physical fitness e intensità dell'esercizio", nota: "Lezione del prof. Bertelli" },
-      { tipo: "slides", id: "1zkSjZ-orrvJdhR-_ppL4vy4d-SYdAvbwvjQCv5z5kiM", titolo: "Come costruire una dieta sana", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1_5ZMzXjYaezJ_7Au8urmZ15rFLt5-vNX", titolo: "Sonno e benessere" },
       { tipo: "yt", id: "ub747pprmJ8", titolo: "Video introduttivo" }
     ],
@@ -77,11 +73,7 @@ window.TOPICS = [
       "Patologie del sistema scheletrico"
     ],
     materiali: [
-      { tipo: "pdf", id: "1lTU_1ZRkAiNF88N6cmDokbZeTNrbJrzd", titolo: "Il sistema scheletrico", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1ihbL-3m8FAgFnCMCdrNqskOuoDmhJ8Wt", titolo: "Sistema scheletrico: slide del libro", nota: "Slide relative al libro di testo" },
-      { tipo: "yt", id: "hWJikT7WP_E", titolo: "Video di ripasso" },
-      { tipo: "yt", id: "wTPcYX_xaN8", titolo: "Il tessuto osseo", nota: "Guarda dal minuto 14:37" },
-      { tipo: "video", id: "1v_VLjEVfAz9Nj0mpkBlLw5OI-6xY2CDf", titolo: "Video-quiz sul sistema scheletrico", nota: "Prendi carta e penna" }
+      { tipo: "yt", id: "hWJikT7WP_E", titolo: "Video di ripasso" }
     ],
     domande: [
       "Qual è la differenza tra osso compatto e osso spugnoso per struttura e funzione?",
@@ -103,18 +95,12 @@ window.TOPICS = [
     ],
     materiali: [
       { tipo: "yt", id: "hWJikT7WP_E", titolo: "Il sistema scheletrico e l'apparato locomotore · La Biologia per tutti" },
-      { tipo: "yt", id: "wTPcYX_xaN8", titolo: "I tessuti connettivi: cartilagine e osso · La Biologia per tutti" },
       { tipo: "pdf", id: "123XYIAbf3NAeMaLpdKoDqYCzWn0yfvo_", titolo: "Approfondimento articolazioni" },
       { tipo: "pdf", id: "1S5_e9an_Cj9iIDLGM4Lm3l9QQEK8EgiG", titolo: "Tabella delle articolazioni" },
       { tipo: "pdf", id: "1_4Q_z9fZwNXnlkypzqJRAnsd6NwboDPf", titolo: "Scheda: spalla" },
       { tipo: "pdf", id: "1U2_jmHK_tgzbpAxpbUJAuNJeUPX6zsnS", titolo: "Scheda: gomito" },
       { tipo: "pdf", id: "1A4BIRTFtbOA0bO3gxW6yojdEkKDs32pH", titolo: "Scheda: anca" },
-      { tipo: "pdf", id: "177oMj-Qt0rOqmq4R_G2frCnhUZIEVcvA", titolo: "Scheda: ginocchio" },
-      { tipo: "video", id: "1atdGcy7shWk13Jt67JibVmdCcG27F9l_", titolo: "Anatomia e biomeccanica della spalla" },
-      { tipo: "video", id: "119Ju1meV47hb3VypBOZ-5qWO9g4r_NR4", titolo: "Anatomia di gomito e polso" },
-      { tipo: "video", id: "1Wpdjiykh2K9S0jWxMym7ChMlm_nRaAnv", titolo: "Anatomia dell'anca" },
-      { tipo: "video", id: "19McE5_op0lvHsXoZf4inq2i33ga6v37q", titolo: "Anatomia del ginocchio" },
-      { tipo: "video", id: "1gW9WglO2gP3VdcOJPd-_KRJp9srqOnPH", titolo: "Anatomia della caviglia" }
+      { tipo: "pdf", id: "177oMj-Qt0rOqmq4R_G2frCnhUZIEVcvA", titolo: "Scheda: ginocchio" }
     ]
   },
   {
@@ -132,12 +118,7 @@ window.TOPICS = [
     ],
     materiali: [
       { tipo: "yt", id: "lJ7f3uEI5To", titolo: "Il tessuto muscolare · La Biologia per tutti" },
-      { tipo: "pdf", id: "1slW8GHjnHmmUF6mVvW_8Ree_ikzJ7UzW", titolo: "Il sistema muscolare", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1Fvfb3WtMP6rpbWsTbST4C5ltabn1HbqD", titolo: "I muscoli: slide Zanichelli", nota: "Slide relative al libro di testo" },
-      { tipo: "pdf", id: "12K-rUfsqC4fTSgJ6bZDJ_SpyA7KiKQ_T", titolo: "Come crescono i muscoli?", nota: "Documento di sintesi" },
-      { tipo: "yt", id: "FqDnJzr_B8w", titolo: "Il sistema muscolare" },
-      { tipo: "yt", id: "BVcgO4p88AA", titolo: "La contrazione muscolare" },
-      { tipo: "yt", id: "2tM1LFFxeKg", titolo: "Come crescono i muscoli" }
+      { tipo: "pdf", id: "12K-rUfsqC4fTSgJ6bZDJ_SpyA7KiKQ_T", titolo: "Come crescono i muscoli?", nota: "Documento di sintesi" }
     ]
   },
 
@@ -232,12 +213,8 @@ window.TOPICS = [
       "Prevenire le malattie cardiovascolari croniche"
     ],
     materiali: [
-      { tipo: "pdf", id: "1-vaa48KgKjmNJIGsM1uvSLipt_eby_xA", titolo: "L'apparato cardiovascolare e l'attività fisica", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1KfsUBl7z59GA8uhRSEc6xxaVsj7NpMcH", titolo: "Apparato cardio: slide del libro", nota: "Slide relative al libro di testo" },
       { tipo: "pdf", id: "1NOdJbZ-BpDtD3Iv8tM1rA-XX7MfMmnlt", titolo: "Prevenzione cardiovascolare", nota: "Ministero della Salute" },
-      { tipo: "yt", id: "TnXaetHt6vY", titolo: "Video di ripasso" },
-      { tipo: "yt", id: "Gri-8f6o07Q", titolo: "Video di approfondimento" },
-      { tipo: "yt", id: "VasQo4KsJ1E", titolo: "Allenamento in alta quota e cuore" }
+      { tipo: "yt", id: "TnXaetHt6vY", titolo: "Video di ripasso" }
     ],
     extra: [
       { tipo: "form", id: "1FAIpQLSc7zAY_fLn_zGIZUAZPgazII7o6TP0PsmoUaHRcW8qrXHZWJg", titolo: "Quiz: apparato cardio-circolatorio" }
@@ -259,10 +236,7 @@ window.TOPICS = [
     materiali: [
       { tipo: "yt", id: "UHpqXOSi4Q0", titolo: "Apparato respiratorio · La Biologia per tutti" },
       { tipo: "link", url: "https://polmonifumo.vercel.app/#top", titolo: "Polmoni e fumo: sito interattivo" },
-      { tipo: "audio", id: "1IGfLeFNeKxyGUfy5qk3za9tQceio4Sa6", titolo: "Podcast introduttivo" },
-      { tipo: "video", id: "1ByBU_cvxsPgzUAry6k6UuIZkqVlRh4lR", titolo: "Video di sintesi" },
-      { tipo: "pdf", id: "1PFsggakqNc6dW4ElRM28kolLamdDUvzc", titolo: "Il respiro e lo sport", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1JGLjanQ_H5CWsl_K7osoq-B_4-RytekR", titolo: "Apparato respiratorio: slide del libro", nota: "Slide relative al libro di testo" }
+      { tipo: "audio", id: "1IGfLeFNeKxyGUfy5qk3za9tQceio4Sa6", titolo: "Podcast introduttivo" }
     ]
   },
   {
@@ -276,14 +250,7 @@ window.TOPICS = [
       "Usare i metabolismi energetici per allenarsi meglio"
     ],
     materiali: [
-      { tipo: "yt", id: "-IcuTAzQP9c", titolo: "Gli enzimi · La Biologia per tutti" },
-      { tipo: "yt", id: "eNOJhnzjmbE", titolo: "La glicolisi · La Biologia per tutti" },
-      { tipo: "yt", id: "Fw4guLC9R8s", titolo: "La fermentazione · La Biologia per tutti" },
-      { tipo: "pdf", id: "1rJbbwA_ER1RJ_LE62rD9s7kNotvEnHV8", titolo: "I metabolismi energetici", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1HiWVEpgwc18fgp0eL9grFxOCih9hdh_e", titolo: "Sistemi energetici: slide del libro", nota: "Slide relative al libro di testo" },
-      { tipo: "yt", id: "Hhj2uWm7L6c", titolo: "La glicolisi" },
-      { tipo: "yt", id: "0yLYEZ_eToU", titolo: "Il destino del piruvato" },
-      { tipo: "yt", id: "DRWIdL7cLdo", titolo: "Il ciclo di Krebs" }
+      { tipo: "yt", id: "eNOJhnzjmbE", titolo: "La glicolisi · La Biologia per tutti" }
     ]
   },
   {
@@ -302,10 +269,7 @@ window.TOPICS = [
       "Le differenze di genere nello sport"
     ],
     materiali: [
-      { tipo: "link", url: "https://maratona-galilei.vercel.app/#/", titolo: "Esempio: piano di allenamento per la maratona" },
-      { tipo: "pdf", id: "14Of9OCeDwkZkEoH97HRkalX-5m1A1wP6", titolo: "Teoria e metodologia dell'allenamento sportivo", nota: "Lezione del prof. Bertelli" },
-      { tipo: "link", url: "https://www.canva.com/design/DAGWEo6Lz-k/VZhTy4jtNYnOh_SVNq3Spg/view", titolo: "Lezione su Canva", nota: "Presentazione interattiva" },
-      { tipo: "pdf", id: "112iLdvt84coKBnJ642nsM7t5UX-qaS59", titolo: "L'allenamento sportivo: slide del libro", nota: "Slide relative al libro di testo" }
+      { tipo: "link", url: "https://maratona-galilei.vercel.app/#/", titolo: "Esempio: piano di allenamento per la maratona" }
     ]
   },
   {
@@ -322,16 +286,7 @@ window.TOPICS = [
       "Velocità e rapidità: come allenarle"
     ],
     materiali: [
-      { tipo: "pdf", id: "1vJx61Bc_cmqtbwuKbvFLr-dza6t-biUg", titolo: "La forza", nota: "Slide del libro di testo" },
-      { tipo: "pdf", id: "1DsVzj49r019wdNbHm4nHGQB4xIukZmy1", titolo: "La resistenza", nota: "Slide del libro di testo" },
-      { tipo: "pdf", id: "1ExhYEu8T43a8RVRkPNFs9qEGcdhx2DU3", titolo: "La velocità", nota: "Slide del libro di testo" },
-      { tipo: "pdf", id: "1ucUUuwS3pwwEZ5UL6lnqw_H1kOlKQ8VW", titolo: "La flessibilità", nota: "Slide del libro di testo" },
-      { tipo: "yt", id: "SXxuQz0R-8U", titolo: "Video di approfondimento 1" },
-      { tipo: "yt", id: "1FQ_pCyHwj4", titolo: "Video di approfondimento 2" },
-      { tipo: "yt", id: "2tM1LFFxeKg", titolo: "Video di approfondimento 3" },
-      { tipo: "yt", id: "AYk2x9iRKn0", titolo: "Video di approfondimento 4" },
-      { tipo: "yt", id: "g1pb2aK2we4", titolo: "Video di approfondimento 5" },
-      { tipo: "yt", id: "OyK0oE5rwFY", titolo: "Video di approfondimento 6" }
+      { tipo: "yt", id: "SXxuQz0R-8U", titolo: "Video di approfondimento 1" }
     ]
   },
 
@@ -431,11 +386,7 @@ window.TOPICS = [
       ["Sostenibilità", "Prodotti di stagione, meno spreco di cibo: fa bene alla salute e al pianeta."]
     ],
     materiali: [
-      { tipo: "yt", id: "YlSf3j_lK3M", titolo: "Le biomolecole · La Biologia per tutti" },
-      { tipo: "slides", id: "1zkSjZ-orrvJdhR-_ppL4vy4d-SYdAvbwvjQCv5z5kiM", titolo: "Come costruire una dieta sana", nota: "Lezione del prof. Bertelli" },
-      { tipo: "slides", id: "1gaYk4aFX5WipuPK8PX8EyEa3oe4GfMluyzsmTKSQigA", titolo: "Colazione e sostenibilità della dieta mediterranea", nota: "Lezione del prof. Bertelli" },
-      { tipo: "slides", id: "1H6AYZIvq45elBDSHO_bpEhjLuFEQzdfdiWjF7L7R46Q", titolo: "Mangiare a colori per vivere meglio", nota: "Lezione del prof. Bertelli" },
-      { tipo: "yt", id: "XMcab1MFaLc", titolo: "Video di approfondimento" }
+      { tipo: "yt", id: "YlSf3j_lK3M", titolo: "Le biomolecole · La Biologia per tutti" }
     ],
     extra: [
       { tipo: "link", url: "https://bit.ly/nonsprecarecibolearningapp", titolo: "Compito a casa: non sprecare il cibo", nota: "Metti le azioni sostenibili nel riquadro giusto" }
@@ -457,13 +408,7 @@ window.TOPICS = [
       "Il ruolo del sistema nervoso nello sport"
     ],
     materiali: [
-      { tipo: "yt", id: "t806EymH7Kg", titolo: "Organizzazione del sistema nervoso · La Biologia per tutti" },
-      { tipo: "yt", id: "vRtfOwRobpA", titolo: "Il tessuto nervoso · La Biologia per tutti" },
-      { tipo: "pdf", id: "1MNu-Ai14gBM8PWz2pnYUcIZSozTlcxB6", titolo: "Il sistema nervoso", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1Bj_S7-4MbE9ZfFtmWEOjeYLVLKKAEC5m", titolo: "Sistema nervoso: slide del libro", nota: "Slide relative al libro di testo" },
-      { tipo: "yt", id: "emtxq9gPJ0M", titolo: "Il sistema nervoso" },
-      { tipo: "yt", id: "8K14YNapISQ", titolo: "Sistema nervoso e movimento" },
-      { tipo: "yt", id: "zX54gmKtUdI", titolo: "Il potenziale d'azione" }
+      { tipo: "yt", id: "t806EymH7Kg", titolo: "Organizzazione del sistema nervoso · La Biologia per tutti" }
     ],
     extra: [
       { tipo: "form", id: "1FAIpQLSdSRqh8VybtrUqPxra-aF9I-OZAIKVcVOArSzqMDoVuVFV-HA", titolo: "Test: sistema nervoso" }
@@ -482,10 +427,7 @@ window.TOPICS = [
       "Gli squilibri ormonali compromettono salute e prestazione"
     ],
     materiali: [
-      { tipo: "pdf", id: "1ls9BJ6t99IH5IbOag17YLaQhJMgAuroH", titolo: "Il sistema endocrino", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "10-qENSO9QD5PCTHy3FKzxdD8WMXQCL_P", titolo: "Sistema endocrino: slide del libro", nota: "Slide relative al libro di testo" },
-      { tipo: "yt", id: "H24GJOLXz1A", titolo: "Il sistema endocrino" },
-      { tipo: "yt", id: "ovksVArw7Fw", titolo: "Riassunto" }
+      { tipo: "yt", id: "H24GJOLXz1A", titolo: "Il sistema endocrino" }
     ]
   },
   {
@@ -502,12 +444,7 @@ window.TOPICS = [
       "Il ruolo dei vaccini nella prevenzione"
     ],
     materiali: [
-      { tipo: "yt", id: "LL7aKX2K_XM", titolo: "Il sistema linfatico · La Biologia per tutti" },
-      { tipo: "pdf", id: "1y8OOPFLVBKJ5tLOmYJKGCpD2gO2ZUWoz", titolo: "Il sistema immunitario", nota: "Lezione del prof. Bertelli" },
-      { tipo: "link", url: "https://bit.ly/IMMUNITARIOCANVA", titolo: "Lezione su Canva", nota: "Presentazione interattiva" },
-      { tipo: "pdf", id: "1djBXdFAM5uiCRXopMxUHfTzvql-VL9pc", titolo: "Immunitario: slide Zanichelli" },
-      { tipo: "yt", id: "N4X77hUuuuY", titolo: "Il sistema immunitario" },
-      { tipo: "yt", id: "UZTf3OXJDWA", titolo: "Come lavora il sistema immunitario" }
+      { tipo: "yt", id: "LL7aKX2K_XM", titolo: "Il sistema linfatico · La Biologia per tutti" }
     ]
   },
   {
@@ -525,7 +462,6 @@ window.TOPICS = [
     ],
     materiali: [
       { tipo: "yt", id: "H24GJOLXz1A", titolo: "Il sistema endocrino · La Biologia per tutti" },
-      { tipo: "yt", id: "LL7aKX2K_XM", titolo: "Il sistema linfatico · La Biologia per tutti" },
       { tipo: "audio", id: "1qfbEZX4CsnBHDdWsfMDdTBhIRKrl-BS8", titolo: "Podcast di ripasso" },
       { tipo: "pdf", id: "1sOhQzq2tEyjvhbhI3yP-QPOZC-lFZWuS", titolo: "Salute e stile di vita" },
       { tipo: "pdf", id: "11vI26gqVgHZrk6fq3lJBADDOMHvUkAr4", titolo: "Il ruolo del sonno per il benessere" },
@@ -550,8 +486,7 @@ window.TOPICS = [
     materiali: [
       { tipo: "pdf", id: "1525novEK9odyzCkdbtOH2yItf2UL4Et1", titolo: "Effetti dell'allenamento in quota" },
       { tipo: "pdf", id: "1wPJXNVvC8L62B-ygoOu-_q8sfY69aC07", titolo: "Gli effetti fisiologici della profondità in acqua" },
-      { tipo: "yt", id: "VasQo4KsJ1E", titolo: "L'allenamento in alta quota" },
-      { tipo: "yt", id: "gFnFsXjqoHo", titolo: "Il corpo in profondità" }
+      { tipo: "yt", id: "VasQo4KsJ1E", titolo: "L'allenamento in alta quota" }
     ],
     domande: [
       "Quali adattamenti cardiovascolari avvengono durante l'allenamento in alta quota?",
@@ -576,11 +511,9 @@ window.TOPICS = [
       "La psicologia dello sport è per tutti?"
     ],
     materiali: [
-      { tipo: "pdf", id: "11VC9zqSQ8KyWqOneYSRo9cETTNM7Z6RR", titolo: "Psicologia dello sport", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1B-XoZege10kVxqBA2kw8NtJxU-N76_HQ", titolo: "Definizione e ambiti applicativi", nota: "Master MAPS" },
       { tipo: "pdf", id: "1NuaVxHimWtoktGLNa4f0ITbiIgubxSZI", titolo: "Regolazione delle emozioni nello sport" },
-      { tipo: "yt", id: "P6oALbNqPeE", titolo: "Video di approfondimento 1" },
-      { tipo: "yt", id: "nr5hcz5SNr8", titolo: "Video di approfondimento 2" }
+      { tipo: "yt", id: "P6oALbNqPeE", titolo: "Video di approfondimento 1" }
     ]
   },
   {
@@ -594,12 +527,7 @@ window.TOPICS = [
       "Il modello prestativo degli sport e l'allenamento"
     ],
     materiali: [
-      { tipo: "yt", id: "lJ7f3uEI5To", titolo: "Il tessuto muscolare · La Biologia per tutti" },
-      { tipo: "yt", id: "eNOJhnzjmbE", titolo: "La glicolisi · La Biologia per tutti" },
-      { tipo: "pdf", id: "1aNRkW2Bz4PU0f8ueVKtwM7zUBLdpjTdq", titolo: "Adattamenti a lungo termine ai diversi tipi di allenamento", nota: "Lezione del prof. Bertelli" },
-      { tipo: "link", url: "https://drive.google.com/open?id=1be5DmIcAXtx-I8Vcn1YLLkKRATR_cPMkEaGzuF3gE4Y", titolo: "Slide prof. Mischiati" },
-      { tipo: "video", id: "1hg4m9gxVRKrzuac51EJLYVUx5VUKxfQC", titolo: "I motori energetici del corpo" },
-      { tipo: "video", id: "1i0f8Xsr7_ISdQs2KAwb7Kf8Gx9C5_Un_", titolo: "Adattamenti all'allenamento" }
+      { tipo: "yt", id: "lJ7f3uEI5To", titolo: "Il tessuto muscolare · La Biologia per tutti" }
     ]
   },
   {
@@ -616,8 +544,6 @@ window.TOPICS = [
     ],
     materiali: [
       { tipo: "yt", id: "YlSf3j_lK3M", titolo: "Le biomolecole · La Biologia per tutti" },
-      { tipo: "yt", id: "RDnlYnrodyQ", titolo: "Apparato digerente · La Biologia per tutti" },
-      { tipo: "pdf", id: "11Kx-5vKvx3gE-l6fi-75xwZ7ftjfOSp4", titolo: "Attività fisica e pratica sportiva", nota: "Lezione del prof. Bertelli" },
       { tipo: "pdf", id: "1EVmQBwCOhVXxcZSqSPjWGLXDiMtBCKLn", titolo: "Attenti alle diete e agli integratori", nota: "Dossier scientifico" },
       { tipo: "pdf", id: "1Crusu7ROTn8Tx4haoqn1xG53fq0CPLn8", titolo: "Integratori", nota: "Università di Verona" },
       { tipo: "link", url: "https://www.ausl.bologna.it/seztemi/alimentazione/integratori/integratori-per-lo-sport", titolo: "Integratori per lo sport", nota: "AUSL Bologna" },
@@ -636,8 +562,6 @@ window.TOPICS = [
       "Storie di atleti con disabilità"
     ],
     materiali: [
-      { tipo: "pdf", id: "13s2idvnq6__1-69Knje60rx2AyhbfbEv", titolo: "Oltre i limiti", nota: "Lezione del prof. Bertelli" },
-      { tipo: "pdf", id: "1Fh24pd887iG328OOR0nuDseaU2n1VWmJ", titolo: "Sport e disabilità", nota: "Slide" },
       { tipo: "video", id: "1-54yHB7tobL8g2wr1HE_CrnNPSnqTiVi", titolo: "Lo spirito paralimpico" },
       { tipo: "audio", id: "10prTTA8UWkTlgin8UaHxuFftYV_W3kES", titolo: "Podcast: disabilità, sport, Paralimpiadi" }
     ]

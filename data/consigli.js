@@ -52,7 +52,7 @@ window.CONSIGLI = {
   "i-metabolismi-energetici": [
     ["Una tabella sola", "Costruisci una tabella con i tre meccanismi: carburante, ossigeno, durata, prodotti, esempio sportivo."],
     ["Pensa a una gara", "Prendi un 400 metri o una partita: quale meccanismo prevale minuto per minuto?"],
-    ["Guarda il video", "Le animazioni di La Biologia per tutti su glicolisi e fermentazione rendono chiari i passaggi."]
+    ["Guarda il video", "L'animazione di La Biologia per tutti sulla glicolisi rende chiari i passaggi."]
   ],
   "teoria-dellallenamento": [
     ["Disegna la curva", "Disegna a memoria la curva della supercompensazione: carico, recupero, supercompensazione."],

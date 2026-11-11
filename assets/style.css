@@ -1730,3 +1730,30 @@ label.a11y-t:hover, a.a11y-t:hover { background: rgba(255, 255, 255, .14); }
 .orl-card b { display: block; font-size: 1.15rem; line-height: 1.15; }
 .orl-card small { display: block; margin-top: 4px; color: var(--muted); font-weight: 700; font-size: .82rem; }
 .orl-card > svg { width: 22px; height: 22px; stroke: var(--k); }
+
+/* v9 — Schemi e Ripasso con colori propri, ben distinguibili */
+:root { --sch: #12C2B0; --sch2: #0A8F9E; --rip: #FFC23D; --rip2: #FF8A1F; --lab: #7C5CFF; --lab2: #4E7BFF; }
+.seg a.tb-schemi svg { stroke: var(--sch); }
+.seg a.tb-ripassa svg, .seg a.tb-gioca svg { stroke: var(--rip); }
+.seg a.tb-schemi.on { background: linear-gradient(120deg, var(--sch), var(--sch2)); box-shadow: 0 6px 16px rgba(18, 194, 176, .4); }
+.seg a.tb-ripassa.on, .seg a.tb-gioca.on { color: #2A1600; background: linear-gradient(120deg, var(--rip), var(--rip2)); box-shadow: 0 6px 16px rgba(255, 160, 40, .4); }
+.seg a.on svg { stroke: currentColor; }
+.stiles { display: grid; gap: 12px; margin-top: 14px; }
+@media (min-width: 560px) { .stiles { grid-template-columns: 1fr 1fr; } .col .stiles { grid-template-columns: 1fr; } }
+@media (min-width: 1100px) { .col .stiles { grid-template-columns: 1fr 1fr; } }
+.stile { display: grid; grid-template-columns: 52px 1fr 22px; gap: 14px; align-items: center; padding: 18px; border-radius: var(--r); text-decoration: none; color: #fff; transition: transform .25s var(--spring), box-shadow .25s; }
+.stile:hover { transform: translateY(-3px); }
+.stile:active { transform: scale(.98); }
+.stile-ic { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: rgba(255, 255, 255, .22); }
+.stile-ic svg { width: 28px; height: 28px; stroke: currentColor; }
+.stile-tx b { display: block; font-size: 1.35rem; font-weight: 900; line-height: 1.1; }
+.stile-tx span { display: block; margin-top: 3px; font-size: .9rem; font-weight: 700; opacity: .9; }
+.stile > svg { width: 22px; height: 22px; stroke: currentColor; }
+.st-schemi { background: linear-gradient(130deg, var(--sch), var(--sch2)); box-shadow: 0 12px 28px rgba(18, 194, 176, .28); }
+.st-ripasso { color: #2A1600; background: linear-gradient(130deg, var(--rip), var(--rip2)); box-shadow: 0 12px 28px rgba(255, 160, 40, .28); }
+.st-ripasso .stile-ic { background: rgba(255, 255, 255, .4); }
+.lab-cta { background: linear-gradient(130deg, var(--lab), var(--lab2)); border: 0; }
+.lab-cta p { color: rgba(255, 255, 255, .9); }
+@media print { .stiles { display: none; } }
+.seg a.tb-schemi:not(.on) { color: var(--sch); }
+.seg a.tb-ripassa:not(.on), .seg a.tb-gioca:not(.on) { color: var(--rip); }
