@@ -1757,3 +1757,12 @@ label.a11y-t:hover, a.a11y-t:hover { background: rgba(255, 255, 255, .14); }
 @media print { .stiles { display: none; } }
 .seg a.tb-schemi:not(.on) { color: var(--sch); }
 .seg a.tb-ripassa:not(.on), .seg a.tb-gioca:not(.on) { color: var(--rip); }
+
+/* v9.1 — sfondo colorato pieno per i riquadri di Schemi, Ripasso/Gioca e Laboratorio */
+.tbody-schemi { --card: #0F6E72; --bg-2: #0A4D58; --line: rgba(120, 255, 240, .28); --muted: #CDEFEA; }
+.tbody-gioca, .tbody-ripassa { --card: #A2480F; --bg-2: #7A2E12; --line: rgba(255, 210, 140, .32); --muted: #FFE2C4; }
+.tbody-lab { --card: #4A35B8; --bg-2: #2E2585; --line: rgba(200, 185, 255, .3); --muted: #E1DAFF; }
+.tbody-schemi .card, .tbody-gioca .card, .tbody-ripassa .card, .tbody-lab .card, .tbody-lab .lab-card { box-shadow: 0 16px 36px rgba(0, 0, 0, .35); }
+.seg a.tb-lab svg { stroke: #A996FF; }
+.seg a.tb-lab:not(.on) { color: #BFB1FF; }
+.seg a.tb-lab.on { color: #fff; background: linear-gradient(120deg, var(--lab), var(--lab2)); box-shadow: 0 6px 16px rgba(124, 92, 255, .4); }

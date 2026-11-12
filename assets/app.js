@@ -547,7 +547,7 @@
       <div class="seg-wrap" ${inGame ? 'style="margin-top:0"' : ""}><div class="wrap">
         <nav class="seg${tabs.length > 3 ? " four" : ""}${tabs.length > 4 ? " five" : ""}" aria-label="Sezioni">${tabs.map(([key, l, ic]) => `<a href="#/argomento/${t.id}/${key}" class="tb-${key}${tab === key ? " on" : ""}">${ic}<span>${key === "lab" ? '<i class="lg">Laboratorio</i><i class="sh">Lab</i>' : l}</span></a>`).join("")}</nav>
       </div></div>
-      <section class="wrap"><div id="tabBody"></div></section>`;
+      <section class="wrap"><div id="tabBody" class="tbody tbody-${tab}"></div></section>`;
     animateRing();
     bindPath();
 
