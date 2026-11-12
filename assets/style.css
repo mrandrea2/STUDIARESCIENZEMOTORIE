@@ -1775,3 +1775,13 @@ label.a11y-t:hover, a.a11y-t:hover { background: rgba(255, 255, 255, .14); }
 .schemi > .schema:nth-child(6n+5) { --card: #9B1F5E; --bg-2: #6E1846; --line: rgba(255, 170, 210, .32); }
 .schemi > .schema:nth-child(6n+6) { --card: #2E7D32; --bg-2: #1F5A26; --line: rgba(170, 255, 180, .32); }
 .schemi > .schema { --muted: rgba(255, 255, 255, .85); }
+
+/* v9.3 — Laboratorio: ogni riquadro con un colore di fondo diverso (stessa tavolozza degli Schemi) */
+.lab-card.lc1 { --card: #0F6E72; --bg-2: #0A4D58; --line: rgba(120, 255, 240, .3); }
+.lab-card.lc2 { --card: #4A35B8; --bg-2: #2E2585; --line: rgba(200, 185, 255, .32); }
+.lab-card.lc3 { --card: #A2480F; --bg-2: #7A2E12; --line: rgba(255, 210, 140, .34); }
+.lab-card.lc4 { --card: #1F5FC8; --bg-2: #163E8E; --line: rgba(160, 205, 255, .34); }
+.lab-card.lc5 { --card: #9B1F5E; --bg-2: #6E1846; --line: rgba(255, 170, 210, .32); }
+.lab-card.lc6 { --card: #2E7D32; --bg-2: #1F5A26; --line: rgba(170, 255, 180, .32); }
+.lab-card[class*="lc"] { --muted: rgba(255, 255, 255, .85); }
+.lab-card[class*="lc"] .lab-tag > span, .lab-card[class*="lc"] .lab-tag > svg { color: #fff; stroke: #fff; opacity: .95; }

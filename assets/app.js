@@ -1012,6 +1012,7 @@
 
   function tabLab(body, t) {
     if (window.renderLab) window.renderLab(body, t, LAB[t.id]);
+    $$(".lab-card", body).forEach((c, i) => c.classList.add("lc" + (i % 6 + 1)));
     reveal();
   }
 
