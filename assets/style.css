@@ -1766,3 +1766,12 @@ label.a11y-t:hover, a.a11y-t:hover { background: rgba(255, 255, 255, .14); }
 .seg a.tb-lab svg { stroke: #A996FF; }
 .seg a.tb-lab:not(.on) { color: #BFB1FF; }
 .seg a.tb-lab.on { color: #fff; background: linear-gradient(120deg, var(--lab), var(--lab2)); box-shadow: 0 6px 16px rgba(124, 92, 255, .4); }
+
+/* v9.2 — Schemi: ogni riquadro con un colore di fondo diverso */
+.schemi > .schema:nth-child(6n+1) { --card: #0F6E72; --bg-2: #0A4D58; --line: rgba(120, 255, 240, .3); }
+.schemi > .schema:nth-child(6n+2) { --card: #4A35B8; --bg-2: #2E2585; --line: rgba(200, 185, 255, .32); }
+.schemi > .schema:nth-child(6n+3) { --card: #A2480F; --bg-2: #7A2E12; --line: rgba(255, 210, 140, .34); }
+.schemi > .schema:nth-child(6n+4) { --card: #1F5FC8; --bg-2: #163E8E; --line: rgba(160, 205, 255, .34); }
+.schemi > .schema:nth-child(6n+5) { --card: #9B1F5E; --bg-2: #6E1846; --line: rgba(255, 170, 210, .32); }
+.schemi > .schema:nth-child(6n+6) { --card: #2E7D32; --bg-2: #1F5A26; --line: rgba(170, 255, 180, .32); }
+.schemi > .schema { --muted: rgba(255, 255, 255, .85); }
