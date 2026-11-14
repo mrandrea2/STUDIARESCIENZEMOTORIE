@@ -382,10 +382,6 @@
         <div class="section-head rv"><h2>Allena la <span class="gt">memoria</span>:</h2></div>
         ${coachHtml()}
       </section>
-      ${APF.length ? `<section class="wrap section">
-        <div class="section-head rv"><div><p class="kicker">Laboratori del prof.</p><h2>Esplora e <span class="gt">approfondisci</span>:</h2></div></div>
-        <div class="apf-grid">${APF.map(apfTile).join("")}</div>
-      </section>` : ""}
       ${a11yHtml(lastT)}
 
       <section class="wrap section"><div class="home-two">

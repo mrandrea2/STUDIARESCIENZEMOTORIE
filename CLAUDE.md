@@ -37,8 +37,8 @@ https://studiarescienzemotorie.vercel.app. Claude è autorizzato a fare commit e
   `consigli.js`. Modello recente da copiare: `l-apprendimento-motorio` (in `data/nuovi-argomenti.js`).
 - Tipi di slide: cover, cards, steps, points (con `fig: {svg}` da `ILL`), split, list, end, fonti.
 - Approfondimenti (laboratori esterni del prof.): `data/approfondimenti.js` (`window.APPROF`). Sono **riquadri
-  cliccabili, mai link visibili**; compaiono in home, nelle pagine di classe indicate in `classi` e, tramite `temi`,
-  in Lezione e Laboratorio dell'argomento. Metabolismo 3D: classi **seconde**; Cellule in equilibrio: classi **quarte**.
+  cliccabili, mai link visibili**; compaiono (non in home) nelle pagine di classe indicate in `classi` e, tramite `temi`,
+  in Lezione e Laboratorio dell'argomento. Metabolismo 3D: classi **seconde e terze**; Cellule in equilibrio: classi **quarte**.
   Ora: «Metabolismo 3D» (metabolismi energetici) e «Cellule in equilibrio» (PNEI, sistema immunitario, salute dinamica, sana alimentazione).
 - Strumenti di studio in `assets/app.js`: **Ripasso mirato** `#/ripasso` (gli errori di quiz, V/F, sfida e simulazioni
   tornano dopo 1, 3 e 7 giorni; `mem._err`), **Simulazione di verifica** `#/argomento/<id>/gioca/verifica`
@@ -49,7 +49,7 @@ https://studiarescienzemotorie.vercel.app. Claude è autorizzato a fare commit e
   da esporre a voce con cronometro, poi risposta modello e punti chiave; `mem._int`).
 - Progressi degli studenti solo nel browser (`localStorage` `ssm-progressi-v1`, profilo fitness `ssm-fitness-v1`).
 - `sw.js` (app installabile e offline): rete prima, copia salvata se offline. **Aumentare `VERSIONE`**
-  (ora `ssm-v20`) a ogni modifica importante. `README.md` descrive le funzioni: aggiornarlo se cambiano.
+  (ora `ssm-v21`) a ogni modifica importante. `README.md` descrive le funzioni: aggiornarlo se cambiano.
 
 ## Come lavorare
 1. `gh repo clone mrandrea2/STUDIARESCIENZEMOTORIE` (o `git pull` se già clonato).

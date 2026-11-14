@@ -15,7 +15,7 @@ window.APPROF = [
     testo: "Entra nella cellula e segui una molecola di glucosio: glicolisi, ciclo di Krebs e catena respiratoria in un modello 3D da ruotare e ingrandire.",
     punti: ["Glicolisi", "Ciclo di Krebs", "ATP sintasi", "Perché serve l'ossigeno"],
     cta: "Apri il laboratorio",
-    classi: [2],
+    classi: [2, 3],
     temi: ["i-metabolismi-energetici"]
   },
   {
