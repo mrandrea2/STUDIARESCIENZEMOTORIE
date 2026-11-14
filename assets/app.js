@@ -167,7 +167,11 @@
     route: sv('<circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H16a3.5 3.5 0 0 0 0-7H8a3.5 3.5 0 0 1 0-7h7.5"/>'),
     mic: sv('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>'),
     phone: sv('<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>'),
-    calc: sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>')
+    calc: sv('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/>'),
+    cal: sv('<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/>'),
+    target: sv('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>'),
+    ext: sv('<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/>', 2.4),
+    clip: sv('<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M9 10h6M9 14h6M9 18h3"/>')
   };
   const star = on => `<svg viewBox="0 0 24 24"><path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="${on ? "#FFD23F" : "rgba(255,255,255,.12)"}" stroke="${on ? "#FFD23F" : "rgba(255,255,255,.35)"}" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
 
@@ -374,6 +378,14 @@
         <div class="section-head rv"><h2>Scegli la tua <span class="gt">classe</span>:</h2></div>
         <div class="classes">${classTiles()}</div>
       </section>
+      <section class="wrap section">
+        <div class="section-head rv"><h2>Allena la <span class="gt">memoria</span>:</h2></div>
+        ${coachHtml()}
+      </section>
+      ${APF.length ? `<section class="wrap section">
+        <div class="section-head rv"><div><p class="kicker">Laboratori del prof.</p><h2>Esplora e <span class="gt">approfondisci</span>:</h2></div></div>
+        <div class="apf-grid">${APF.map(apfTile).join("")}</div>
+      </section>` : ""}
       ${a11yHtml(lastT)}
 
       <section class="wrap section"><div class="home-two">
@@ -432,7 +444,7 @@
     const D = dailyQ();
     $$(".opt", box).forEach(b => b.addEventListener("click", () => {
       const k = Number(b.dataset.k), ok = k === D.ci;
-      mem._daily = { date: today(), pick: k, ok }; markActive(); save();
+      mem._daily = { date: today(), pick: k, ok }; markActive(); save(); logAns(D.id, "q", D.q, ok);
       $$(".opt", box).forEach((x, j) => { x.disabled = true; if (j === D.ci) x.classList.add("right"); else if (j !== k) x.classList.add("dim"); });
       if (!ok) { b.classList.add("wrong"); sfx("no"); vib([60, 40, 60]); } else { sfx("ok"); vib(25); confetti(80); }
       const fb = $("#dfb", box);
@@ -562,6 +574,7 @@
       if (game === "completa") return gameCloze(body, t);
       if (game === "ordina" && g.ordina) return gameOrder(body, t);
       if (game === "gruppi" && g.gruppi) return gameGroups(body, t);
+      if (game === "verifica") return gameVerifica(body, t);
       return gamePicker(body, t);
     }
     if (tab === "schemi" && S[t.id]) return tabSchemi(body, t);
@@ -629,7 +642,9 @@
       const s = starsFor(getBest(t.id, key));
       const href = key === "flash" ? `#/argomento/${t.id}/ripassa` : `#/argomento/${t.id}/gioca/${key}`;
       return `<a class="gcard g-${key} rv${i === 0 ? " big" : ""}" href="${href}" style="--i:${i}"><span class="gi">${ic}</span><span style="display:flex;flex-direction:column;gap:4px;flex:1"><h3>${n}</h3><p>${d}</p><span class="stars-row">${[0, 1, 2].map(x => star(x < s)).join("")}</span></span></a>`;
-    }).join("")}</div><p class="note" style="text-align:center">1 stella dal 40% · 2 stelle dal 70% · 3 stelle dal 90%</p>`;
+    }).join("")}
+      <a class="gcard g-verifica big rv" href="#/argomento/${t.id}/gioca/verifica" style="--i:${list.length}"><span class="gi">${I.clip}</span><span style="display:flex;flex-direction:column;gap:4px;flex:1"><h3>Simulazione di verifica</h3><p>15 domande senza aiuti, correzione alla fine e voto in decimi${getBest(t.id, "verifica") ? ` · migliore: ${votoTxt(votoDi(getBest(t.id, "verifica")))}` : ""}</p></span></a>
+    </div><p class="note" style="text-align:center">1 stella dal 40% · 2 stelle dal 70% · 3 stelle dal 90%</p>`;
     if ((t.extra || []).length) {
       body.insertAdjacentHTML("beforeend", `<div class="section-head" style="margin-top:26px"><h2 style="font-size:1.5rem">Altri giochi della classe:</h2></div>` + t.extra.map((m, i) => {
         const u = matUrls(m);
@@ -667,6 +682,7 @@
       <h2>${frase}</h2>
       <p style="margin:0 0 10px">${sub}<br><span class="muted">${msg || ""}</span></p>
       ${nuovo && pct > 0 ? '<span class="record">Nuovo record!</span>' : ""}
+      ${(gameKey === "quiz" || gameKey === "vf") && pct < 100 ? `<p class="note">Gli errori sono nel <a href="#/ripasso" style="color:#fff">Ripasso mirato</a>: torneranno domani.</p>` : ""}
       <div class="cta-row"><button class="btn grad" id="again">Gioca ancora</button><a class="btn ghost" href="#/argomento/${t.id}/gioca">Altri giochi</a><a class="btn ghost" href="#/argomento/${t.id}">Torna allo studio</a></div>
     </div></div>`;
     countUp($("#bigNum", body), pct, "%");
@@ -694,7 +710,7 @@
         const k = Number(b.dataset.k), ok = q.o[k].ok;
         $$(".opt", body).forEach((x, j) => { x.disabled = true; if (q.o[j].ok) x.classList.add("right"); else if (j !== k) x.classList.add("dim"); });
         if (ok) { score++; rightFx(card); } else { b.classList.add("wrong"); wrongFx(card); }
-        res[i] = ok;
+        res[i] = ok; logAns(t.id, "q", q.q, ok);
         const fb = $("#fb", body); fb.className = "feedback show " + (ok ? "ok" : "no");
         fb.innerHTML = `<b>${ok ? "Giusto!" : "Non proprio."}</b>${esc(q.sp)}`;
         const n = $("#next", body); n.hidden = false; scrollToEl(n);
@@ -725,7 +741,7 @@
       const tm = $("#tm", body), tb = $("#tb", body), bar = $("#tb i", body), card = $("#qc", body);
       function answer(choice) {
         if (done) return; done = true; clearInterval(timer);
-        const ok = choice === v; res[i] = ok;
+        const ok = choice === v; res[i] = ok; logAns(t.id, "v", s, ok);
         $$(".vf-btns button", body).forEach(b => { b.disabled = true; if ((b.dataset.v === "1") === v) b.classList.add("right"); });
         if (ok) { score++; rightFx(card); } else wrongFx(card);
         const fb = $("#fb", body); fb.className = "feedback show " + (ok ? "ok" : "no");
@@ -981,6 +997,7 @@
         <div class="rd-bar" role="group" aria-label="Per leggere meglio"><span>${I.access} Per leggere meglio:</span><button type="button" data-o="big" aria-pressed="false">A+ <b>Testo grande</b></button><button type="button" data-o="dsa" aria-pressed="false"><i class="dsa-a">Aa</i> <b>Alta leggibilità</b></button><button type="button" data-listen>${I.ear} <b>Ascolta</b></button></div></div>
       ${deckHtml(t)}
       ${tipsHtml(t)}
+      ${apfSection(t)}
       ${vids.length ? `<section class="lez-vid rv"><h3 class="lez-h">Guarda e ascolta:</h3><div class="vid-grid">${vids.map(([x, i]) => videoHtml(x, i)).join("")}</div></section>` : ""}
       <div class="two" style="margin-top:18px">
         <div class="col"><div class="card rv"><h3>Obiettivi della lezione:</h3><ol class="goals">${(t.obiettivi || []).map(o => `<li>${esc(o)}</li>`).join("")}</ol></div>
@@ -1011,7 +1028,7 @@
   }
 
   function tabLab(body, t) {
-    if (window.renderLab) window.renderLab(body, t, LAB[t.id]);
+    if (window.renderLab) window.renderLab(body, t, LAB[t.id], apfSection(t));
     $$(".lab-card", body).forEach((c, i) => c.classList.add("lc" + (i % 6 + 1)));
     reveal();
   }
@@ -1021,7 +1038,8 @@
   function studyTiles(t) {
     const sc = S[t.id] ? `<a class="stile st-schemi rv" href="#/argomento/${t.id}/schemi"><span class="stile-ic">${I.map}</span><span class="stile-tx"><b>Schemi</b><span>Mappe e tabelle per fissare i concetti</span></span>${I.arr}</a>` : "";
     const gi = G[t.id] ? `<a class="stile st-ripasso rv" href="#/argomento/${t.id}/gioca" style="--i:1"><span class="stile-ic">${I.game}</span><span class="stile-tx"><b>Ripasso</b><span>Quiz e 6 giochi · fino a ${MAXT} stelle</span></span>${I.arr}</a>` : "";
-    return sc || gi ? `<div class="stiles">${sc}${gi}</div>` : "";
+    const ve = G[t.id] ? `<a class="stile st-ver rv" href="#/piano/${t.id}" style="--i:2"><span class="stile-ic">${I.cal}</span><span class="stile-tx"><b>Verifica in arrivo?</b><span>Piano di studio giorno per giorno e simulazione con il voto</span></span>${I.arr}</a>` : "";
+    return sc || gi ? `<div class="stiles">${sc}${gi}</div>${ve ? `<div class="stiles one">${ve}</div>` : ""}` : "";
   }
   function pathSteps(t) {
     const m = t.materiali || [], out = [];
@@ -1312,7 +1330,7 @@
 
         <div class="card rv"><h3>Che cosa resta sul tuo dispositivo</h3>
           <p>Per farti ritrovare i progressi, il sito usa la memoria locale del browser (<i>localStorage</i>) e, se lo installi, la memoria dell'app per funzionare offline (<i>service worker</i>). Vi salva:</p>
-          <ul><li>stelle, livello, giochi completati, percorso degli argomenti;</li><li>preferenze: classe, testo grande, alta leggibilità, suoni;</li><li>le risposte che scrivi alle domande aperte;</li><li>i profili del Laboratorio fitness;</li><li>una copia delle pagine del sito, per aprirle senza rete.</li></ul>
+          <ul><li>stelle, livello, giochi completati, percorso degli argomenti;</li><li>preferenze: classe, testo grande, alta leggibilità, suoni;</li><li>le risposte che scrivi alle domande aperte;</li><li>le domande da rivedere nel Ripasso mirato e le date delle verifiche che inserisci;</li><li>i profili del Laboratorio fitness;</li><li>una copia delle pagine del sito, per aprirle senza rete.</li></ul>
           <p>Questi dati non lasciano il dispositivo e il gestore del sito non può vederli. Sono strumenti tecnici necessari alle funzioni che usi tu: per questo, come prevedono l'art. 122 del Codice privacy e le Linee guida del Garante sui cookie (10 giugno 2021), non serve un banner di consenso.</p>
           <button class="btn ghost" id="wipe" type="button">Cancella tutti i dati di questo sito dal dispositivo</button>
           <p class="tnote" id="wipeMsg" aria-live="polite"></p>
@@ -1324,7 +1342,7 @@
 
         <div class="card rv"><h3>Contenuti esterni: solo quando li apri tu</h3>
           <p>Alcuni materiali arrivano da altri servizi. Nessuno si carica da solo: partono solo quando tocchi il pulsante per aprirli.</p>
-          <ul><li><b>Video</b>: YouTube in modalità privacy avanzata (youtube-nocookie.com).</li><li><b>Dispense e moduli</b>: Google Drive e Google Moduli.</li><li><b>Giochi esterni</b>: LearningApps.</li><li><b>Modelli 3D</b>: Sketchfab, con l'opzione «do not track».</li><li><b>Link</b> ad altri siti, anche tramite bit.ly.</li></ul>
+          <ul><li><b>Video</b>: YouTube in modalità privacy avanzata (youtube-nocookie.com).</li><li><b>Dispense e moduli</b>: Google Drive e Google Moduli.</li><li><b>Giochi esterni</b>: LearningApps.</li><li><b>Modelli 3D</b>: Sketchfab, con l'opzione «do not track».</li><li><b>Laboratori di approfondimento del prof.</b> («Metabolismo 3D», «Cellule in equilibrio»): siti separati, ospitati da Vercel, che si aprono in una nuova scheda.</li><li><b>Link</b> ad altri siti, anche tramite bit.ly.</li></ul>
           <p>Quando apri uno di questi contenuti, il servizio riceve il tuo indirizzo IP e può usare cookie propri, secondo la sua informativa privacy.</p>
         </div>
 
@@ -1333,7 +1351,7 @@
           <li><b>Ascolta la slide</b>: usa le voci del tuo browser e preferisce quelle installate sul dispositivo. Se il dispositivo offre solo voci online, il testo letto può essere elaborato dal fornitore del browser.</li>
           <li><b>Studenti minorenni</b>: il sito non raccoglie dati personali, quindi non chiede alcun consenso ai genitori.</li></ul>
           <p>Per domande: prof. Andrea Bertelli, Liceo Statale «Galileo Galilei» di Verona, attraverso i canali istituzionali della scuola.</p>
-          <p class="tnote">Ultimo aggiornamento: 9 novembre 2026.</p>
+          <p class="tnote">Ultimo aggiornamento: 14 novembre 2026.</p>
         </div>
       </section>`;
     $("#wipe").onclick = async () => {
@@ -1550,6 +1568,7 @@
           rightFx(card, "+" + gain);
           const sc = $("#sc"); sc.textContent = pts; sc.classList.add("bump"); setTimeout(() => sc.classList.remove("bump"), 320);
         } else { if (k !== null) btns[k].classList.add("wrong"); streak = 0; wrongFx(card); }
+        logAns(q.id, "q", q.q, ok);
         const fb = $("#fb"); fb.className = "feedback show " + (ok ? "ok" : "no");
         fb.innerHTML = `<b>${k === null ? "Tempo scaduto!" : ok ? `Giusto! +${gain} punti` : "Sbagliato."}</b>${esc(q.sp)}`;
         const n = $("#next"); n.hidden = false; scrollToEl(n);
@@ -1597,6 +1616,7 @@
           }).join("")}</div></div>
           <div class="card rv"><h3>Record Sfida lampo:</h3><div class="ranks">${[1, 2, 3, 4, 5].map(c => { const r = getBest("_sfida", "c" + c); return `<div class="rank${r ? " got" : ""}"><i>${c}</i><span>${PLC[c]}</span><small>${r ? r + " punti" : "—"}</small></div>`; }).join("")}</div>
             <a class="btn full" href="#/sfida" style="margin-top:14px">${I.bolt} Gioca la sfida</a></div>
+          <div class="stiles one"><a class="stile st-ver rv" href="#/ripasso"><span class="stile-ic">${I.target}</span><span class="stile-tx"><b>Ripasso mirato</b><span>${errDue().length} da rivedere oggi · ${errAll().length} in memoria</span></span>${I.arr}</a></div>
           <div class="card rv"><h3>Azzera i progressi</h3><p class="muted" style="margin:0 0 14px">Stelle e record sono salvati solo su questo dispositivo. Azzerarli non si può annullare.</p><button class="btn ghost full" id="reset">Azzera tutto</button></div>
         </div>
       </div></section>`;
@@ -1607,6 +1627,312 @@
       if (!armed) { armed = true; e.currentTarget.textContent = "Tocca di nuovo per confermare"; e.currentTarget.style.borderColor = "var(--no)"; setTimeout(() => { armed = false; const b = $("#reset"); if (b) { b.textContent = "Azzera tutto"; b.style.borderColor = ""; } }, 4000); return; }
       const pref = mem._pref; mem = { _pref: pref }; save(); updateLvl(); sfx("no"); pageTrofei(); reveal();
     };
+  }
+
+  /* ================= Approfondimenti: laboratori del prof. come riquadri ================= */
+  const APF = window.APPROF || [];
+  const APF_ART = {
+    atp: `<svg viewBox="0 0 200 200" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><path d="M100 22 158 55v66l-58 33-58-33V55z" stroke-width="7" opacity=".9"/><path d="M100 46 137 67v42l-37 21-37-21V67z" stroke-width="4" opacity=".45"/><path d="M108 58 78 100h22l-8 40 32-46h-22z" fill="#fff" stroke="none"/><circle cx="100" cy="22" r="9" fill="#fff" stroke="none"/><circle cx="158" cy="121" r="9" fill="#fff" stroke="none"/><circle cx="42" cy="121" r="9" fill="#fff" stroke="none"/><path d="M24 172c22-14 44 14 66 0s44 14 66 0 22-6 22-6" stroke-width="5" opacity=".55"/></svg>`,
+    cellula: `<svg viewBox="0 0 200 200" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><path d="M100 18c42 0 78 28 80 74s-30 88-78 90-84-34-84-82 40-82 82-82z" stroke-width="7" opacity=".9"/><circle cx="92" cy="98" r="34" stroke-width="5" opacity=".6"/><path d="M78 84c10 6 18 6 28 0M78 98c10 6 18 6 28 0M78 112c10 6 18 6 28 0M80 80v36M104 80v36" stroke-width="3.5"/><ellipse cx="146" cy="72" rx="13" ry="7" transform="rotate(35 146 72)" stroke-width="4" opacity=".7"/><ellipse cx="142" cy="140" rx="13" ry="7" transform="rotate(-30 142 140)" stroke-width="4" opacity=".7"/><circle cx="52" cy="58" r="5" fill="#fff" stroke="none" opacity=".8"/><circle cx="56" cy="146" r="6" fill="#fff" stroke="none" opacity=".8"/></svg>`
+  };
+  function apfTile(a, i) {
+    return `<a class="apf apf-${esc(a.col || "a")} rv" style="--i:${i || 0}" href="${esc(a.url)}" target="_blank" rel="noopener" aria-label="${esc(a.titolo)}: ${esc(a.sotto)}. Si apre in una nuova scheda">
+      <span class="apf-art" aria-hidden="true">${APF_ART[a.art] || ""}</span>
+      <span class="apf-tx"><span class="apf-tag">${esc(a.tag)}</span><b>${esc(a.titolo)}</b><em>${esc(a.sotto)}</em>
+        <span class="apf-p">${esc(a.testo)}</span>
+        <span class="apf-ch">${(a.punti || []).map(p => `<i>${esc(p)}</i>`).join("")}</span>
+        <span class="apf-go">${esc(a.cta || "Apri")} ${I.ext}</span></span></a>`;
+  }
+  function apfSection(t) {
+    const l = APF.filter(a => (a.temi || []).includes(t.id));
+    return l.length ? `<section class="apf-sec"><h3 class="lez-h rv">Approfondisci:</h3><div class="apf-grid${l.length === 1 ? " one" : ""}">${l.map(apfTile).join("")}</div></section>` : "";
+  }
+
+  /* ================= Ripasso mirato: gli errori tornano dopo 1, 3 e 7 giorni ================= */
+  const ymd = d => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  const addDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return ymd(d); };
+  const dparse = s => { const [y, m, d] = String(s).split("-").map(Number); return new Date(y, m - 1, d); };
+  const ddiff = (a, b) => Math.round((dparse(b) - dparse(a)) / 864e5);
+  const dlabel = s => { const n = ddiff(today(), s); return n === 0 ? "Oggi" : n === 1 ? "Domani" : n === -1 ? "Ieri" : dparse(s).toLocaleDateString("it-IT", { weekday: "short", day: "numeric", month: "short" }); };
+  const hashS = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0; return h.toString(36); };
+  const GAP = [1, 3, 7];
+  const QIDX = {};
+  T.forEach(t => {
+    const g = G[t.id]; if (!g) return;
+    (g.quiz || []).forEach(q => { QIDX[t.id + "|q|" + hashS(q[0])] = { tid: t.id, k: "q", d: q }; });
+    (g.vf || []).forEach(q => { QIDX[t.id + "|v|" + hashS(q[0])] = { tid: t.id, k: "v", d: q }; });
+  });
+  /* registra una risposta: sbagliata → torna domani; giusta al momento del ripasso → intervallo più lungo */
+  function logAns(tid, k, text, ok, review) {
+    const key = tid + "|" + k + "|" + hashS(text);
+    if (!QIDX[key]) return;
+    mem._err = mem._err || {};
+    const e = mem._err[key];
+    if (!ok) { mem._err[key] = { b: 0, d: addDays(GAP[0]), n: (e ? e.n : 0) + 1 }; save(); return; }
+    if (!e || (!review && e.d > today())) return;
+    e.b++;
+    if (e.b >= GAP.length) delete mem._err[key]; else e.d = addDays(GAP[e.b]);
+    save();
+  }
+  const errAll = () => Object.keys(mem._err || {}).filter(k => QIDX[k]);
+  const errDue = () => errAll().filter(k => mem._err[k].d <= today());
+
+  function pageRipasso() {
+    setK(0);
+    const all = errAll(), due = errDue();
+    const byT = {}; all.forEach(k => { const id = QIDX[k].tid; byT[id] = (byT[id] || 0) + 1; });
+    const next = all.filter(k => !due.includes(k)).map(k => mem._err[k].d).sort()[0];
+    app.innerHTML = `
+      <section class="band"><div class="wrap">
+        <span class="ghost" aria-hidden="true">↻</span>
+        <a class="crumb" href="#/">${I.back}Home</a>
+        <p class="kicker">Memoria a lungo termine</p><h1>Ripasso mirato<em>solo quello che non sai ancora</em></h1>
+        <p>Le domande che sbagli nei quiz, nel vero o falso, nella sfida e nelle simulazioni tornano qui <b>dopo 1, 3 e 7 giorni</b>. Tre risposte giuste distanziate e la domanda è consolidata.</p>
+      </div></section>
+      <section class="wrap section" style="padding-top:6px"><div id="rp"></div></section>`;
+    const box = $("#rp");
+    const home = () => {
+      box.innerHTML = `<div class="two">
+        <div class="col">
+          <div class="card rp-now rv">
+            <div class="rp-num"><b>${due.length}</b><span>${due.length === 1 ? "domanda da rivedere oggi" : "domande da rivedere oggi"}</span></div>
+            ${due.length ? `<button class="btn grad full" id="rpGo">${I.bolt} Inizia il ripasso · circa ${Math.max(1, Math.round(due.length * .5))} min</button>`
+              : all.length ? `<p class="muted" style="margin:0 0 12px">Per oggi sei a posto. Prossimo ripasso: <b style="color:#fff">${dlabel(next).toLowerCase()}</b>.</p><button class="btn ghost full" id="rpAll">Ripassa in anticipo (${all.length})</button>`
+              : `<p class="muted" style="margin:0 0 12px">Qui non c'è ancora niente: gioca un quiz o prova una simulazione di verifica. Gli errori arrivano qui da soli.</p><a class="btn full" href="${lastClass ? `#/classe/${lastClass}` : "#/classi"}">Vai agli argomenti</a>`}
+          </div>
+          ${all.length ? `<div class="card rv"><h3>Dove sbagli di più:</h3><div class="rp-top">${Object.entries(byT).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([id, n]) => `<a href="#/argomento/${id}"><span>${esc(byId[id].titolo)}</span><b>${n}</b></a>`).join("")}</div><p class="note">Tocca un argomento per riguardare lezione e schemi prima di riprovare.</p></div>` : ""}
+        </div>
+        <div class="col">
+          <div class="card rv" style="--i:1"><h3>Perché funziona:</h3>
+            <ol class="rp-why">
+              <li><b>Dimentichiamo in fretta.</b><span>Dopo un giorno resta una parte di ciò che hai studiato: è la curva dell'oblio.</span></li>
+              <li><b>Ripescare rinforza.</b><span>Sforzarti di ricordare una risposta la fissa più che rileggerla.</span></li>
+              <li><b>Distanziare conviene.</b><span>Tre ripassi brevi in giorni diversi valgono più di un'ora la sera prima.</span></li>
+            </ol>
+          </div>
+          <a class="stile st-ver rv" href="#/piano" style="--i:2"><span class="stile-ic">${I.cal}</span><span class="stile-tx"><b>Verso la verifica</b><span>Scrivi la data: il piano giorno per giorno lo prepara il sito</span></span>${I.arr}</a>
+        </div></div>`;
+      const go = $("#rpGo", box) || $("#rpAll", box);
+      if (go) go.onclick = () => { sfx("tap"); session(go.id === "rpAll" ? all : due); };
+      reveal();
+    };
+    const session = keys => {
+      const qs = shuffle(keys).slice(0, 15).map(key => {
+        const { tid, k, d } = QIDX[key];
+        return k === "q" ? { tid, k, q: d[0], sp: d[3], o: shuffle(d[1].map((x, i) => ({ x, ok: i === d[2] }))) } : { tid, k, q: d[0], v: d[1], sp: d[2] };
+      });
+      let i = 0, right = 0; const res = [];
+      const draw = () => {
+        if (i >= qs.length) {
+          markActive();
+          box.innerHTML = `<div class="stage"><div class="qcard result">
+            <p class="kicker" style="justify-content:center">Ripasso mirato</p>
+            <div class="big">${right}/${qs.length}</div>
+            <h2>${right === qs.length ? "Tutte ricordate!" : right >= qs.length / 2 ? "Ci sei quasi!" : "Serve ancora un giro."}</h2>
+            <p style="margin:6px 0 10px">Le risposte giuste tornano più avanti, a intervalli più lunghi. Quelle sbagliate le ritrovi <b>domani</b>.</p>
+            <div class="cta-row"><a class="btn grad" href="#/">Torna alla home</a><a class="btn ghost" href="#/piano">${I.cal} Verso la verifica</a></div>
+          </div></div>`;
+          if (right === qs.length) { confetti(160); sfx("win"); }
+          window.scrollTo(0, 0);
+          return;
+        }
+        const q = qs[i];
+        box.innerHTML = `<div class="stage">
+          <div class="stage-top"><a class="back" href="#/">${I.back} Esci</a>${dotsHtml(qs.length, i, res)}</div>
+          <div class="qcard" id="qc"><span class="qn">${i + 1}/${qs.length} · ${esc(byId[q.tid].titolo)}</span><h2>${esc(q.q)}</h2>
+            ${q.k === "q" ? `<div class="opts">${q.o.map((o, k) => `<button class="opt" data-k="${k}" data-l="${"ABCD"[k]}" style="--i:${k}">${esc(o.x)}</button>`).join("")}</div>`
+              : `<div class="vf-btns"><button class="v" data-v="1"><span>✓</span>Vero</button><button class="f" data-v="0"><span>✕</span>Falso</button></div>`}
+            <div class="feedback" id="fb"></div>
+            <div class="next-row"><button class="btn" id="next" hidden>${i + 1 < qs.length ? "Avanti" : "Vedi il risultato"} ${I.arr}</button></div>
+          </div></div>`;
+        const card = $("#qc", box);
+        const done = (ok, pre) => {
+          res[i] = ok; if (ok) { right++; rightFx(card); } else wrongFx(card);
+          logAns(q.tid, q.k, q.q, ok, true);
+          const fb = $("#fb", box); fb.className = "feedback show " + (ok ? "ok" : "no");
+          fb.innerHTML = `<b>${ok ? "Giusto: l'hai ricordata!" : "Non ancora: torna domani."}</b>${pre || ""}${esc(q.sp)}<a class="fb-l" href="#/argomento/${q.tid}/lezione">Rivedi la lezione</a>`;
+          const n = $("#next", box); n.hidden = false; scrollToEl(n);
+        };
+        $$(".opt", box).forEach(b => b.addEventListener("click", () => {
+          const k = Number(b.dataset.k), ok = q.o[k].ok;
+          $$(".opt", box).forEach((x, j) => { x.disabled = true; if (q.o[j].ok) x.classList.add("right"); else if (j !== k) x.classList.add("dim"); });
+          if (!ok) b.classList.add("wrong");
+          done(ok);
+        }));
+        $$(".vf-btns button", box).forEach(b => b.addEventListener("click", () => {
+          $$(".vf-btns button", box).forEach(x => { x.disabled = true; if ((x.dataset.v === "1") === q.v) x.classList.add("right"); });
+          done((b.dataset.v === "1") === q.v, `È ${q.v ? "vero" : "falso"}: `);
+        }));
+        $("#next", box).onclick = () => { i++; sfx("tap"); draw(); window.scrollTo(0, 0); };
+      };
+      draw(); window.scrollTo(0, 0);
+    };
+    home();
+  }
+
+  /* ================= Simulazione di verifica: senza aiuti, con il voto ================= */
+  const votoDi = pct => { const v = pct <= 60 ? 2 + pct / 60 * 4 : 6 + (pct - 60) / 40 * 4; return Math.round(v * 2) / 2; };
+  const votoTxt = v => Math.floor(v) + (v % 1 ? "½" : "");
+  function gameVerifica(body, t) {
+    const g = G[t.id];
+    const qs = shuffle(g.quiz).slice(0, 10).map(([q, opts, ci, sp]) => ({ k: "q", q, sp, o: shuffle(opts.map((x, i) => ({ x, ok: i === ci }))) }))
+      .concat(shuffle(g.vf).slice(0, 5).map(([q, v, sp]) => ({ k: "v", q, v, sp })));
+    const ans = []; let i = 0;
+    const best = getBest(t.id, "verifica");
+    const intro = () => {
+      body.innerHTML = `<div class="stage">${stageTop(t)}
+        <div class="qcard ver-intro"><span class="qn">Simulazione di verifica</span><h2>${esc(t.titolo)}: come in classe.</h2>
+          <ul class="ver-rules">
+            <li><b>${qs.length} domande</b><span>${qs.filter(x => x.k === "q").length} a risposta multipla e ${qs.filter(x => x.k === "v").length} vero o falso</span></li>
+            <li><b>Nessun aiuto</b><span>Le correzioni arrivano solo alla fine, tutte insieme</span></li>
+            <li><b>Voto in decimi</b><span>Una stima per capire a che punto sei: sufficienza al 60%</span></li>
+          </ul>
+          ${best ? `<p class="note" style="margin:0 0 14px">Il tuo risultato migliore: <b style="color:#fff">${votoTxt(votoDi(best))}</b> (${best}%)</p>` : ""}
+          <button class="btn grad full" id="verGo">Inizia la verifica ${I.arr}</button>
+          <p class="note" style="text-align:center">Consiglio: chiudi il quaderno e rispondi senza guardare gli appunti.</p>
+        </div></div>`;
+      $("#verGo", body).onclick = () => { sfx("tap"); draw(); window.scrollTo(0, 0); };
+    };
+    const draw = () => {
+      if (i >= qs.length) return end();
+      const q = qs[i]; let pick = null;
+      body.innerHTML = `<div class="stage">${stageTop(t, `<span class="pill">${i + 1} / ${qs.length}</span>`)}
+        <div class="tbar prog"><i style="transform:scaleX(${i / qs.length})"></i></div>
+        <div class="qcard"><span class="qn">${q.k === "q" ? "Scegli la risposta" : "Vero o falso?"}</span><h2>${esc(q.q)}</h2>
+          ${q.k === "q" ? `<div class="opts">${q.o.map((o, k) => `<button class="opt" data-k="${k}" data-l="${"ABCD"[k]}" style="--i:${k}">${esc(o.x)}</button>`).join("")}</div>`
+            : `<div class="vf-btns ver-vf"><button class="v" data-k="1"><span>✓</span>Vero</button><button class="f" data-k="0"><span>✕</span>Falso</button></div>`}
+          <div class="next-row ver-next"><button class="btn ghost" id="skip" type="button">Salta</button><button class="btn" id="next" disabled>${i + 1 < qs.length ? "Conferma" : "Consegna"} ${I.arr}</button></div>
+        </div></div>`;
+      $$("[data-k]", body).forEach(b => b.addEventListener("click", () => {
+        pick = Number(b.dataset.k); vib(8); sfx("tap");
+        $$("[data-k]", body).forEach(x => x.classList.toggle("sel", x === b));
+        $("#next", body).disabled = false;
+      }));
+      const go = p => { ans[i] = p; i++; draw(); window.scrollTo(0, 0); };
+      $("#next", body).onclick = () => go(pick);
+      $("#skip", body).onclick = () => go(null);
+    };
+    const end = () => {
+      const ok = qs.map((q, k) => ans[k] !== null && ans[k] !== undefined && (q.k === "q" ? q.o[ans[k]].ok : (ans[k] === 1) === q.v));
+      const right = ok.filter(Boolean).length, pct = Math.round(right / qs.length * 100), voto = votoDi(pct);
+      qs.forEach((q, k) => logAns(t.id, q.k, q.q, ok[k]));
+      const nuovo = setBest(t.id, "verifica", pct); markActive();
+      const wrong = qs.length - right;
+      const frase = voto >= 8 ? "Preparazione solida." : voto >= 6 ? "Sufficiente: ora punta più in alto." : "Non ancora: sai già cosa ripassare.";
+      body.innerHTML = `<div class="stage"><div class="qcard result">
+          <p class="kicker" style="justify-content:center">Simulazione · ${esc(t.titolo)}</p>
+          <div class="big">${votoTxt(voto)}</div><p class="muted" style="margin:4px 0 0;font-weight:900">voto indicativo · ${right} giuste su ${qs.length}</p>
+          <h2 style="margin-top:14px">${frase}</h2>
+          ${nuovo && pct > 0 ? '<span class="record">Il tuo risultato migliore!</span>' : ""}
+          <p class="note">È una stima per orientarti: il voto vero lo decide il prof., anche con domande aperte.</p>
+          <div class="cta-row"><button class="btn grad" id="again">Rifai con domande diverse</button>${wrong ? `<a class="btn ghost" href="#/ripasso">Ripasso mirato · ${wrong} ${wrong === 1 ? "errore salvato" : "errori salvati"}</a>` : ""}<a class="btn ghost" href="#/argomento/${t.id}">Torna allo studio</a></div>
+        </div>
+        <h3 class="lez-h" style="margin-top:26px">La correzione:</h3>
+        <ol class="ver-rev">${qs.map((q, k) => {
+          const mine = ans[k] === null || ans[k] === undefined ? "non data" : q.k === "q" ? q.o[ans[k]].x : ans[k] === 1 ? "Vero" : "Falso";
+          const giusta = q.k === "q" ? q.o.find(o => o.ok).x : q.v ? "Vero" : "Falso";
+          return `<li class="${ok[k] ? "ok" : "no"}"><b>${esc(q.q)}</b>
+            <span class="vr-a">${ok[k] ? "✓" : "✕"} La tua risposta: ${esc(mine)}</span>
+            ${ok[k] ? "" : `<span class="vr-c">Risposta corretta: ${esc(giusta)}</span>`}
+            <span class="vr-s">${esc(q.sp)}</span></li>`;
+        }).join("")}</ol></div>`;
+      if (voto >= 6) { confetti(voto >= 8 ? 220 : 110); sfx("win"); vib([30, 60, 30]); }
+      $("#again", body).onclick = () => gameVerifica(body, t);
+      window.scrollTo(0, 0);
+    };
+    intro();
+  }
+
+  /* ================= Verso la verifica: piano di studio giorno per giorno ================= */
+  function planTasks(t) {
+    const out = [], id = t.id, a = `#/argomento/${id}`;
+    out.push({ h: L[id] ? "Studia la lezione" : "Studia i materiali", s: "Leggi una volta, poi chiudi e ripeti a voce i punti chiave.", href: a + (L[id] ? "/lezione" : "/studia"), done: pathDone(id, "lezione") });
+    if (S[id]) out.push({ h: "Ripassa con gli schemi", s: "Copri lo schema e prova a rifarlo sul quaderno.", href: a + "/schemi", done: pathDone(id, "schema") });
+    if (G[id]) out.push({ h: "Flashcard", s: "Rispondi a voce prima di girare la carta.", href: a + "/ripassa", done: getBest(id, "flash") > 0 });
+    if (G[id]) out.push({ h: "Quiz e giochi", s: "Leggi sempre la spiegazione, anche quando indovini.", href: a + "/gioca", done: getBest(id, "quiz") > 0 });
+    if (D[id]) out.push({ h: "Domande aperte", s: "Scrivi senza guardare, poi confronta con la traccia.", href: a + "/domande", done: pathDone(id, "domanda") });
+    if (G[id]) out.push({ h: "Simulazione di verifica", s: "Come in classe: senza aiuti, con il voto.", href: a + "/gioca/verifica", done: getBest(id, "verifica") > 0 });
+    out.push({ h: "Ripasso finale", s: "Solo gli errori e gli schemi. Poi a letto presto: il sonno fissa i ricordi.", href: "#/ripasso", fin: true, done: false });
+    return out;
+  }
+  function planOf(v) {
+    const t = byId[v.id]; if (!t) return null;
+    const tasks = planTasks(t), m = tasks.length, n = Math.max(1, ddiff(v.c, v.d));
+    tasks.forEach((x, i) => { const k = m === 1 ? 0 : Math.round(i * (n - 1) / (m - 1)); const d = dparse(v.c); d.setDate(d.getDate() + k); x.d = ymd(d) > v.d ? v.d : ymd(d); });
+    const real = tasks.filter(x => !x.fin);
+    return { t, tasks, done: real.filter(x => x.done).length, tot: real.length, left: ddiff(today(), v.d), now: tasks.find(x => !x.done && x.d <= today()), next: tasks.find(x => !x.done) };
+  }
+  const verList = () => {
+    const l = (mem._ver || []).filter(v => byId[v.id] && ddiff(v.d, today()) <= 3);
+    if (mem._ver && l.length !== mem._ver.length) { mem._ver = l; save(); }
+    return l.slice().sort((a, b) => (a.d < b.d ? -1 : 1));
+  };
+  const leftTxt = n => n < 0 ? "passata" : n === 0 ? "è oggi" : n === 1 ? "è domani" : `tra ${n} giorni`;
+
+  function pagePiano(pre) {
+    setK(0);
+    const order = lastClass ? [lastClass].concat([1, 2, 3, 4, 5].filter(c => c !== lastClass)) : [1, 2, 3, 4, 5];
+    app.innerHTML = `
+      <section class="band"><div class="wrap">
+        <span class="ghost" aria-hidden="true">✓</span>
+        <a class="crumb" href="#/">${I.back}Home</a>
+        <p class="kicker">Organizzati</p><h1>Verso la verifica<em>un po' ogni giorno, senza ansia</em></h1>
+        <p>Scegli l'argomento e la data: il sito divide lo studio in passi brevi e ti dice che cosa fare oggi.</p>
+      </div></section>
+      <section class="wrap section" style="padding-top:6px"><div class="two">
+        <div class="col">
+          <form class="card pn-form rv" id="pnForm"><h3>Aggiungi una verifica:</h3>
+            <label class="pn-f"><span>Argomento</span><select id="pnT" required>${order.map(c => `<optgroup label="Classi ${PL[c]}">${C[c].temi.map(id => byId[id] ? `<option value="${id}"${pre === id ? " selected" : ""}>${esc(byId[id].titolo)}</option>` : "").join("")}</optgroup>`).join("")}</select></label>
+            <label class="pn-f"><span>Data della verifica</span><input id="pnD" type="date" required min="${today()}" value="${addDays(7)}"></label>
+            <button class="btn full" type="submit">${I.cal} Crea il piano</button>
+            <p class="note">Resta salvato solo su questo dispositivo.</p>
+          </form>
+          <div class="card rv" style="--i:1"><h3>Il metodo:</h3>
+            <ol class="rp-why">
+              <li><b>Parti presto.</b><span>Meglio 20 minuti per cinque giorni che due ore la sera prima.</span></li>
+              <li><b>Mettiti alla prova.</b><span>Quiz, domande aperte e simulazione ti dicono che cosa sai davvero.</span></li>
+              <li><b>Il giorno prima, leggero.</b><span>Ripassa gli errori e dormi: è nel sonno che la memoria si consolida.</span></li>
+            </ol>
+          </div>
+        </div>
+        <div class="col" id="pnList"></div>
+      </div></section>`;
+    const list = $("#pnList");
+    const draw = () => {
+      const vs = verList();
+      list.innerHTML = vs.length ? vs.map((v, k) => {
+        const p = planOf(v), days = [];
+        p.tasks.forEach(x => { const g = days.find(y => y.d === x.d); if (g) g.l.push(x); else days.push({ d: x.d, l: [x] }); });
+        return `<article class="card pn-card rv" style="--i:${k};${kVars(topicClass(p.t))}">
+          <header><div><p class="kicker">${esc(dlabel(v.d))} · ${leftTxt(p.left)}</p><h3>${esc(p.t.titolo)}</h3></div><button class="pn-x" type="button" data-rm="${esc(v.id)}|${esc(v.d)}" aria-label="Elimina questa verifica">${sv('<path d="M6 6l12 12M18 6 6 18"/>', 2.6)}</button></header>
+          <div class="pn-bar"><i style="width:${Math.round(p.done / p.tot * 100)}%"></i></div><p class="pn-st">${p.done} passi fatti su ${p.tot}</p>
+          <ol class="pn-days">${days.map(g => `<li class="${g.d === today() ? "today" : ""}"><span class="pn-d">${esc(dlabel(g.d))}</span><div>${g.l.map(x => `<a href="${x.href}" class="${x.done ? "ok" : !x.fin && x.d < today() ? "late" : ""}"><i>${x.done ? I.check : ""}</i><span><b>${esc(x.h)}${!x.done && !x.fin && x.d < today() ? " <em>da recuperare</em>" : ""}</b><small>${esc(x.s)}</small></span></a>`).join("")}</div></li>`).join("")}</ol>
+        </article>`;
+      }).join("") : `<div class="empty rv">Nessuna verifica in programma.<br>Aggiungine una: il piano compare qui.</div>`;
+      $$("[data-rm]", list).forEach(b => b.onclick = () => { const [id, d] = b.dataset.rm.split("|"); mem._ver = (mem._ver || []).filter(v => !(v.id === id && v.d === d)); save(); sfx("tap"); draw(); });
+      reveal();
+    };
+    $("#pnForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const id = $("#pnT").value, d = $("#pnD").value;
+      if (!byId[id] || !/^\d{4}-\d{2}-\d{2}$/.test(d) || d < today()) return;
+      mem._ver = (mem._ver || []).filter(v => v.id !== id).concat({ id, d, c: today() }); save();
+      toast("✓", "Piano creato", byId[id].titolo); sfx("ok"); draw();
+    });
+    draw();
+  }
+
+  /* riquadri in home: ripasso, verifica, sfida */
+  function coachHtml() {
+    const due = errDue().length, all = errAll().length, v = verList().filter(x => x.d >= today())[0], p = v && planOf(v);
+    return `<div class="coach">
+      <a class="coach-t ct-rip rv" href="#/ripasso"><span class="coach-ic">${I.target}</span>${due ? `<i class="coach-n">${due}</i>` : ""}<b>Ripasso mirato</b>
+        <span>${due ? `${due} ${due === 1 ? "domanda" : "domande"} da rivedere oggi` : all ? "Per oggi sei a posto: gli errori tornano al momento giusto" : "Gli errori dei quiz tornano qui dopo 1, 3 e 7 giorni"}</span></a>
+      <a class="coach-t ct-ver rv" href="#/piano" style="--i:1"><span class="coach-ic">${I.cal}</span><b>Verso la verifica</b>
+        <span>${p ? `${esc(p.t.titolo)} ${leftTxt(p.left)}${p.now ? ` · oggi: ${esc(p.now.h.toLowerCase())}` : p.next ? ` · prossimo passo ${esc(dlabel(p.next.d).toLowerCase())}` : ""}` : "Scrivi la data: il piano giorno per giorno lo prepara il sito"}</span></a>
+      <a class="coach-t ct-sfi rv" href="#/sfida${lastClass ? "/" + lastClass : ""}" style="--i:2"><span class="coach-ic">${I.bolt}</span><b>Sfida lampo</b>
+        <span>10 domande a tempo${lastClass ? ` delle ${PL[lastClass]}` : ""}: quanto sei veloce?</span></a>
+    </div>`;
   }
 
   /* ================= Router ================= */
@@ -1628,6 +1954,8 @@
     else if (a === "fitness" && window.pageFitness) { setK(0); window.pageFitness(app); navKey = ""; }
     else if (a === "privacy") { pagePrivacy(); navKey = ""; }
     else if (a === "stampa") { pageStampa(b); navKey = "classi"; }
+    else if (a === "ripasso") { pageRipasso(); navKey = ""; }
+    else if (a === "piano") { pagePiano(b); navKey = ""; }
     else pageHome();
     const cl = a === "classe" ? Number(b) : (a === "argomento" || a === "stampa") && byId[b] ? topicClass(byId[b]) : a === "orale" ? 5 : 0;
     root.classList.toggle("printing", a === "stampa");

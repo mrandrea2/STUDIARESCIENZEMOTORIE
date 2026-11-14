@@ -18,6 +18,7 @@ data/giochi-3.js    giochi: classe quarta e quinta
 data/giochi-extra.js  domande in più e i giochi «Metti in ordine» e «Dividi in gruppi»
 data/schemi.js      SCHEMI RIASSUNTIVI di ogni argomento (flussi, cicli, confronti, barre)
 data/lezioni/       LEZIONI UNICHE (slide integrate), un file per argomento
+data/approfondimenti.js  APPROFONDIMENTI: i laboratori esterni del prof. mostrati come riquadri cliccabili
 data/laboratori.js  LABORATORIO di ogni argomento: esperienze, strumenti, modelli 3D, link
 assets/lab.js       il funzionamento degli strumenti interattivi del laboratorio
 assets/illustrazioni.js  i disegni delle slide (SVG con etichette in italiano)
@@ -48,6 +49,18 @@ Apri `data/topics.js` su GitHub, clicca la matita e aggiungi una riga nell'elenc
 - **Codice YouTube**: la parte dopo `v=`.
   `youtube.com/watch?v=`**`ub747pprmJ8`** → `id: "ub747pprmJ8"`
 - Tipi: `pdf` (anche PPTX e DOCX su Drive), `video`, `audio`, `slides`, `yt`, `form`, `la` (LearningApps), `link`.
+
+## Approfondimenti (riquadri cliccabili)
+
+In `data/approfondimenti.js` ci sono i laboratori esterni del prof. («Metabolismo 3D», «Cellule in equilibrio»). Ogni blocco ha titolo, testo, indirizzo e l'elenco `temi` degli argomenti in cui deve comparire. Il sito li mostra come grandi riquadri colorati (mai come link scritti) nella home e nelle schede Lezione e Laboratorio. Per aggiungerne uno, copia un blocco e cambia i testi.
+
+## Strumenti per studiare
+
+- **Ripasso mirato** (`#/ripasso`): le domande sbagliate nei quiz, nel vero o falso, nella sfida e nelle simulazioni tornano dopo 1, 3 e 7 giorni. Dopo tre risposte giuste distanziate la domanda esce dall'elenco.
+- **Simulazione di verifica** (nella scheda Gioca di ogni argomento): 10 domande a scelta multipla e 5 vero o falso, senza aiuti; alla fine la correzione completa e un voto indicativo in decimi (sufficienza al 60%).
+- **Verso la verifica** (`#/piano`): lo studente sceglie argomento e data e riceve un piano giorno per giorno (lezione, schemi, flashcard, quiz, domande aperte, simulazione, ripasso finale). I passi si spuntano da soli.
+
+Tutto resta salvato solo sul dispositivo dello studente.
 
 ## Aggiungere domande ai giochi
 
