@@ -38,14 +38,17 @@ https://studiarescienzemotorie.vercel.app. Claude è autorizzato a fare commit e
 - Tipi di slide: cover, cards, steps, points (con `fig: {svg}` da `ILL`), split, list, end, fonti.
 - Approfondimenti (laboratori esterni del prof.): `data/approfondimenti.js` (`window.APPROF`). Sono **riquadri
   cliccabili, mai link visibili**; compaiono in home e, tramite `temi`, in Lezione e Laboratorio dell'argomento.
-  Ora: «Metabolismo 3D» (metabolismi energetici) e «Cellule in equilibrio» (PNEI, sistema immunitario, salute dinamica).
+  Ora: «Metabolismo 3D» (metabolismi energetici) e «Cellule in equilibrio» (PNEI, sistema immunitario, salute dinamica, sana alimentazione).
 - Strumenti di studio in `assets/app.js`: **Ripasso mirato** `#/ripasso` (gli errori di quiz, V/F, sfida e simulazioni
   tornano dopo 1, 3 e 7 giorni; `mem._err`), **Simulazione di verifica** `#/argomento/<id>/gioca/verifica`
   (15 domande, correzione alla fine, voto indicativo in decimi, sufficienza al 60%), **Verso la verifica** `#/piano`
-  (piano giorno per giorno dalla data della verifica; `mem._ver`).
+  (piano giorno per giorno dalla data della verifica; `mem._ver`), **Glossario** `#/glossario[/<classe>|<id>]`
+  (creato da solo dalle flashcard `flash` di ogni argomento: per aggiungere una parola basta aggiungere una flashcard;
+  modalità «Mettiti alla prova»), **Interrogazione** `#/interrogazione[/<classe>|<id>]` (tre domande di `domande.js`
+  da esporre a voce con cronometro, poi risposta modello e punti chiave; `mem._int`).
 - Progressi degli studenti solo nel browser (`localStorage` `ssm-progressi-v1`, profilo fitness `ssm-fitness-v1`).
 - `sw.js` (app installabile e offline): rete prima, copia salvata se offline. **Aumentare `VERSIONE`**
-  (ora `ssm-v18`) a ogni modifica importante. `README.md` descrive le funzioni: aggiornarlo se cambiano.
+  (ora `ssm-v19`) a ogni modifica importante. `README.md` descrive le funzioni: aggiornarlo se cambiano.
 
 ## Come lavorare
 1. `gh repo clone mrandrea2/STUDIARESCIENZEMOTORIE` (o `git pull` se già clonato).

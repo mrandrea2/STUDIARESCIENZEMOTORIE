@@ -60,6 +60,9 @@ In `data/approfondimenti.js` ci sono i laboratori esterni del prof. («Metabolis
 - **Simulazione di verifica** (nella scheda Gioca di ogni argomento): 10 domande a scelta multipla e 5 vero o falso, senza aiuti; alla fine la correzione completa e un voto indicativo in decimi (sufficienza al 60%).
 - **Verso la verifica** (`#/piano`): lo studente sceglie argomento e data e riceve un piano giorno per giorno (lezione, schemi, flashcard, quiz, domande aperte, simulazione, ripasso finale). I passi si spuntano da soli.
 
+- **Glossario** (`#/glossario`): tutte le parole chiave della materia in ordine alfabetico, con ricerca e filtro per classe. Si crea da solo dalle flashcard: per aggiungere una parola basta aggiungere una flashcard all'argomento. Con «Mettiti alla prova» le definizioni si nascondono e lo studente prova a dirle prima di scoprirle.
+- **Interrogazione** (`#/interrogazione`): tre domande aperte da esporre a voce, con cronometro (due minuti consigliati) e scaletta «definisci, spiega, fai un esempio, collega». Poi la risposta modello e i punti chiave da spuntare. Usa le domande di `data/domande.js`.
+
 Tutto resta salvato solo sul dispositivo dello studente.
 
 ## Aggiungere domande ai giochi

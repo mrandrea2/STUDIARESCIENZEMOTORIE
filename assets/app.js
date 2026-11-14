@@ -481,7 +481,7 @@
           <div><p class="kicker">${ts.length} argomenti</p><h1>Classi ${PL[c]}<em>studia, ripassa, gioca</em></h1></div>
           ${ring(st, ts.length * MAXT, "stelle")}
         </div>
-        <div class="cta-row"><a class="btn white" href="#/sfida/${c}">${I.bolt} Sfida delle ${PL[c]}</a>${c === 5 && window.ORALE ? `<a class="btn ghost" href="#/orale">${I.mic} Verso l'orale</a>` : ""}</div>
+        <div class="cta-row"><a class="btn white" href="#/sfida/${c}">${I.bolt} Sfida delle ${PL[c]}</a><a class="btn ghost" href="#/interrogazione/${c}">${I.mic} Interrogazione</a><a class="btn ghost" href="#/glossario/${c}">${I.book} Glossario</a>${c === 5 && window.ORALE ? `<a class="btn ghost" href="#/orale">${I.mic} Verso l'orale</a>` : ""}</div>
       </div></section>
       <section class="wrap section" style="padding-top:10px">
         <div class="grid">${ts.map((t, i) => topicCard(t, i, i + 1)).join("")}</div>
@@ -517,6 +517,8 @@
         return [t.titolo, t.sottotitolo, ...(t.obiettivi || []), ...((t.sintesi || []).flat()), ...((g.flash || []).flat())].join(" ").toLowerCase().includes(n);
       });
       res.innerHTML = out.length ? `<p class="note" style="margin:0 0 12px">${out.length} ${out.length === 1 ? "argomento trovato" : "argomenti trovati"}</p><div class="grid">${out.map((t, i) => topicCard(t, i)).join("")}</div>` : `<div class="empty">Nessun risultato per «${esc(inp.value)}». Prova con un'altra parola.</div>`;
+      const gw = GLO.filter(x => x.n.includes(norm(n)) || x.nb.includes(norm(n))).length;
+      if (gw) res.insertAdjacentHTML("beforeend", `<a class="btn ghost full" style="margin-top:16px" href="#/glossario/tutte/${encodeURIComponent(inp.value.trim())}">${I.book} ${gw} ${gw === 1 ? "parola" : "parole"} nel glossario</a>`);
       reveal();
     };
     $("#sf").addEventListener("submit", e => { e.preventDefault(); inp.blur(); history.replaceState(null, "", "#/cerca/" + encodeURIComponent(inp.value.trim())); });
@@ -1039,7 +1041,9 @@
     const sc = S[t.id] ? `<a class="stile st-schemi rv" href="#/argomento/${t.id}/schemi"><span class="stile-ic">${I.map}</span><span class="stile-tx"><b>Schemi</b><span>Mappe e tabelle per fissare i concetti</span></span>${I.arr}</a>` : "";
     const gi = G[t.id] ? `<a class="stile st-ripasso rv" href="#/argomento/${t.id}/gioca" style="--i:1"><span class="stile-ic">${I.game}</span><span class="stile-tx"><b>Ripasso</b><span>Quiz e 6 giochi · fino a ${MAXT} stelle</span></span>${I.arr}</a>` : "";
     const ve = G[t.id] ? `<a class="stile st-ver rv" href="#/piano/${t.id}" style="--i:2"><span class="stile-ic">${I.cal}</span><span class="stile-tx"><b>Verifica in arrivo?</b><span>Piano di studio giorno per giorno e simulazione con il voto</span></span>${I.arr}</a>` : "";
-    return sc || gi ? `<div class="stiles">${sc}${gi}</div>${ve ? `<div class="stiles one">${ve}</div>` : ""}` : "";
+    const gl = gloOf(t.id).length ? `<a class="stile st-glo rv" href="#/glossario/${t.id}"><span class="stile-ic">${I.book}</span><span class="stile-tx"><b>Parole chiave</b><span>${gloOf(t.id).length} termini da sapere definire</span></span>${I.arr}</a>` : "";
+    const it = D[t.id] ? `<a class="stile st-int rv" href="#/interrogazione/${t.id}" style="--i:1"><span class="stile-ic">${I.mic}</span><span class="stile-tx"><b>Interrogazione</b><span>Esponi a voce e confronta con la risposta modello</span></span>${I.arr}</a>` : "";
+    return sc || gi ? `<div class="stiles">${sc}${gi}</div>${gl || it ? `<div class="stiles">${gl}${it}</div>` : ""}${ve ? `<div class="stiles one">${ve}</div>` : ""}` : "";
   }
   function pathSteps(t) {
     const m = t.materiali || [], out = [];
@@ -1154,7 +1158,7 @@
         <div class="dom-m" hidden><b class="dom-l">Risposta modello</b><p>${esc(r)}</p><b class="dom-l">Quali punti chiave hai toccato?</b>
           <div class="dom-pts">${pts.map((p, k) => `<label><input type="checkbox" data-k="${k}"><span>${esc(p)}</span></label>`).join("")}</div></div>
       </article>`).join("")}</div>
-      <div class="cta-row" style="justify-content:center;margin-top:20px"><a class="btn ghost" href="#/stampa/${t.id}">${I.print} Sintesi da stampare</a><a class="btn grad" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a></div>`;
+      <div class="cta-row" style="justify-content:center;margin-top:20px"><a class="btn ghost" href="#/interrogazione/${t.id}">${I.mic} Prova a voce</a><a class="btn ghost" href="#/stampa/${t.id}">${I.print} Sintesi da stampare</a><a class="btn grad" href="#/argomento/${t.id}/gioca">${I.game} Vai ai giochi</a></div>`;
     $$(".dom", body).forEach(card => {
       const i = Number(card.dataset.i), pts = Q[i][2], ta = $("textarea", card), m = $(".dom-m", card), sc = $(".dom-sc", card);
       const st = () => (A[i] = A[i] || { t: "", p: [] });
@@ -1330,7 +1334,7 @@
 
         <div class="card rv"><h3>Che cosa resta sul tuo dispositivo</h3>
           <p>Per farti ritrovare i progressi, il sito usa la memoria locale del browser (<i>localStorage</i>) e, se lo installi, la memoria dell'app per funzionare offline (<i>service worker</i>). Vi salva:</p>
-          <ul><li>stelle, livello, giochi completati, percorso degli argomenti;</li><li>preferenze: classe, testo grande, alta leggibilità, suoni;</li><li>le risposte che scrivi alle domande aperte;</li><li>le domande da rivedere nel Ripasso mirato e le date delle verifiche che inserisci;</li><li>i profili del Laboratorio fitness;</li><li>una copia delle pagine del sito, per aprirle senza rete.</li></ul>
+          <ul><li>stelle, livello, giochi completati, percorso degli argomenti;</li><li>preferenze: classe, testo grande, alta leggibilità, suoni;</li><li>le risposte che scrivi alle domande aperte;</li><li>le domande da rivedere nel Ripasso mirato e le date delle verifiche che inserisci;</li><li>il numero e il risultato delle interrogazioni simulate (la voce non viene registrata né inviata);</li><li>i profili del Laboratorio fitness;</li><li>una copia delle pagine del sito, per aprirle senza rete.</li></ul>
           <p>Questi dati non lasciano il dispositivo e il gestore del sito non può vederli. Sono strumenti tecnici necessari alle funzioni che usi tu: per questo, come prevedono l'art. 122 del Codice privacy e le Linee guida del Garante sui cookie (10 giugno 2021), non serve un banner di consenso.</p>
           <button class="btn ghost" id="wipe" type="button">Cancella tutti i dati di questo sito dal dispositivo</button>
           <p class="tnote" id="wipeMsg" aria-live="polite"></p>
@@ -1932,7 +1936,163 @@
         <span>${p ? `${esc(p.t.titolo)} ${leftTxt(p.left)}${p.now ? ` · oggi: ${esc(p.now.h.toLowerCase())}` : p.next ? ` · prossimo passo ${esc(dlabel(p.next.d).toLowerCase())}` : ""}` : "Scrivi la data: il piano giorno per giorno lo prepara il sito"}</span></a>
       <a class="coach-t ct-sfi rv" href="#/sfida${lastClass ? "/" + lastClass : ""}" style="--i:2"><span class="coach-ic">${I.bolt}</span><b>Sfida lampo</b>
         <span>10 domande a tempo${lastClass ? ` delle ${PL[lastClass]}` : ""}: quanto sei veloce?</span></a>
+      <a class="coach-t ct-int rv" href="#/interrogazione" style="--i:1"><span class="coach-ic">${I.mic}</span><b>Interrogazione</b>
+        <span>Tre domande da esporre a voce${lastClass ? `, programma delle ${PL[lastClass]}` : ""}: poi confronti con la risposta modello</span></a>
+      <a class="coach-t ct-glo rv" href="#/glossario" style="--i:2"><span class="coach-ic">${I.book}</span><b>Glossario</b>
+        <span>${GLO.length} parole chiave spiegate in una riga, con la modalità «mettiti alla prova»</span></a>
     </div>`;
+  }
+
+  /* ================= Glossario (dalle flashcard di ogni argomento) ================= */
+  const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const GLO = [];
+  (function () {
+    const seen = {};
+    T.forEach(t => ((G[t.id] && G[t.id].flash) || []).forEach(([a, b]) => {
+      const k = norm(a).trim();
+      if (!k || a.length > 60 || /\?\s*$/.test(a) || seen[k]) return;
+      seen[k] = 1; GLO.push({ a, b, id: t.id, n: k, nb: norm(b) });
+    }));
+    GLO.sort((x, y) => x.n.localeCompare(y.n, "it"));
+  })();
+  const gloOf = id => GLO.filter(x => x.id === id);
+  function pageGlossario(arg, q0) {
+    setK(0);
+    let cls = /^[1-5]$/.test(arg || "") ? Number(arg) : 0, tid = byId[arg] ? arg : "";
+    if (!arg && lastClass) cls = lastClass;
+    let test = false;
+    app.innerHTML = `
+      <section class="band"><div class="wrap">
+        <span class="ghost" aria-hidden="true">Az</span>
+        <a class="crumb" href="${tid ? `#/argomento/${tid}` : "#/"}">${I.back}${tid ? esc(byId[tid].titolo) : "Home"}</a>
+        <p class="kicker">Le parole della materia</p><h1>Glossario<em>${GLO.length} termini spiegati in una riga</em></h1>
+        <form class="searchbox" id="gf" role="search">${I.search}<input id="gq" type="search" enterkeyhint="search" placeholder="es. ATP, sinapsi, VO₂max" value="${esc(decodeURIComponent(q0 || ""))}" aria-label="Cerca una parola nel glossario"></form>
+      </div></section>
+      <section class="wrap section" style="padding-top:6px">
+        <div class="glo-bar">
+          <div class="glo-f" role="group" aria-label="Filtra per classe">
+            <button class="glo-c" data-c="0">Tutte</button>${[1, 2, 3, 4, 5].map(c => `<button class="glo-c" data-c="${c}">${PLC[c]}</button>`).join("")}
+            ${tid ? `<button class="glo-c on" data-t="1">${esc(byId[tid].titolo)} ✕</button>` : ""}
+          </div>
+          <button class="btn small ghost" id="gTest" aria-pressed="false">${I.cards} Mettiti alla prova</button>
+        </div>
+        <p class="note" id="gInfo" aria-live="polite" style="margin:14px 0 0"></p>
+        <nav class="glo-az" id="gAz" aria-label="Vai alla lettera"></nav>
+        <div id="gList"></div>
+      </section>`;
+    const inp = $("#gq"), list = $("#gList"), az = $("#gAz"), info = $("#gInfo"), tb = $("#gTest");
+    const run = () => {
+      const n = norm(inp.value.trim());
+      const ids = tid ? [tid] : cls ? C[cls].temi.concat("metodo-di-studio") : null;
+      const out = GLO.filter(x => (!ids || ids.includes(x.id)) && (!n || x.n.includes(n) || x.nb.includes(n)));
+      $$(".glo-c[data-c]").forEach(b => b.classList.toggle("on", !tid && Number(b.dataset.c) === cls));
+      const groups = {}; out.forEach(x => { const l = /[a-z]/.test(x.n[0]) ? x.n[0].toUpperCase() : "#"; (groups[l] = groups[l] || []).push(x); });
+      const letters = Object.keys(groups);
+      info.textContent = out.length ? `${out.length} ${out.length === 1 ? "parola" : "parole"}${test ? " · tocca una parola per scoprire la definizione" : ""}` : "";
+      az.innerHTML = letters.length > 3 ? letters.map(l => `<button data-l="${l}">${l}</button>`).join("") : "";
+      list.className = "glo-list" + (test ? " test" : "");
+      list.innerHTML = out.length ? letters.map(l => `<section class="glo-g" id="glo-${l}"><h2 class="glo-h">${l}</h2><div class="glo-items">${groups[l].map(x => `<article class="glo-i">
+          <button class="glo-t" type="button"${test ? ' aria-expanded="false"' : ""}>${esc(x.a)}</button>
+          <div class="glo-d"><p>${esc(x.b)}</p>${tid ? "" : `<a href="#/argomento/${x.id}">${esc(byId[x.id].titolo)} ${I.arr}</a>`}</div>
+        </article>`).join("")}</div></section>`).join("")
+        : `<div class="empty" style="margin-top:16px">Nessuna parola per «${esc(inp.value)}»${cls || tid ? `. <button class="btn small ghost" id="gAll" style="margin-top:12px">Cerca in tutte le classi</button>` : ". Prova con un'altra parola."}</div>`;
+      const ga = $("#gAll"); if (ga) ga.onclick = () => { cls = 0; tid = ""; const tc = $(".glo-c[data-t]"); if (tc) tc.remove(); run(); };
+    };
+    list.addEventListener("click", e => {
+      const b = e.target.closest(".glo-t"); if (!b || !test) return;
+      const it = b.parentElement, on = it.classList.toggle("open"); b.setAttribute("aria-expanded", on); sfx("flip"); vib(8);
+    });
+    az.addEventListener("click", e => { const b = e.target.closest("[data-l]"); if (!b) return; const g = document.getElementById("glo-" + b.dataset.l); if (g) window.scrollTo({ top: g.getBoundingClientRect().top + window.scrollY - 120, behavior: reduce ? "auto" : "smooth" }); });
+    $$(".glo-c").forEach(b => b.onclick = () => { if (b.dataset.t) { tid = ""; b.remove(); } else { cls = Number(b.dataset.c); tid = ""; const tc = $(".glo-c[data-t]"); if (tc) tc.remove(); } sfx("tap"); run(); });
+    tb.onclick = () => { test = !test; tb.setAttribute("aria-pressed", test); tb.classList.toggle("grad", test); tb.classList.toggle("ghost", !test); tb.innerHTML = test ? `${I.check} Mostra le definizioni` : `${I.cards} Mettiti alla prova`; sfx("tap"); run(); };
+    $("#gf").addEventListener("submit", e => { e.preventDefault(); inp.blur(); });
+    inp.addEventListener("input", run);
+    run();
+  }
+
+  /* ================= Interrogazione simulata (esposizione orale) ================= */
+  function pageInterrogazione(arg) {
+    setK(0);
+    const tid = byId[arg] && D[arg] ? arg : "";
+    let cls = /^[1-5]$/.test(arg || "") ? Number(arg) : tid ? 0 : lastClass;
+    const synth = "speechSynthesis" in window && window.SpeechSynthesisUtterance ? window.speechSynthesis : null;
+    let timer = 0;
+    const stop = () => { clearInterval(timer); if (synth) synth.cancel(); };
+    stopOnLeave(stop);
+    app.innerHTML = `
+      <section class="band"><div class="wrap">
+        <span class="ghost" aria-hidden="true">?!</span>
+        <a class="crumb" href="${tid ? `#/argomento/${tid}/domande` : "#/"}">${I.back}${tid ? esc(byId[tid].titolo) : "Home"}</a>
+        <p class="kicker">Allenati a esporre</p><h1>Interrogazione<em>${tid ? esc(byId[tid].titolo.toLowerCase()) : "tre domande, rispondi a voce"}</em></h1>
+        <p>Sapere una cosa e <b>saperla dire</b> sono due abilità diverse. Rispondi ad alta voce come davanti al prof., poi confronta con la risposta modello.</p>
+      </div></section>
+      <section class="wrap section" style="padding-top:6px"><div id="ib" class="int-box"></div></section>`;
+    const box = $("#ib");
+    const pool = () => {
+      const ids = tid ? [tid] : cls ? C[cls].temi.filter(id => D[id]) : T.filter(t => D[t.id] && !t.evidenza).map(t => t.id);
+      if (tid) return shuffle(D[tid].map((q, i) => ({ id: tid, q }))).slice(0, 3);
+      return shuffle(ids).slice(0, 3).map(id => ({ id, q: shuffle(D[id])[0] }));
+    };
+    const setup = () => {
+      const st = mem._int || {};
+      box.innerHTML = `<div class="card int-set rv">
+        ${tid ? "" : `<p class="kicker">Su quale programma?</p><div class="glo-f" style="margin-bottom:18px">${[1, 2, 3, 4, 5].map(c => `<button class="glo-c${c === cls ? " on" : ""}" data-c="${c}">${PLC[c]}</button>`).join("")}<button class="glo-c${cls ? "" : " on"}" data-c="0">Tutto</button></div>`}
+        <p class="kicker">Come funziona</p>
+        <ol class="int-how">
+          <li><b>Leggi o ascolta</b> la domanda e prenditi qualche secondo per pensare.</li>
+          <li><b>Rispondi a voce</b> per circa due minuti: definisci, spiega, fai un esempio sportivo.</li>
+          <li><b>Confronta</b> con la risposta modello e spunta i punti chiave che hai detto.</li>
+        </ol>
+        <button class="btn grad full" id="iGo">${I.mic} Inizia l'interrogazione</button>
+        ${st.n ? `<p class="note" style="margin:14px 0 0;text-align:center">Interrogazioni fatte: <b>${st.n}</b> · ultima: ${st.last}% dei punti chiave${st.best ? ` · migliore: ${st.best}%` : ""}</p>` : ""}
+      </div>`;
+      $$(".glo-c", box).forEach(b => b.onclick = () => { cls = Number(b.dataset.c); sfx("tap"); setup(); });
+      $("#iGo").onclick = () => { const qs = pool(); if (!qs.length) return; sfx("go"); ask(qs, 0, []); };
+      reveal();
+    };
+    const ask = (qs, i, res) => {
+      stop();
+      const { id, q: [q, r, pts] } = qs[i]; let s = 0;
+      box.innerHTML = `<article class="card int-q">
+        <div class="int-top"><span class="int-n">Domanda ${i + 1} di ${qs.length}</span><span class="chip">${esc(byId[id].titolo)}</span></div>
+        <h2>${esc(q)}</h2>
+        <div class="int-clock" aria-hidden="true"><b id="iT">0:00</b><span class="xpbar"><i id="iBar" style="width:0"></i></span><small>consigliati 2:00</small></div>
+        <div class="int-steps" aria-label="Scaletta per rispondere"><span><i>1</i>Definisci</span><span><i>2</i>Spiega</span><span><i>3</i>Fai un esempio</span><span><i>4</i>Collega</span></div>
+        <div class="int-act">${synth ? `<button class="btn small ghost" id="iSay" type="button">${I.ear} Ascolta la domanda</button>` : ""}<button class="btn grad" id="iDone" type="button">${I.check} Ho risposto: confronta</button></div>
+        <div class="dom-m" id="iM" hidden><b class="dom-l">Risposta modello</b><p>${esc(r)}</p><b class="dom-l">Quali punti chiave hai detto?</b>
+          <div class="dom-pts">${pts.map((p, k) => `<label><input type="checkbox" data-k="${k}"><span>${esc(p)}</span></label>`).join("")}</div>
+          <button class="btn full" id="iNext" type="button" style="margin-top:14px">${i + 1 < qs.length ? "Prossima domanda" : "Vedi il risultato"} ${I.arr}</button></div>
+      </article>`;
+      const tEl = $("#iT"), bar = $("#iBar");
+      timer = setInterval(() => { s++; tEl.textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); bar.style.width = Math.min(100, s / 120 * 100) + "%"; if (s === 120) { tEl.classList.add("ok"); sfx("ok"); } }, 1000);
+      const say = $("#iSay"); if (say) say.onclick = () => { synth.cancel(); const u = new SpeechSynthesisUtterance(q); u.lang = "it-IT"; u.rate = .95; synth.speak(u); };
+      $("#iDone").onclick = () => {
+        clearInterval(timer); if (synth) synth.cancel();
+        $("#iDone").hidden = true; if (say) say.hidden = true;
+        const m = $("#iM"); m.hidden = false; sfx("flip"); m.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      };
+      $$("#iM input").forEach(x => x.addEventListener("change", () => sfx(x.checked ? "ok" : "tap")));
+      $("#iNext").onclick = () => {
+        res.push({ id, q, n: $$("#iM input").filter(x => x.checked).length, tot: pts.length, s });
+        if (i + 1 < qs.length) { ask(qs, i + 1, res); window.scrollTo(0, 0); } else end(res);
+      };
+    };
+    const end = res => {
+      stop();
+      const n = res.reduce((a, x) => a + x.n, 0), tot = res.reduce((a, x) => a + x.tot, 0), pct = Math.round(n / tot * 100);
+      const st = mem._int = mem._int || {}; st.n = (st.n || 0) + 1; st.last = pct; st.best = Math.max(st.best || 0, pct); save();
+      const msg = pct >= 80 ? "Esposizione completa: sei pronto per l'interrogazione." : pct >= 55 ? "Buona base: rivedi i punti che ti sono sfuggiti e riprova." : "Per ora mancano troppi punti chiave: ripassa la lezione, poi riprova a voce.";
+      if (pct >= 80) { confetti(90); sfx("win"); }
+      box.innerHTML = `<div class="card int-end">
+        <div class="rp-num"><b>${pct}%</b><span>dei punti chiave · ${n} su ${tot}</span></div>
+        <p class="int-msg">${msg}</p>
+        <div class="int-res">${res.map(x => { const ok = x.n / x.tot >= .75, mid = x.n / x.tot >= .5; return `<div class="int-r ${ok ? "ok" : mid ? "mid" : "no"}"><b>${x.n}/${x.tot}</b><span>${esc(x.q)}<small>${esc(byId[x.id].titolo)} · hai parlato ${Math.floor(x.s / 60)}:${String(x.s % 60).padStart(2, "0")}</small></span>${ok ? "" : `<a class="btn small ghost" href="#/argomento/${x.id}/lezione">Ripassa</a>`}</div>`; }).join("")}</div>
+        <div class="cta-row" style="justify-content:center"><button class="btn grad" id="iAgain">${I.mic} Altre tre domande</button><a class="btn ghost" href="${tid ? `#/argomento/${tid}/domande` : "#/"}">${tid ? "Torna alle domande" : "Torna alla home"}</a></div>
+      </div>`;
+      $("#iAgain").onclick = () => { const qs = pool(); sfx("go"); ask(qs, 0, []); window.scrollTo(0, 0); };
+      window.scrollTo(0, 0);
+    };
+    setup();
   }
 
   /* ================= Router ================= */
@@ -1956,6 +2116,8 @@
     else if (a === "stampa") { pageStampa(b); navKey = "classi"; }
     else if (a === "ripasso") { pageRipasso(); navKey = ""; }
     else if (a === "piano") { pagePiano(b); navKey = ""; }
+    else if (a === "glossario") { pageGlossario(b, c); navKey = ""; }
+    else if (a === "interrogazione") { pageInterrogazione(b); navKey = ""; }
     else pageHome();
     const cl = a === "classe" ? Number(b) : (a === "argomento" || a === "stampa") && byId[b] ? topicClass(byId[b]) : a === "orale" ? 5 : 0;
     root.classList.toggle("printing", a === "stampa");
