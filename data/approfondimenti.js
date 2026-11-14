@@ -2,6 +2,7 @@
    Compaiono come riquadri cliccabili (non come link) nella home e negli argomenti indicati in `temi`.
    Si aprono in una nuova scheda solo quando lo studente li tocca.
    Per aggiungerne uno: copia un blocco, cambia i testi e l'indirizzo.
+   classi: in quali pagine di classe compare il riquadro (es. [2] = classi seconde).
    col: "a" (arancio-magenta) oppure "b" (verde-blu) · art: "atp" oppure "cellula". */
 window.APPROF = [
   {
@@ -14,6 +15,7 @@ window.APPROF = [
     testo: "Entra nella cellula e segui una molecola di glucosio: glicolisi, ciclo di Krebs e catena respiratoria in un modello 3D da ruotare e ingrandire.",
     punti: ["Glicolisi", "Ciclo di Krebs", "ATP sintasi", "Perché serve l'ossigeno"],
     cta: "Apri il laboratorio",
+    classi: [2],
     temi: ["i-metabolismi-energetici"]
   },
   {
@@ -26,6 +28,7 @@ window.APPROF = [
     testo: "Come nasce un tumore, come si cura e quali scelte di ogni giorno riducono il rischio: movimento, alimentazione, niente fumo, vaccini e screening.",
     punti: ["Dal DNA alla salute", "Cellula in 3D", "Laboratori", "Ripasso attivo"],
     cta: "Apri il percorso",
+    classi: [4],
     temi: ["pnei-lifestyle-e-salute", "il-sistema-immunitario", "la-salute-dinamica", "principi-per-una-sana-alimentazione"]
   }
 ];

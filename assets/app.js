@@ -485,7 +485,11 @@
       </div></section>
       <section class="wrap section" style="padding-top:10px">
         <div class="grid">${ts.map((t, i) => topicCard(t, i, i + 1)).join("")}</div>
-      </section>${c === 5 && window.ORALE ? `
+      </section>${(() => { const l = APF.filter(a => (a.classi || []).includes(c)); return l.length ? `
+      <section class="wrap section">
+        <div class="section-head rv"><div><p class="kicker">Laboratorio del prof. · classi ${PL[c]}</p><h2>Esplora e <span class="gt">approfondisci</span>:</h2></div></div>
+        <div class="apf-grid${l.length === 1 ? " one" : ""}">${l.map(apfTile).join("")}</div>
+      </section>` : ""; })()}${c === 5 && window.ORALE ? `
       <section class="wrap section orl-cls">
         <div class="section-head rv"><p class="kicker">Esame di Stato</p><h2>Percorsi per l'<span class="gt">esame</span>:</h2><p class="muted">Sei temi per collegare le Scienze motorie alle altre discipline nel colloquio orale.</p></div>
         <div class="orl-cards">${window.ORALE.percorsi.map((p, i) => `<a class="card orl-card rv" style="--i:${i % 3}" href="#/orale/${i + 1}"><span class="orl-n">${i + 1}</span><span><b>${esc(p.titolo)}</b><small>${p.collegamenti.slice(0, 3).map(x => esc(x[0])).join(" · ")}</small></span>${I.arr}</a>`).join("")}</div>

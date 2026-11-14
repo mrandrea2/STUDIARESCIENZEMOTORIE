@@ -52,7 +52,7 @@ Apri `data/topics.js` su GitHub, clicca la matita e aggiungi una riga nell'elenc
 
 ## Approfondimenti (riquadri cliccabili)
 
-In `data/approfondimenti.js` ci sono i laboratori esterni del prof. («Metabolismo 3D», «Cellule in equilibrio»). Ogni blocco ha titolo, testo, indirizzo e l'elenco `temi` degli argomenti in cui deve comparire. Il sito li mostra come grandi riquadri colorati (mai come link scritti) nella home e nelle schede Lezione e Laboratorio. Per aggiungerne uno, copia un blocco e cambia i testi.
+In `data/approfondimenti.js` ci sono i laboratori esterni del prof. («Metabolismo 3D», «Cellule in equilibrio»). Ogni blocco ha titolo, testo, indirizzo, l'elenco `classi` (le pagine di classe in cui compare: Metabolismo 3D in seconda, Cellule in equilibrio in quarta) e l'elenco `temi` degli argomenti in cui deve comparire. Il sito li mostra come grandi riquadri colorati (mai come link scritti) nella home e nelle schede Lezione e Laboratorio. Per aggiungerne uno, copia un blocco e cambia i testi.
 
 ## Strumenti per studiare
 
