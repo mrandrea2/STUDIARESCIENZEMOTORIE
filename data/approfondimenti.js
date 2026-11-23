@@ -28,7 +28,7 @@ window.APPROF = [
     testo: "Come nasce un tumore, come si cura e quali scelte di ogni giorno riducono il rischio: movimento, alimentazione, niente fumo, vaccini e screening.",
     punti: ["Dal DNA alla salute", "Cellula in 3D", "Laboratori", "Ripasso attivo"],
     cta: "Apri il percorso",
-    classi: [4],
+    classi: [4, 5],
     temi: ["pnei-lifestyle-e-salute", "il-sistema-immunitario", "la-salute-dinamica", "principi-per-una-sana-alimentazione"]
   }
 ];
